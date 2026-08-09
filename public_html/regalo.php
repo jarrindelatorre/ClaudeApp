@@ -82,10 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endforeach; ?>
 
     <h2>1. Pagá</h2>
+    <?php if ($cumpleanero['alias_cobro'] !== ''): ?>
     <p>Alias / cuenta de <?= h($cumpleanero['nombre']) ?>:
        <strong id="alias"><?= h($cumpleanero['alias_cobro']) ?></strong>
        <button type="button" onclick="copiarAlias()">Copiar</button>
     </p>
+    <?php endif; ?>
 
     <?php if ($cumpleanero['qr_pago_path']): ?>
         <div id="bloque-qr">

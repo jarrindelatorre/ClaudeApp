@@ -4,8 +4,10 @@ public_html/includes/config.php
 # Archivos subidos por usuarios (no versionar)
 public_html/uploads/selfies/*
 public_html/uploads/receipts/*
+public_html/uploads/qr/*
 !public_html/uploads/selfies/.gitkeep
 !public_html/uploads/receipts/.gitkeep
+!public_html/uploads/qr/.gitkeep
 
 # Credenciales de deploy
 deploy/.netrc

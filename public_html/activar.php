@@ -12,15 +12,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $aliasCobro = trim($_POST['alias_cobro'] ?? '');
         $traje = trim($_POST['traje'] ?? 'clasico');
 
-        if ($nombre === '' || $email === '' || $aliasCobro === '') {
-            throw new RuntimeException('Nombre, email y alias de cobro son obligatorios.');
+        if ($nombre === '' || $email === '') {
+            throw new RuntimeException('Nombre y email son obligatorios.');
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new RuntimeException('Email inválido.');
         }
 
-        $qrPath = guardarImagenSubida('qr_pago', 'selfies'); // reutiliza carpeta selfies, ver nota abajo
+        $qrPath = guardarImagenSubida('qr_pago', 'qr');
         $selfiePath = guardarImagenSubida('selfie', 'selfies');
+
+        if ($aliasCobro === '' && !$qrPath) {
+            throw new RuntimeException('Subí tu QR de cobro o escribí un alias/cuenta — necesitamos al menos uno de los dos para que te puedan pagar.');
+        }
 
         $slug = generarSlugUnico($nombre);
         $token = generarToken();
@@ -85,12 +89,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" name="telefono" value="<?= h($_POST['telefono'] ?? '') ?>"></label>
         </p>
         <p>
-            <label>Alias / número de cuenta / celular para que te transfieran (texto copiable)<br>
-            <input type="text" name="alias_cobro" required value="<?= h($_POST['alias_cobro'] ?? '') ?>"></label>
+            <strong>Cómo te van a pagar</strong> — completá al menos uno de estos dos (los dos es mejor):
         </p>
         <p>
-            <label>QR de cobro de tu banco (imagen, opcional si ya pusiste alias)<br>
-            <input type="file" name="qr_pago" accept="image/*"></label>
+            <label>QR de cobro de tu banco (imagen)<br>
+            <input type="file" name="qr_pago" accept="image/*"></label><br>
+            <small>Sirve cuando quien te regala te ve desde una compu y paga con el celular.</small>
+        </p>
+        <p>
+            <label>Alias / número de cuenta / celular (texto copiable)<br>
+            <input type="text" name="alias_cobro" value="<?= h($_POST['alias_cobro'] ?? '') ?>"></label><br>
+            <small>Sirve como respaldo cuando quien te regala está en su propio celular y no puede escanear su propia pantalla.</small>
         </p>
         <p>
             <label>Selfie (se recorta dentro del casco del traje)<br>
