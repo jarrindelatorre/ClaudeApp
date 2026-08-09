@@ -1,0 +1,16 @@
+# Config real con credenciales — nunca a git
+public_html/includes/config.php
+
+# Archivos subidos por usuarios (no versionar)
+public_html/uploads/*
+!public_html/uploads/.htaccess
+!public_html/uploads/selfies/.gitkeep
+!public_html/uploads/receipts/.gitkeep
+
+# Credenciales de deploy
+deploy/.netrc
+deploy/.env
+
+# Varios
+*.log
+.DS_Store

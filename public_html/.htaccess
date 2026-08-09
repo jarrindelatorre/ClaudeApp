@@ -1,0 +1,19 @@
+RewriteEngine On
+
+# /u/slug -> u.php?slug=slug
+RewriteRule ^u/([a-zA-Z0-9\-]+)/?$ u.php?slug=$1 [L,QSA]
+
+# /regalo/slug -> regalo.php?slug=slug
+RewriteRule ^regalo/([a-zA-Z0-9\-]+)/?$ regalo.php?slug=$1 [L,QSA]
+
+# /panel/token -> panel.php?token=token
+RewriteRule ^panel/([a-zA-Z0-9]+)/?$ panel.php?token=$1 [L,QSA]
+
+# /api/feed/slug -> api/feed.php?slug=slug
+RewriteRule ^api/feed/([a-zA-Z0-9\-]+)/?$ api/feed.php?slug=$1 [L,QSA]
+
+# No listar directorios ni exponer includes/uploads sensibles
+Options -Indexes
+<FilesMatch "\.(sql|md)$">
+    Require all denied
+</FilesMatch>

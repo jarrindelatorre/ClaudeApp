@@ -1,0 +1,4 @@
+# Las imágenes subidas se sirven, pero nunca se ejecutan como código.
+<FilesMatch "\.(php|phtml|php\d)$">
+    Require all denied
+</FilesMatch>
