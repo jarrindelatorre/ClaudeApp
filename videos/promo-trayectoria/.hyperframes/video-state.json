@@ -1,7 +1,7 @@
 {
   "version": 1,
   "historyId": "47d4fe95-1cf2-414e-a306-4fb648a3666f",
-  "currentRevision": "e128d6a6-e4bf-410e-b6eb-2115252ff23c",
+  "currentRevision": "180ea5c4-850f-4c55-b120-515c2ea62032",
   "pendingChanges": false,
   "files": {
     "assets/fonts/inter-var.woff2": {
@@ -17,8 +17,8 @@
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/53/53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
     },
     "index.html": {
-      "hash": "96335f93bd74e079c50b05fccfd9f411c049b6bf031b0a7952b1665eb711fd8e",
-      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/96/96335f93bd74e079c50b05fccfd9f411c049b6bf031b0a7952b1665eb711fd8e"
+      "hash": "e38bcb7af9c6222ecf4b2730712d9e12de6a0fff6b1c36da511aaae6dfe5879f",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/e3/e38bcb7af9c6222ecf4b2730712d9e12de6a0fff6b1c36da511aaae6dfe5879f"
     },
     "meta.json": {
       "hash": "50ca7a1280d2df13e54267f16f15231aa641a2a27f9fde4d60401849b6f0545f",
@@ -103,6 +103,10 @@
     "assets/web-dam-movil.webp": {
       "hash": "61bf4677e75a3ec130530c8251d67c446d5cfdf033dc4c7e6c8e053cf49d493d",
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/61/61bf4677e75a3ec130530c8251d67c446d5cfdf033dc4c7e6c8e053cf49d493d"
+    },
+    "assets/fondo-portada-comunica.webp": {
+      "hash": "1526566133fdc74b894b0aedd86066cb763f0f273d5832b7046155a236982747",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/15/1526566133fdc74b894b0aedd86066cb763f0f273d5832b7046155a236982747"
     }
   },
   "revisions": {
@@ -361,6 +365,40 @@
           "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/96/96335f93bd74e079c50b05fccfd9f411c049b6bf031b0a7952b1665eb711fd8e"
         }
       }
+    },
+    "d6f0c3d7-5024-4548-be31-f3480637797d": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792581574459,
+      "endedAt": 1792581574460,
+      "files": {
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/96/96335f93bd74e079c50b05fccfd9f411c049b6bf031b0a7952b1665eb711fd8e",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/4e/4e3b41b6f342ef830e350e8dcfab791f279da3cda006ab6d867682b1c79729eb"
+        }
+      }
+    },
+    "180ea5c4-850f-4c55-b120-515c2ea62032": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792582054463,
+      "endedAt": 1792582054477,
+      "files": {
+        "assets/fondo-portada-comunica.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/15/1526566133fdc74b894b0aedd86066cb763f0f273d5832b7046155a236982747"
+        },
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/4e/4e3b41b6f342ef830e350e8dcfab791f279da3cda006ab6d867682b1c79729eb",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/e3/e38bcb7af9c6222ecf4b2730712d9e12de6a0fff6b1c36da511aaae6dfe5879f"
+        }
+      }
     }
   },
   "checks": {
@@ -375,15 +413,15 @@
   },
   "renders": {
     "latest": {
-      "id": "bb476580-3dbf-4806-a8e0-3316e52a5d59",
-      "completedAt": 1792580941743,
-      "output": "/home/user/ClaudeApp/videos/promo-trayectoria/promo-trayectoria.mp4",
+      "id": "066dbcd8-d4e2-49d2-b0e1-14a8b9a1af04",
+      "completedAt": 1792582018255,
+      "output": "/tmp/claude-0/-home-user-ClaudeApp/439a2653-94de-5f64-9c4c-73fcc92ca0ca/scratchpad/p15.mp4",
       "status": "completed",
-      "revision": "e128d6a6-e4bf-410e-b6eb-2115252ff23c"
+      "revision": "d6f0c3d7-5024-4548-be31-f3480637797d"
     },
     "retainedRevisions": [
-      "e128d6a6-e4bf-410e-b6eb-2115252ff23c",
-      "127cdd92-c6be-4743-b0a1-66674e9dd997"
+      "d6f0c3d7-5024-4548-be31-f3480637797d",
+      "e128d6a6-e4bf-410e-b6eb-2115252ff23c"
     ]
   },
   "pendingArtifactCleanup": []
