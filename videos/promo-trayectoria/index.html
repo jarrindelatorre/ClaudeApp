@@ -395,11 +395,11 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="120"
+      data-duration="127.875"
       data-width="1920"
       data-height="1080"
     >
-      <div id="stage" class="clip" data-start="0" data-duration="120" data-track-index="0">
+      <div id="stage" class="clip" data-start="0" data-duration="127.875" data-track-index="0">
         <div id="scenes"></div>
         <img id="watermark" src="assets/jarrindelatorre-white.png" alt="" />
         <div id="vignette"></div>
@@ -413,7 +413,7 @@
       </div>
 
       <!-- Música original (assets/musica.mp3): 4 compases por escena, cortes sobre el compás. -->
-      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="120" data-track-index="1" data-volume="0.85"></audio>
+      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="127.875" data-track-index="1" data-volume="0.85"></audio>
     </div>
 
     <script>
@@ -422,7 +422,7 @@
       const IMG = "assets/";
 
       // images: carrusel de cada sección ({ src | video, title, note }); null = placeholder (imagen pendiente).
-      // Con 4 tarjetas la escena dura 15.75 s (6 compases) para que el carrusel mantenga la misma velocidad.
+      // Con 4 tarjetas la escena dura 15.75 s (6 compases) y con 5, 18.375 s (7), para que el carrusel mantenga una velocidad lenta.
       const SCENES = [
         {
           type: "brand",
@@ -508,15 +508,17 @@
         {
           type: "area",
           bg: "cartel-dam-desde-el-silencio.webp",
-          duration: 10.5,
+          duration: 18.375,
           kicker: "07 · Gestión",
           title: ["Dirección de", "proyectos"],
           orgs: ["Presidencia de la República", "Ruta Viva", "DAM", "Misión Metal"],
           skills: ["Coordinación de equipos", "Eventos", "Festivales", "Conciertos", "Campañas"],
           images: [
-            { src: "cartel-dam-desde-el-silencio.webp", title: "DAM · Desde el silencio", note: "Concierto y lanzamiento" },
-            { src: "cartel-corovozandes.webp", title: "Corovozandes 2010", note: "Días de Nochebuena · Teatro Sucre" },
-            null,
+            { src: "gestion-dam-concierto.webp", title: "DAM en concierto", note: "Producción y dirección del show" },
+            { src: "gestion-concierto.webp", title: "Concierto en vivo", note: "Coordinación de evento y escenario" },
+            { src: "gestion-transmision.webp", title: "Transmisión en vivo", note: "Realización multicámara y streaming" },
+            { src: "gestion-coordinacion-tecnica.jpg", title: "Coordinación técnica", note: "Evento institucional" },
+            { src: "gestion-el-ciudadano.webp", title: "El Ciudadano", note: "Cobertura y transmisión web" },
           ],
         },
         {

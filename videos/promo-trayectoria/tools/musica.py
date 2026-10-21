@@ -2,7 +2,7 @@
 # Grid: 4 bars per 10.5 s scene (≈91.4 bpm); scene cuts land on bar lines.
 import numpy as np, soundfile as sf, sys
 # Scene durations must match SCENES in index.html (each is a whole number of bars).
-SCENES = [6, 10.5, 15.75, 15.75, 15.75, 15.75, 10.5, 10.5, 10.5, 9]
+SCENES = [6, 10.5, 15.75, 15.75, 15.75, 15.75, 18.375, 10.5, 10.5, 9]
 sr = 44100
 T = float(sum(SCENES))
 n = int(sr * T)
