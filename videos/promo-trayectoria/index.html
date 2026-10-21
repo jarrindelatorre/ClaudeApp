@@ -11,20 +11,24 @@
         --text: #f4f1ec;
         --text-2: #a39e8f;
         --accent: #c8553d;
-        --font-display: "Fraunces", Georgia, serif;
+        --font-display: "Archivo", "Inter", system-ui, sans-serif;
+        --display-stretch: 118%; /* ancho de la tipografía display (62%–125%) */
+        --display-weight: 600;
+        --bg-shade: 0.8; /* oscuridad del fondo fotográfico (0–1) */
         --font-body: "Inter", system-ui, sans-serif;
         --margin: 120px; /* márgenes laterales */
         --col: 118px; /* ancho de columna (12 col) */
         --gutter: 24px;
         --radius: 4px;
         --title-size: 80px;
-        --title-tracking: 0.06em;
+        --title-tracking: 0.02em;
       }
 
       @font-face {
-        font-family: "Fraunces";
-        src: url("assets/fonts/fraunces-500.woff2") format("woff2");
-        font-weight: 500;
+        font-family: "Archivo";
+        src: url("assets/fonts/archivo-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
         font-display: block;
       }
       @font-face {
@@ -67,6 +71,32 @@
         width: 1920px;
         height: 1080px;
         opacity: 0;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      /* Foto de fondo opaca (más alta que el cuadro para el parallax) */
+      .bgl {
+        position: absolute;
+        left: -40px;
+        top: -40px;
+        width: 2000px;
+        height: 1800px;
+      }
+      .bgl img {
+        display: block;
+        width: 2000px;
+        height: 1160px;
+        object-fit: cover;
+        filter: grayscale(0.55) blur(1.5px);
+      }
+      .shade {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background:
+          linear-gradient(90deg, rgba(18, 18, 18, 0.96) 0%, rgba(18, 18, 18, 0.82) 48%, rgba(18, 18, 18, 0.7) 100%),
+          rgba(18, 18, 18, calc(var(--bg-shade) - 0.6));
       }
       .content {
         position: absolute;
@@ -96,6 +126,9 @@
       }
 
       /* Columna izquierda: 5 columnas */
+      .left.wide {
+        width: calc(9 * var(--col) + 8 * var(--gutter));
+      }
       .left {
         position: absolute;
         left: var(--margin);
@@ -103,7 +136,8 @@
         width: calc(5 * var(--col) + 4 * var(--gutter));
       }
       .title {
-        font: 500 var(--title-size) / 1.04 var(--font-display);
+        font: var(--display-weight) var(--title-size) / 1.02 var(--font-display);
+        font-stretch: var(--display-stretch);
         letter-spacing: var(--title-tracking);
         text-transform: uppercase;
         color: var(--text);
@@ -202,7 +236,8 @@
       }
       .intro-title {
         margin-top: 34px;
-        font: 500 104px / 1.04 var(--font-display);
+        font: var(--display-weight) 100px / 1.02 var(--font-display);
+        font-stretch: var(--display-stretch);
         letter-spacing: var(--title-tracking);
         text-transform: uppercase;
       }
@@ -234,7 +269,8 @@
         left: 1100px;
       }
       .edu-title {
-        font: 500 50px / 1.14 var(--font-display);
+        font: var(--display-weight) 46px / 1.15 var(--font-display);
+        font-stretch: var(--display-stretch);
         color: var(--text);
       }
       .edu-school {
@@ -315,13 +351,13 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="42"
+      data-duration="57"
       data-width="1920"
       data-height="1080"
     >
-      <div id="stage" class="clip" data-start="0" data-duration="42" data-track-index="0">
+      <div id="stage" class="clip" data-start="0" data-duration="57" data-track-index="0">
         <div id="scenes"></div>
-        <img id="watermark" src="assets/logo-blanco.png" alt="" />
+        <img id="watermark" src="assets/jarrindelatorre-white.png" alt="" />
         <div id="vignette"></div>
         <svg id="grain" viewBox="0 0 1920 1080" preserveAspectRatio="none">
           <filter id="noise">
@@ -333,13 +369,13 @@
       </div>
 
       <!-- Música: descomenta y apunta src a tu pista para agregarla.
-      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="42" data-track-index="1" data-volume="0.6"></audio>
+      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="57" data-track-index="1" data-volume="0.6"></audio>
       -->
     </div>
 
     <script>
       /* ───────────── Contenido (editable) ───────────── */
-      const LOGO = "assets/logo-blanco.png";
+      const LOGO = "assets/jarrindelatorre-white.png"; // logo Jarrín De la Torre (blanco)
       const IMG = "assets/";
 
       // Imágenes opcionales: cuando agregues audiovisual-01/02.jpg o social-01/02.jpg a assets/,
@@ -347,6 +383,7 @@
       const SCENES = [
         {
           type: "intro",
+          bg: "branding-comunica-ep.webp", // foto de fondo opaca
           duration: 5,
           name: "Darío Jarrín De la Torre",
           title: ["20 años coordinando", "comunicación"],
@@ -354,8 +391,8 @@
         },
         {
           type: "area",
+          bg: "branding-publica-fm.webp",
           duration: 5,
-          number: "01 / 05",
           title: ["Producción", "audiovisual"],
           orgs: ["Presidencia de la República", "Ecuador TV"],
           skills: ["Dirección de cámaras", "Cámara", "Edición y postproducción"],
@@ -364,8 +401,8 @@
         },
         {
           type: "area",
+          bg: "branding-alpha-technologies.webp",
           duration: 5,
-          number: "02 / 05",
           title: ["Diseño", "editorial"],
           orgs: ["BID", "OIT", "Compassion International"],
           skills: ["Revistas", "Diseño editorial", "Cómics", "Ilustración"],
@@ -373,8 +410,8 @@
         },
         {
           type: "area",
+          bg: "branding-ecuador-tv.webp",
           duration: 5,
-          number: "03 / 05",
           title: ["Diseño", "digital"],
           orgs: ["Comunica EP", "Koen.ec", "Danny Ghosen"],
           skills: ["UX/UI", "Diseño de interfaces", "HTML", "CSS", "IA"],
@@ -382,26 +419,55 @@
         },
         {
           type: "area",
+          bg: "branding-publica-fm.webp",
           duration: 5,
-          number: "04 / 05",
+          title: ["Branding"],
+          orgs: ["Comunica EP", "Alpha Technologies"],
+          skills: ["Creación de marcas", "Manejo de imagen corporativa", "Aplicación a productos"],
+          images: ["branding-comunica-ep.webp", "branding-alpha-technologies.webp"],
+        },
+        {
+          type: "area",
+          bg: "branding-comunica-ep.webp",
+          duration: 5,
           title: ["Social", "media"],
           orgs: ["Metaldam", "El Ciudadano", "Presidencia de la República", "Ruta Viva"],
           skills: ["Diseño de artes", "Creación de copys", "Administración de redes"],
-          images: ["cartel-dam-desde-el-silencio.webp", "cartel-corovozandes.webp"],
+          images: ["branding-publica-fm.webp"],
           // images: ["social-01.jpg", "social-02.jpg"],
         },
         {
           type: "area",
+          bg: "branding-alpha-technologies.webp",
           duration: 5,
-          number: "05 / 05",
+          title: ["Coordinación", "de equipos"],
+          titleSize: 68,
+          orgs: ["Conciertos de DAM", "Misión Metal", "Documental"],
+          skills: ["Organización de eventos", "Festivales culturales y musicales"],
+          images: ["cartel-dam-desde-el-silencio.webp", "cartel-corovozandes.webp"],
+        },
+        {
+          type: "area",
+          bg: "branding-ecuador-tv.webp",
+          duration: 5,
           title: ["Proyectos", "internacionales"],
-          titleSize: 66,
+          titleSize: 56,
           orgs: ["The Tech Coup", "Festival Internacional de Música de Esmeraldas", "Belén la Radio"],
           skills: ["Gestión de proyectos", "Coordinación", "Traducción", "Administración"],
           images: ["thetechcoup-portada-web.webp", "belen-la-radio-portada-web.webp"],
         },
         {
+          type: "area",
+          bg: "branding-publica-fm.webp",
+          duration: 5,
+          title: ["Docencia"],
+          orgs: ["Universidad de las Américas", "Universidad Católica", "CEC Escuela Politécnica"],
+          skills: ["Docente en áreas de comunicación", "Diseño gráfico", "Diseño de interfaces"],
+          images: [],
+        },
+        {
           type: "education",
+          bg: "branding-alpha-technologies.webp",
           duration: 6,
           kicker: "Formación",
           items: [
@@ -411,14 +477,23 @@
         },
         {
           type: "outro",
+          bg: "branding-comunica-ep.webp",
           duration: 6,
           url: "jarrindelatorre.com",
           linkedin: "linkedin.com/in/dariojarrin",
         },
       ];
 
+      // Numeración automática de las áreas: "01 / 08", "02 / 08"…
+      const AREAS = SCENES.filter((x) => x.type === "area");
+      AREAS.forEach((x, n) => (x.number = `${String(n + 1).padStart(2, "0")} / ${String(AREAS.length).padStart(2, "0")}`));
+
       /* ───────────── Timing (igual en todas las escenas) ───────────── */
-      const EXIT = 0.5; // salida hacia arriba con fade
+      const EXIT = 0.5; // salida de la marca de agua
+      const T = 1.2; // duración de la transición parallax entre escenas
+      // Capas del parallax: el fondo es la más lenta, el texto intermedio y las imágenes las más rápidas.
+      const SLOW = ".kicker, .left, .intro-block, .intro-logo, .edu, .edu-rule, .outro";
+      const FAST = ".right";
       const EASE = "power3.out";
 
       /* ───────────── Construcción del DOM ───────────── */
@@ -437,6 +512,13 @@
         t0 += s.duration;
         const scene = el("div", "scene");
         scene.id = `scene-${i}`;
+        const bgl = el("div", "bgl");
+        const bgImg = el("img");
+        bgImg.src = IMG + s.bg;
+        bgImg.alt = "";
+        bgl.appendChild(bgImg);
+        scene.appendChild(bgl);
+        scene.appendChild(el("div", "shade"));
         const content = el("div", "content");
         scene.appendChild(content);
 
@@ -465,6 +547,7 @@
           content.appendChild(left);
 
           const right = el("div", "right");
+          if (!s.images.length) left.classList.add("wide");
           const kinds = s.images.length === 1 ? ["solo"] : ["big", "small"];
           s.images.forEach((src, j) => {
             const shot = el("div", `shot ${kinds[j]}`);
@@ -513,17 +596,34 @@
         const S = s.start;
         const E = s.start + s.duration;
         const scene = document.getElementById(`scene-${i}`);
-        const content = scene.querySelector(".content");
-        const last = i === SCENES.length - 1;
+                const last = i === SCENES.length - 1;
 
-        tl.set(scene, { opacity: 1 }, S);
+        const bgl = scene.querySelector(".bgl");
+        const tin = i === 0 ? 0 : S - T / 2;
+        const tend = last ? E : E + T / 2;
+        tl.set(scene, { opacity: 1 }, tin);
+        // Ken Burns lento en la foto de fondo durante toda la escena.
+        tl.fromTo(bgl.querySelector("img"), { scale: 1.14 }, { scale: 1, duration: tend - tin, ease: "none" }, tin);
+
+        if (i > 0) {
+          // Entrada: la escena sube como una lámina y cada capa llega a su propio ritmo.
+          tl.fromTo(scene, { y: 1080 }, { y: 0, duration: T, ease: "power3.inOut" }, tin);
+          tl.fromTo(bgl, { y: -640 }, { y: 0, duration: T, ease: "power3.inOut" }, tin);
+          tl.fromTo(q(scene, SLOW), { y: 420 }, { y: 0, duration: T + 0.3, ease: "power3.out" }, tin + 0.12);
+          tl.fromTo(q(scene, FAST), { y: 820 }, { y: 0, duration: T + 0.45, ease: "power3.out" }, tin + 0.2);
+        }
         if (!last) {
-          tl.fromTo(content, { y: 0, opacity: 1 }, { y: -70, opacity: 0, duration: EXIT, ease: "power2.in" }, E - EXIT);
-          tl.set(scene, { opacity: 0 }, E);
+          // Salida: las capas se separan hacia arriba a distintas velocidades.
+          const tout = E - T / 2;
+          tl.fromTo(bgl, { y: 0 }, { y: -420, duration: T, ease: "power2.inOut" }, tout);
+          tl.fromTo(q(scene, SLOW), { y: 0, opacity: 1 }, { y: -340, opacity: 0, duration: T * 0.85, ease: "power2.in" }, tout);
+          tl.fromTo(q(scene, FAST), { y: 0, opacity: 1 }, { y: -720, opacity: 0, duration: T * 0.85, ease: "power2.in" }, tout);
+          tl.set(scene, { opacity: 0 }, tend);
         }
 
         if (s.type === "intro") {
-          tl.fromTo(q(scene, ".intro-logo"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, S + 0.2);
+          tl.fromTo(q(scene, ".intro-block"), { x: 0 }, { x: -22, duration: tend - tin, ease: "none" }, tin);
+          tl.fromTo(q(scene, ".intro-logo"), { opacity: 0 }, { opacity: 1, duration: 0.9, ease: EASE }, S + 0.2);
           tl.fromTo(q(scene, ".intro-name"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8, ease: EASE }, S + 0.45);
           tl.fromTo(q(scene, ".intro-title .line span"), { yPercent: 105 }, { yPercent: 0, duration: 1.0, ease: EASE, stagger: 0.14 }, S + 0.65);
           tl.fromTo(q(scene, ".intro-sub"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, S + 1.35);
@@ -543,8 +643,10 @@
             tl.fromTo(shot, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" }, at);
             tl.fromTo(shot.querySelector("img"), { scale: 1.06 }, { scale: 1, duration: 1.8, ease: "power2.out" }, at);
             // Parallax leve hasta el final de la escena para que nunca quede estático.
-            tl.fromTo(shot, { y: 0 }, { y: j ? 16 : -12, duration: s.duration - 1.2 - EXIT, ease: "sine.inOut" }, S + 1.2);
+            tl.fromTo(shot, { y: 0, x: 0 }, { y: j ? 34 : -26, x: j ? -10 : 8, duration: s.duration, ease: "none" }, S + 0.4);
           });
+          // Deriva continua del bloque de texto: nunca queda estático.
+          tl.fromTo(q(scene, ".left"), { x: 0 }, { x: -18, duration: s.duration + T, ease: "none" }, tin);
         }
 
         if (s.type === "education") {
@@ -553,18 +655,21 @@
           tl.fromTo(q(scene, ".edu-rule"), { scaleY: 0 }, { scaleY: 1, duration: 0.9, ease: "power2.inOut" }, S + 0.3);
           tl.fromTo(q(scene, ".edu-title"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.0, ease: EASE, stagger: 0.25 }, S + 0.6);
           tl.fromTo(q(scene, ".edu-school"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.8, ease: EASE, stagger: 0.25 }, S + 1.1);
-          tl.fromTo(q(scene, ".edu"), { x: 0 }, { x: 10, duration: s.duration - 2 - EXIT, ease: "sine.inOut" }, S + 2);
+          tl.fromTo(q(scene, ".edu.a"), { x: 0 }, { x: -16, duration: s.duration + T, ease: "none" }, tin);
+          tl.fromTo(q(scene, ".edu.b"), { x: 0 }, { x: 16, duration: s.duration + T, ease: "none" }, tin);
         }
 
         if (s.type === "outro") {
-          tl.fromTo(q(scene, ".outro-logo"), { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 1.4, ease: "power2.out" }, S + 0.3);
+          tl.fromTo(q(scene, ".outro-logo"), { opacity: 0 }, { opacity: 1, duration: 1.4, ease: "power2.out" }, S + 0.3);
+          // Escala continua hasta el último cuadro: el cierre respira, nunca se congela.
+          tl.fromTo(q(scene, ".outro-logo"), { scale: 0.92 }, { scale: 1.04, duration: E - S - 0.3, ease: "power1.out" }, S + 0.3);
+          tl.fromTo(q(scene, ".outro"), { y: 10 }, { y: -10, duration: E - S - 1.2, ease: "none" }, S + 1.2);
           tl.fromTo(q(scene, ".outro-url"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, S + 1.2);
           tl.fromTo(q(scene, ".outro-li"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, S + 1.5);
-          // Todo queda quieto desde S+2.4 hasta el final (≥ 1.5 s).
         }
       });
 
-      // Marca de agua discreta en las escenas 2–7.
+      // Marca de agua discreta en todas las escenas entre la intro y el cierre.
       const wmIn = SCENES[1].start;
       const wmOut = SCENES[SCENES.length - 1].start;
       tl.fromTo("#watermark", { opacity: 0 }, { opacity: 0.5, duration: 0.6, ease: "power1.out" }, wmIn);

@@ -1,13 +1,9 @@
 {
   "version": 1,
   "historyId": "47d4fe95-1cf2-414e-a306-4fb648a3666f",
-  "currentRevision": null,
+  "currentRevision": "9705723f-adfd-4497-b3e5-c5dd8d2a0a76",
   "pendingChanges": false,
   "files": {
-    "assets/fonts/fraunces-500.woff2": {
-      "hash": "c51a88097b121d9703593329d471b22777b65b855dde2ba7f7f16994cb81e177",
-      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/c5/c51a88097b121d9703593329d471b22777b65b855dde2ba7f7f16994cb81e177"
-    },
     "assets/fonts/inter-var.woff2": {
       "hash": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/31/3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62"
@@ -21,8 +17,8 @@
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/53/53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
     },
     "index.html": {
-      "hash": "becd7ee6e6efcc4644df1e4dba21002dfc3e7a321edeff5c725066ef041469ae",
-      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/be/becd7ee6e6efcc4644df1e4dba21002dfc3e7a321edeff5c725066ef041469ae"
+      "hash": "ba812cf71f4becb30bb4f96be18d849245c6458fb9d2c577570c6dae3a1d4275",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/ba/ba812cf71f4becb30bb4f96be18d849245c6458fb9d2c577570c6dae3a1d4275"
     },
     "meta.json": {
       "hash": "50ca7a1280d2df13e54267f16f15231aa641a2a27f9fde4d60401849b6f0545f",
@@ -31,9 +27,133 @@
     "package.json": {
       "hash": "9bd88e306e10e10571a7e5d149a15c054a95ed8fc5b6d1acaba456b8f27b3e3e",
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/9b/9bd88e306e10e10571a7e5d149a15c054a95ed8fc5b6d1acaba456b8f27b3e3e"
+    },
+    "assets/belen-la-radio-portada-web.webp": {
+      "hash": "b136e52d5a002b4206af6ddde83ca7d59b0b6ea0a08466fb23221c858408a8cf",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/b1/b136e52d5a002b4206af6ddde83ca7d59b0b6ea0a08466fb23221c858408a8cf"
+    },
+    "assets/branding-alpha-technologies.webp": {
+      "hash": "4db0071146de0c08fb5b1e26f5bf09b1cef4352acca0134003b6c9599c449500",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/4d/4db0071146de0c08fb5b1e26f5bf09b1cef4352acca0134003b6c9599c449500"
+    },
+    "assets/branding-comunica-ep.webp": {
+      "hash": "1ddae40532ed0ba2857ecbbb6dd1d0b75553011534e353cb8e3757232b318523",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/1d/1ddae40532ed0ba2857ecbbb6dd1d0b75553011534e353cb8e3757232b318523"
+    },
+    "assets/branding-ecuador-tv.webp": {
+      "hash": "48ad7c822e4973179719eebf67ff4422fbc1192063d0584ddf5b328d5caf0025",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/48/48ad7c822e4973179719eebf67ff4422fbc1192063d0584ddf5b328d5caf0025"
+    },
+    "assets/branding-publica-fm.webp": {
+      "hash": "4e9d7f257e46a6bfe84deecfa9a6619c296c821c4640cb6030d35689c93881d6",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/4e/4e9d7f257e46a6bfe84deecfa9a6619c296c821c4640cb6030d35689c93881d6"
+    },
+    "assets/fonts/archivo-var.woff2": {
+      "hash": "e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/e3/e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e"
     }
   },
-  "revisions": {},
+  "revisions": {
+    "86c4d339-a8a0-49c1-8dcf-649093670b9a": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792575893226,
+      "endedAt": 1792575893253,
+      "files": {
+        "assets/belen-la-radio-portada-web.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/b1/b136e52d5a002b4206af6ddde83ca7d59b0b6ea0a08466fb23221c858408a8cf"
+        },
+        "assets/branding-alpha-technologies.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/4d/4db0071146de0c08fb5b1e26f5bf09b1cef4352acca0134003b6c9599c449500"
+        },
+        "assets/branding-comunica-ep.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/1d/1ddae40532ed0ba2857ecbbb6dd1d0b75553011534e353cb8e3757232b318523"
+        },
+        "assets/branding-ecuador-tv.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/48/48ad7c822e4973179719eebf67ff4422fbc1192063d0584ddf5b328d5caf0025"
+        },
+        "assets/branding-publica-fm.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/4e/4e9d7f257e46a6bfe84deecfa9a6619c296c821c4640cb6030d35689c93881d6"
+        }
+      }
+    },
+    "2d3b2887-b51f-478d-bbd8-a635985ffbfb": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792576067402,
+      "endedAt": 1792576067412,
+      "files": {
+        "assets/fonts/archivo-var.woff2": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/e3/e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e"
+        },
+        "assets/fonts/fraunces-500.woff2": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/c5/c51a88097b121d9703593329d471b22777b65b855dde2ba7f7f16994cb81e177",
+          "after": null
+        },
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/be/becd7ee6e6efcc4644df1e4dba21002dfc3e7a321edeff5c725066ef041469ae",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/10/104363a7060fafb1debd77806bd96b657ee610fa904f616c40afc63b1cf88e37"
+        }
+      }
+    },
+    "8bf46682-bb8e-4f5a-b47b-a08bebf5304b": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792576241533,
+      "endedAt": 1792576241535,
+      "files": {
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/10/104363a7060fafb1debd77806bd96b657ee610fa904f616c40afc63b1cf88e37",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/cf/cfc1db40c4208a4297486256d6698276f6677dc5a18c82094eb02258abdfa08b"
+        }
+      }
+    },
+    "73543fd8-561b-4bd5-8cb7-3699c580c8b8": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792576502087,
+      "endedAt": 1792576502089,
+      "files": {
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/cf/cfc1db40c4208a4297486256d6698276f6677dc5a18c82094eb02258abdfa08b",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/31/31fead64d7b430cc7c902dd75ba866f8f2593b267b8b4db7d5995becb7e5139c"
+        }
+      }
+    },
+    "9705723f-adfd-4497-b3e5-c5dd8d2a0a76": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792576734239,
+      "endedAt": 1792576734240,
+      "files": {
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/31/31fead64d7b430cc7c902dd75ba866f8f2593b267b8b4db7d5995becb7e5139c",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/ba/ba812cf71f4becb30bb4f96be18d849245c6458fb9d2c577570c6dae3a1d4275"
+        }
+      }
+    }
+  },
   "checks": {
     "latest": null,
     "revisions": {},
@@ -46,13 +166,16 @@
   },
   "renders": {
     "latest": {
-      "id": "6a2b7771-f6c5-4c96-ac34-59a394aa27b8",
-      "completedAt": 1792553759010,
-      "output": "/tmp/claude-0/-home-user-ClaudeApp/439a2653-94de-5f64-9c4c-73fcc92ca0ca/scratchpad/promo-draft.mp4",
+      "id": "c91d0f06-3e10-4514-b87c-f7f0f6e91535",
+      "completedAt": 1792577002328,
+      "output": "/home/user/ClaudeApp/videos/promo-trayectoria/promo-trayectoria.mp4",
       "status": "completed_with_warnings",
-      "revision": null
+      "revision": "9705723f-adfd-4497-b3e5-c5dd8d2a0a76"
     },
-    "retainedRevisions": []
+    "retainedRevisions": [
+      "9705723f-adfd-4497-b3e5-c5dd8d2a0a76",
+      "73543fd8-561b-4bd5-8cb7-3699c580c8b8"
+    ]
   },
   "pendingArtifactCleanup": []
 }
