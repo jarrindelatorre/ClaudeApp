@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="gsap.min.js"></script>
+    <style>
+      /* ───────────── Sistema de diseño (editable) ───────────── */
+      :root {
+        --bg: #121212;
+        --text: #f4f1ec;
+        --text-2: #a39e8f;
+        --accent: #c8553d;
+        --font-display: "Fraunces", Georgia, serif;
+        --font-body: "Inter", system-ui, sans-serif;
+        --margin: 120px; /* márgenes laterales */
+        --col: 118px; /* ancho de columna (12 col) */
+        --gutter: 24px;
+        --radius: 4px;
+        --title-size: 80px;
+        --title-tracking: 0.06em;
+      }
+
+      @font-face {
+        font-family: "Fraunces";
+        src: url("assets/fonts/fraunces-500.woff2") format("woff2");
+        font-weight: 500;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+      }
+      #stage {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        opacity: 0;
+      }
+      .content {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+
+      /* Encabezado de escena: "01 / 05" + línea fina */
+      .kicker {
+        position: absolute;
+        left: var(--margin);
+        top: 104px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: var(--accent);
+        font: 500 18px/1 var(--font-body);
+        letter-spacing: 0.22em;
+      }
+      .kicker .rule {
+        display: block;
+        width: 120px;
+        height: 1px;
+        background: var(--accent);
+        transform-origin: left center;
+      }
+
+      /* Columna izquierda: 5 columnas */
+      .left {
+        position: absolute;
+        left: var(--margin);
+        top: 250px;
+        width: calc(5 * var(--col) + 4 * var(--gutter));
+      }
+      .title {
+        font: 500 var(--title-size) / 1.04 var(--font-display);
+        letter-spacing: var(--title-tracking);
+        text-transform: uppercase;
+        color: var(--text);
+      }
+      .title .line {
+        display: block;
+        overflow: hidden;
+        padding-bottom: 6px;
+      }
+      .title .line span {
+        display: block;
+      }
+      .label {
+        margin-top: 48px;
+        color: var(--text-2);
+        font: 400 20px/1.4 var(--font-body);
+        letter-spacing: 0.04em;
+      }
+      .orgs {
+        margin-top: 12px;
+        color: var(--text);
+        font: 500 28px/1.38 var(--font-body);
+      }
+      .orgs div {
+        display: block;
+      }
+      .skills {
+        margin-top: 30px;
+        color: var(--text-2);
+        font: 400 21px/1.55 var(--font-body);
+      }
+
+      /* Columna derecha: 6 columnas, imágenes superpuestas */
+      .right {
+        position: absolute;
+        left: calc(var(--margin) + 6 * (var(--col) + var(--gutter)));
+        top: 210px;
+        width: calc(6 * var(--col) + 5 * var(--gutter));
+        height: 640px;
+      }
+      .shot {
+        position: absolute;
+        border-radius: var(--radius);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 4px 14px rgba(0, 0, 0, 0.35);
+        background: #1d1d1d;
+      }
+      .shot .mask {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        border-radius: var(--radius);
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .shot.big {
+        left: 0;
+        top: 0;
+        width: 640px;
+        height: 450px;
+      }
+      .shot.small {
+        right: 0;
+        bottom: 0;
+        width: 370px;
+        height: 290px;
+      }
+      .shot.solo {
+        left: 0;
+        top: 40px;
+        width: 828px;
+        height: 540px;
+      }
+
+      /* Intro */
+      .intro-logo {
+        position: absolute;
+        left: var(--margin);
+        top: 96px;
+        width: 220px;
+      }
+      .intro-block {
+        position: absolute;
+        left: var(--margin);
+        top: 360px;
+        width: 1400px;
+      }
+      .intro-name {
+        color: var(--text-2);
+        font: 500 22px/1 var(--font-body);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .intro-title {
+        margin-top: 34px;
+        font: 500 104px / 1.04 var(--font-display);
+        letter-spacing: var(--title-tracking);
+        text-transform: uppercase;
+      }
+      .intro-title .line {
+        display: block;
+        overflow: hidden;
+        padding-bottom: 8px;
+      }
+      .intro-title .line span {
+        display: block;
+      }
+      .intro-sub {
+        margin-top: 40px;
+        width: 980px;
+        color: var(--text-2);
+        font: 400 28px/1.5 var(--font-body);
+      }
+
+      /* Formación */
+      .edu {
+        position: absolute;
+        top: 400px;
+        width: 700px;
+      }
+      .edu.a {
+        left: var(--margin);
+      }
+      .edu.b {
+        left: 1100px;
+      }
+      .edu-title {
+        font: 500 50px / 1.14 var(--font-display);
+        color: var(--text);
+      }
+      .edu-school {
+        margin-top: 26px;
+        color: var(--text-2);
+        font: 500 24px/1.45 var(--font-body);
+      }
+      .edu-rule {
+        position: absolute;
+        left: 959px;
+        top: 360px;
+        width: 2px;
+        height: 340px;
+        background: var(--accent);
+        transform-origin: center top;
+      }
+
+      /* Cierre */
+      .outro {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .outro-logo {
+        display: block;
+        width: 640px;
+      }
+      .outro-url {
+        margin-top: 56px;
+        color: var(--text);
+        font: 500 34px/1 var(--font-body);
+        letter-spacing: 0.06em;
+      }
+      .outro-li {
+        margin-top: 20px;
+        color: var(--text-2);
+        font: 400 22px/1 var(--font-body);
+        letter-spacing: 0.04em;
+      }
+
+      /* Marca de agua (escenas 2–7) */
+      #watermark {
+        position: absolute;
+        right: var(--margin);
+        bottom: 72px;
+        width: 150px;
+        opacity: 0;
+      }
+
+      /* Viñeteado + grano muy sutil */
+      #vignette {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.45) 100%);
+        pointer-events: none;
+      }
+      #grain {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        opacity: 0.07;
+        mix-blend-mode: overlay;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="42"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div id="stage" class="clip" data-start="0" data-duration="42" data-track-index="0">
+        <div id="scenes"></div>
+        <img id="watermark" src="assets/logo-blanco.png" alt="" />
+        <div id="vignette"></div>
+        <svg id="grain" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+          <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="1920" height="1080" filter="url(#noise)" />
+        </svg>
+      </div>
+
+      <!-- Música: descomenta y apunta src a tu pista para agregarla.
+      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="42" data-track-index="1" data-volume="0.6"></audio>
+      -->
+    </div>
+
+    <script>
+      /* ───────────── Contenido (editable) ───────────── */
+      const LOGO = "assets/logo-blanco.png";
+      const IMG = "assets/";
+
+      // Imágenes opcionales: cuando agregues audiovisual-01/02.jpg o social-01/02.jpg a assets/,
+      // cambia los arreglos `images` de esas escenas por los comentados.
+      const SCENES = [
+        {
+          type: "intro",
+          duration: 5,
+          name: "Darío Jarrín De la Torre",
+          title: ["20 años coordinando", "comunicación"],
+          sub: "En mi propia agencia, en la Presidencia de la República y liderando equipos multidisciplinarios.",
+        },
+        {
+          type: "area",
+          duration: 5,
+          number: "01 / 05",
+          title: ["Producción", "audiovisual"],
+          orgs: ["Presidencia de la República", "Ecuador TV"],
+          skills: ["Dirección de cámaras", "Cámara", "Edición y postproducción"],
+          images: ["branding-ecuador-tv.webp"],
+          // images: ["audiovisual-01.jpg", "audiovisual-02.jpg"],
+        },
+        {
+          type: "area",
+          duration: 5,
+          number: "02 / 05",
+          title: ["Diseño", "editorial"],
+          orgs: ["BID", "OIT", "Compassion International"],
+          skills: ["Revistas", "Diseño editorial", "Cómics", "Ilustración"],
+          images: ["editorial-yo-si-puedo-01.webp", "editorial-yo-si-puedo-03.webp"],
+        },
+        {
+          type: "area",
+          duration: 5,
+          number: "03 / 05",
+          title: ["Diseño", "digital"],
+          orgs: ["Comunica EP", "Koen.ec", "Danny Ghosen"],
+          skills: ["UX/UI", "Diseño de interfaces", "HTML", "CSS", "IA"],
+          images: ["koen-group-portada-web.webp", "danny-ghosen-portada-web.webp"],
+        },
+        {
+          type: "area",
+          duration: 5,
+          number: "04 / 05",
+          title: ["Social", "media"],
+          orgs: ["Metaldam", "El Ciudadano", "Presidencia de la República", "Ruta Viva"],
+          skills: ["Diseño de artes", "Creación de copys", "Administración de redes"],
+          images: ["cartel-dam-desde-el-silencio.webp", "cartel-corovozandes.webp"],
+          // images: ["social-01.jpg", "social-02.jpg"],
+        },
+        {
+          type: "area",
+          duration: 5,
+          number: "05 / 05",
+          title: ["Proyectos", "internacionales"],
+          titleSize: 66,
+          orgs: ["The Tech Coup", "Festival Internacional de Música de Esmeraldas", "Belén la Radio"],
+          skills: ["Gestión de proyectos", "Coordinación", "Traducción", "Administración"],
+          images: ["thetechcoup-portada-web.webp", "belen-la-radio-portada-web.webp"],
+        },
+        {
+          type: "education",
+          duration: 6,
+          kicker: "Formación",
+          items: [
+            { title: "Máster en Diseño Web Multidispositivo UX/UI", school: "Escuela de Diseño de Barcelona" },
+            { title: "Máster en Inteligencia Artificial Aplicada", school: "Universidad de las Américas, Quito" },
+          ],
+        },
+        {
+          type: "outro",
+          duration: 6,
+          url: "jarrindelatorre.com",
+          linkedin: "linkedin.com/in/dariojarrin",
+        },
+      ];
+
+      /* ───────────── Timing (igual en todas las escenas) ───────────── */
+      const EXIT = 0.5; // salida hacia arriba con fade
+      const EASE = "power3.out";
+
+      /* ───────────── Construcción del DOM ───────────── */
+      const host = document.getElementById("scenes");
+      const el = (tag, cls, html) => {
+        const n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (html != null) n.innerHTML = html;
+        return n;
+      };
+      const titleLines = (lines) => lines.map((l) => `<span class="line"><span>${l}</span></span>`).join("");
+
+      let t0 = 0;
+      SCENES.forEach((s, i) => {
+        s.start = t0;
+        t0 += s.duration;
+        const scene = el("div", "scene");
+        scene.id = `scene-${i}`;
+        const content = el("div", "content");
+        scene.appendChild(content);
+
+        if (s.type === "intro") {
+          const logo = el("img", "intro-logo");
+          logo.src = LOGO;
+          logo.alt = "";
+          content.appendChild(logo);
+          const block = el("div", "intro-block");
+          block.appendChild(el("div", "intro-name", s.name));
+          block.appendChild(el("div", "intro-title", titleLines(s.title)));
+          block.appendChild(el("p", "intro-sub", s.sub));
+          content.appendChild(block);
+        }
+
+        if (s.type === "area") {
+          const k = el("div", "kicker", `<span class="num">${s.number}</span><span class="rule"></span>`);
+          content.appendChild(k);
+          const left = el("div", "left");
+          const title = el("div", "title", titleLines(s.title));
+          if (s.titleSize) title.style.fontSize = `${s.titleSize}px`;
+          left.appendChild(title);
+          left.appendChild(el("div", "label", "Experiencia en"));
+          left.appendChild(el("div", "orgs", s.orgs.map((o) => `<div>${o}</div>`).join("")));
+          left.appendChild(el("div", "skills", s.skills.join(" · ")));
+          content.appendChild(left);
+
+          const right = el("div", "right");
+          const kinds = s.images.length === 1 ? ["solo"] : ["big", "small"];
+          s.images.forEach((src, j) => {
+            const shot = el("div", `shot ${kinds[j]}`);
+            const mask = el("div", "mask");
+            const img = el("img");
+            img.src = IMG + src;
+            img.alt = "";
+            mask.appendChild(img);
+            shot.appendChild(mask);
+            right.appendChild(shot);
+          });
+          content.appendChild(right);
+        }
+
+        if (s.type === "education") {
+          const k = el("div", "kicker", `<span class="num">${s.kicker.toUpperCase()}</span><span class="rule"></span>`);
+          content.appendChild(k);
+          s.items.forEach((it, j) => {
+            const b = el("div", `edu ${j ? "b" : "a"}`);
+            b.appendChild(el("div", "edu-title", it.title));
+            b.appendChild(el("div", "edu-school", it.school));
+            content.appendChild(b);
+          });
+          content.appendChild(el("div", "edu-rule"));
+        }
+
+        if (s.type === "outro") {
+          const o = el("div", "outro");
+          const logo = el("img", "outro-logo");
+          logo.src = LOGO;
+          logo.alt = "";
+          o.appendChild(logo);
+          o.appendChild(el("div", "outro-url", s.url));
+          o.appendChild(el("div", "outro-li", s.linkedin));
+          content.appendChild(o);
+        }
+
+        host.appendChild(scene);
+      });
+
+      /* ───────────── Animación ───────────── */
+      const tl = gsap.timeline({ paused: true });
+      const q = (scene, sel) => scene.querySelectorAll(sel);
+
+      SCENES.forEach((s, i) => {
+        const S = s.start;
+        const E = s.start + s.duration;
+        const scene = document.getElementById(`scene-${i}`);
+        const content = scene.querySelector(".content");
+        const last = i === SCENES.length - 1;
+
+        tl.set(scene, { opacity: 1 }, S);
+        if (!last) {
+          tl.fromTo(content, { y: 0, opacity: 1 }, { y: -70, opacity: 0, duration: EXIT, ease: "power2.in" }, E - EXIT);
+          tl.set(scene, { opacity: 0 }, E);
+        }
+
+        if (s.type === "intro") {
+          tl.fromTo(q(scene, ".intro-logo"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, S + 0.2);
+          tl.fromTo(q(scene, ".intro-name"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8, ease: EASE }, S + 0.45);
+          tl.fromTo(q(scene, ".intro-title .line span"), { yPercent: 105 }, { yPercent: 0, duration: 1.0, ease: EASE, stagger: 0.14 }, S + 0.65);
+          tl.fromTo(q(scene, ".intro-sub"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, S + 1.35);
+        }
+
+        if (s.type === "area") {
+          tl.fromTo(q(scene, ".kicker .rule"), { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, S + 0.05);
+          tl.fromTo(q(scene, ".kicker .num"), { opacity: 0 }, { opacity: 1, duration: 0.5 }, S + 0.1);
+          tl.fromTo(q(scene, ".title .line span"), { yPercent: 105, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.95, ease: EASE, stagger: 0.12 }, S + 0.35);
+          tl.fromTo(q(scene, ".label"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7, ease: EASE }, S + 0.95);
+          tl.fromTo(q(scene, ".orgs div"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7, ease: EASE, stagger: 0.08 }, S + 1.05);
+          tl.fromTo(q(scene, ".skills"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7, ease: EASE }, S + 1.45);
+
+          // Revelado con máscara de barrido horizontal + leve zoom-out.
+          q(scene, ".shot").forEach((shot, j) => {
+            const at = S + 0.75 + j * 0.3;
+            tl.fromTo(shot, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" }, at);
+            tl.fromTo(shot.querySelector("img"), { scale: 1.06 }, { scale: 1, duration: 1.8, ease: "power2.out" }, at);
+            // Parallax leve hasta el final de la escena para que nunca quede estático.
+            tl.fromTo(shot, { y: 0 }, { y: j ? 16 : -12, duration: s.duration - 1.2 - EXIT, ease: "sine.inOut" }, S + 1.2);
+          });
+        }
+
+        if (s.type === "education") {
+          tl.fromTo(q(scene, ".kicker .rule"), { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, S + 0.05);
+          tl.fromTo(q(scene, ".kicker .num"), { opacity: 0 }, { opacity: 1, duration: 0.5 }, S + 0.1);
+          tl.fromTo(q(scene, ".edu-rule"), { scaleY: 0 }, { scaleY: 1, duration: 0.9, ease: "power2.inOut" }, S + 0.3);
+          tl.fromTo(q(scene, ".edu-title"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.0, ease: EASE, stagger: 0.25 }, S + 0.6);
+          tl.fromTo(q(scene, ".edu-school"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.8, ease: EASE, stagger: 0.25 }, S + 1.1);
+          tl.fromTo(q(scene, ".edu"), { x: 0 }, { x: 10, duration: s.duration - 2 - EXIT, ease: "sine.inOut" }, S + 2);
+        }
+
+        if (s.type === "outro") {
+          tl.fromTo(q(scene, ".outro-logo"), { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 1.4, ease: "power2.out" }, S + 0.3);
+          tl.fromTo(q(scene, ".outro-url"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, S + 1.2);
+          tl.fromTo(q(scene, ".outro-li"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, S + 1.5);
+          // Todo queda quieto desde S+2.4 hasta el final (≥ 1.5 s).
+        }
+      });
+
+      // Marca de agua discreta en las escenas 2–7.
+      const wmIn = SCENES[1].start;
+      const wmOut = SCENES[SCENES.length - 1].start;
+      tl.fromTo("#watermark", { opacity: 0 }, { opacity: 0.5, duration: 0.6, ease: "power1.out" }, wmIn);
+      tl.to("#watermark", { opacity: 0, duration: EXIT, ease: "power1.in" }, wmOut - EXIT);
+
+      tl.set({}, {}, t0); // la línea de tiempo dura exactamente la suma de escenas
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
