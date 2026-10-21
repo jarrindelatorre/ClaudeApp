@@ -76,19 +76,21 @@
         box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.6);
       }
       /* Foto de fondo opaca (más grande que el cuadro para el parallax) */
+      /* Fondo: la foto se ve casi completa (caja 4:3 apenas más ancha que el cuadro)
+         y un paneo lento la recorre de arriba a abajo durante la escena. */
       .bgl {
         position: absolute;
-        left: -520px;
-        top: -60px;
-        width: 2960px;
-        height: 1200px;
+        left: -100px;
+        top: 0;
+        width: 2120px;
+        height: 1590px;
       }
       .bgl img {
         display: block;
-        width: 2960px;
-        height: 1200px;
+        width: 2120px;
+        height: 1590px;
         object-fit: cover;
-        filter: grayscale(0.55) blur(1.5px);
+        filter: grayscale(0.4) blur(0.6px);
       }
       .shade {
         position: absolute;
@@ -188,15 +190,29 @@
         position: absolute;
         width: 560px;
         height: 420px;
-        border-radius: var(--radius);
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 4px 14px rgba(0, 0, 0, 0.35);
-        background: #1d1d1d;
       }
       .card .mask {
         position: absolute;
         inset: 0;
         overflow: hidden;
         border-radius: var(--radius);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 4px 14px rgba(0, 0, 0, 0.35);
+        background: #1d1d1d;
+      }
+      /* Texto bajo cada imagen del carrusel */
+      .card .cap {
+        position: absolute;
+        left: 2px;
+        top: 438px;
+        width: 556px;
+        color: var(--text);
+        font: 500 19px/1.35 var(--font-body);
+      }
+      .card .cap small {
+        display: block;
+        margin-top: 4px;
+        color: var(--text-2);
+        font: 400 16px/1.35 var(--font-body);
       }
       .card img {
         display: block;
@@ -237,13 +253,17 @@
       /* 01 · Logo personal */
       .brand {
         position: absolute;
-        left: var(--margin);
+        left: 0;
         top: 250px;
-        width: 1300px;
+        width: 1920px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
       }
       .brand-logo {
         display: block;
-        width: 1000px;
+        width: 940px;
       }
       .brand-tag {
         margin-top: 48px;
@@ -382,11 +402,11 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="56"
+      data-duration="102"
       data-width="1920"
       data-height="1080"
     >
-      <div id="stage" class="clip" data-start="0" data-duration="56" data-track-index="0">
+      <div id="stage" class="clip" data-start="0" data-duration="102" data-track-index="0">
         <div id="scenes"></div>
         <img id="watermark" src="assets/jarrindelatorre-white.png" alt="" />
         <div id="vignette"></div>
@@ -400,7 +420,7 @@
       </div>
 
       <!-- Música: descomenta y apunta src a tu pista para agregarla.
-      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="56" data-track-index="1" data-volume="0.6"></audio>
+      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="102" data-track-index="1" data-volume="0.6"></audio>
       -->
     </div>
 
@@ -409,20 +429,21 @@
       const LOGO = "assets/jarrindelatorre-white.png"; // logo Jarrín De la Torre (blanco)
       const IMG = "assets/";
 
-      // images: hasta 4 por sección para el carrusel; null = placeholder (imagen pendiente).
+      // images: 3 por sección para el carrusel ({ src, title, note }); null = placeholder (imagen pendiente).
       const SCENES = [
         {
           type: "brand",
-          bg: "web-dam-movil.webp", // foto de fondo opaca (una distinta por tema)
+          duration: 9,
+          bg: "fondo-portada-comunica.webp", // foto de fondo opaca (una distinta por tema)
+          bgAspect: 16 / 9, // proporción del fondo si no es 4:3
           banner: "banner-portada.jpg",
-          duration: 5,
           tag: "Diseño · Comunicación · Tecnología",
           url: "jarrindelatorre.com",
         },
         {
           type: "education",
           bg: "app-golf-live.jpg",
-          duration: 6.5,
+          duration: 10.5,
           kicker: "02 · Visión",
           title: ["Formación y visión"],
           items: [
@@ -434,80 +455,108 @@
         {
           type: "area",
           bg: "branding-publica-fm.webp",
-          duration: 5.5,
+          duration: 10.5,
           kicker: "03 · Marca",
           title: ["Branding", "e identidad"],
           orgs: ["Comunica EP", "Koen", "Alpha Technologies"],
           skills: ["Creación de marcas", "Imagen corporativa", "Sistemas visuales", "Aplicaciones de marca"],
-          images: ["branding-comunica-ep.webp", "branding-alpha-technologies.webp", null, null],
+          images: [
+            { src: "branding-comunica-ep.webp", title: "Comunica EP", note: "Sistema de identidad y aplicaciones" },
+            { src: "branding-alpha-technologies.webp", title: "Alpha Technologies", note: "Identidad corporativa y web" },
+            null,
+          ],
         },
         {
           type: "area",
           bg: "editorial-compassion.jpg",
-          duration: 5.5,
+          duration: 10.5,
           kicker: "04 · Editorial",
           title: ["Diseño", "editorial e", "ilustración"],
           titleSize: 66,
           orgs: ["BID", "OIT", "Compassion International"],
           skills: ["Revistas", "Publicaciones", "Diagramación", "Cómics", "Ilustración"],
-          images: ["editorial-yo-si-puedo-03.webp", "editorial-bid.webp", "editorial-yo-si-puedo-01.webp", "editorial-compassion.jpg"],
+          images: [
+            { src: "editorial-yo-si-puedo-03.webp", title: "Yo Sí Puedo", note: "Guía del tutor · Compassion International" },
+            { src: "editorial-bid.webp", title: "BID", note: "Feminicidio en América Latina y el Caribe" },
+            { src: "editorial-compassion.jpg", title: "Compassion International", note: "Manuales y material educativo" },
+          ],
         },
         {
           type: "area",
           bg: "branding-ecuador-tv.webp",
-          duration: 5.5,
+          duration: 10.5,
           kicker: "05 · Audiovisual",
           title: ["Producción", "audiovisual"],
           orgs: ["Presidencia de la República del Ecuador", "Ecuador TV"],
           skills: ["Dirección de cámaras", "Realización", "Edición", "Postproducción"],
-          images: ["branding-ecuador-tv.webp", null, null, null],
+          images: [
+            { src: "branding-ecuador-tv.webp", title: "Ecuador TV", note: "Piezas de programación y promoción" },
+            null,
+            null,
+          ],
         },
         {
           type: "area",
           bg: "branding-alpha-technologies.webp",
-          duration: 5.5,
+          duration: 10.5,
           kicker: "06 · Digital",
           title: ["Diseño web y", "social media"],
           titleSize: 66,
           orgs: ["Comunica EP", "Koen", "Danny Ghosen", "El Ciudadano", "Ruta Viva"],
           skills: ["UX/UI", "Diseño web", "Figma", "HTML/CSS", "Contenidos digitales", "Gestión de redes"],
-          images: ["koen-group-portada-web.webp", "app-golf-live.jpg", "danny-ghosen-portada-web.webp", "web-dam-movil.webp"],
+          images: [
+            { src: "koen-group-portada-web.webp", title: "Koen Group", note: "Sitio web corporativo" },
+            { src: "app-golf-live.jpg", title: "Golf Live", note: "App móvil · UX/UI" },
+            { src: "danny-ghosen-portada-web.webp", title: "Danny Ghosen", note: "Sitio web personal" },
+          ],
         },
         {
           type: "area",
           bg: "cartel-dam-desde-el-silencio.webp",
-          duration: 5.5,
+          duration: 10.5,
           kicker: "07 · Gestión",
           title: ["Dirección de", "proyectos"],
           orgs: ["Presidencia de la República", "Ruta Viva", "DAM", "Misión Metal"],
           skills: ["Coordinación de equipos", "Eventos", "Festivales", "Conciertos", "Campañas"],
-          images: ["cartel-dam-desde-el-silencio.webp", "cartel-corovozandes.webp", null, null],
+          images: [
+            { src: "cartel-dam-desde-el-silencio.webp", title: "DAM · Desde el silencio", note: "Concierto y lanzamiento" },
+            { src: "cartel-corovozandes.webp", title: "Corovozandes 2010", note: "Días de Nochebuena · Teatro Sucre" },
+            null,
+          ],
         },
         {
           type: "area",
           bg: "editorial-yo-si-puedo-03.webp",
-          duration: 5.5,
+          duration: 10.5,
           kicker: "08 · Internacional",
           title: ["Proyectos", "internacionales"],
           titleSize: 56,
           orgs: ["The Tech Coup", "Festival Internacional de Música de Esmeraldas", "Belén La Radio"],
           skills: ["Coordinación", "Gestión de contenidos", "Traducción", "Comunicación intercultural", "Desarrollo digital"],
-          images: ["thetechcoup-portada-web.webp", "belen-la-radio-portada-web.webp", null, null],
+          images: [
+            { src: "thetechcoup-portada-web.webp", title: "The Tech Coup", note: "Sitio web del libro de Marietje Schaake" },
+            { src: "belen-la-radio-portada-web.webp", title: "Belén La Radio", note: "Sitio web y reproductor en vivo" },
+            null,
+          ],
         },
         {
           type: "area",
           bg: "editorial-bid.webp",
-          duration: 5.5,
+          duration: 10.5,
           kicker: "09 · Docencia",
           title: ["Docencia", "universitaria"],
           orgs: ["UDLA", "Pontificia Universidad Católica del Ecuador", "CEC de la Escuela Politécnica"],
           skills: ["Diseño gráfico", "Comunicación", "Interfaces UX/UI", "Actualización profesional", "Formación de nuevas generaciones"],
-          images: [null, null, null, null],
+          images: [
+            null,
+            null,
+            null,
+          ],
         },
         {
           type: "outro",
           bg: "branding-comunica-ep.webp",
-          duration: 6,
+          duration: 9,
           url: "jarrindelatorre.com",
           linkedin: "linkedin.com/in/dariojarrin",
         },
@@ -515,11 +564,11 @@
 
       /* ───────────── Timing y movimiento ───────────── */
       const EXIT = 0.5; // salida de la marca de agua
-      const T = 1.3; // duración de la transición entre escenas
+      const T = 1.7; // duración de la transición entre escenas
       const EASE = "expo.out";
       // Cada escena entra desde un lado distinto (alternando) y con un leve giro: el recorrido es curvo, no recto.
       const dirOf = (i) => (i % 2 ? 1 : -1);
-      const CARD_STEP = 596; // ancho de tarjeta + separación en el carrusel
+      const CARD_STEP = 620; // ancho de tarjeta + separación en el carrusel
 
       /* ───────────── Construcción del DOM ───────────── */
       const host = document.getElementById("scenes");
@@ -541,6 +590,9 @@
         const bgl = el("div", "bgl");
         const bgImg = el("img");
         bgImg.src = IMG + s.bg;
+        // Caja del fondo con la proporción de la foto: se ve casi completa.
+        s.bgH = Math.round(2120 / (s.bgAspect || 4 / 3));
+        bgl.style.height = bgImg.style.height = `${s.bgH}px`;
         bgImg.alt = "";
         bgl.appendChild(bgImg);
         scene.appendChild(bgl);
@@ -582,21 +634,22 @@
 
           const car = el("div", "carousel");
           const strip = el("div", "strip");
-          s.images.forEach((src, j) => {
-            const card = el("div", src ? "card" : "card ph");
+          s.images.forEach((it, j) => {
+            const card = el("div", it ? "card" : "card ph");
             // La tira avanza hacia la derecha: la primera imagen va al extremo derecho para verse primero.
             card.style.left = `${(s.images.length - 1 - j) * CARD_STEP}px`;
-            card.style.top = `${j % 2 ? 150 : 40}px`;
+            card.style.top = `${j % 2 ? 130 : 30}px`;
             const mask = el("div", "mask");
-            if (src) {
+            if (it) {
               const img = el("img");
-              img.src = IMG + src;
+              img.src = IMG + it.src;
               img.alt = "";
               mask.appendChild(img);
             } else {
               mask.textContent = `Imagen ${j + 1} · pendiente`;
             }
             card.appendChild(mask);
+            card.appendChild(el("div", "cap", it ? `${it.title}<small>${it.note}</small>` : `Imagen pendiente<small>Agrega aquí un proyecto</small>`));
             strip.appendChild(card);
           });
           car.appendChild(strip);
@@ -654,19 +707,19 @@
 
         tl.set(scene, { opacity: 1 }, tin);
         // Fondo: Ken Burns con deriva diagonal suave durante toda la escena.
-        tl.fromTo(bgl.querySelector("img"), { scale: 1.16, x: 40 * d, y: 0 }, { scale: 1.02, x: -40 * d, y: -30, duration: tend - tin, ease: "sine.inOut" }, tin);
+        tl.fromTo(bgl.querySelector("img"), { scale: 1.06, y: 0, x: 0 }, { scale: 1, y: -Math.max(0, s.bgH - 1080), x: -40 * d, duration: tend - tin, ease: "sine.inOut" }, tin);
 
         if (i > 0) {
           // Entrada lateral: la lámina llega desde la izquierda con una leve ondulación y giro que se endereza.
           tl.fromTo(scene, { x: -1920, y: 50 * d, rotation: -2.5 }, { x: 0, y: 0, rotation: 0, duration: T, ease: "power4.inOut", transformOrigin: "100% 50%" }, tin);
-          tl.fromTo(bgl, { x: 460 }, { x: 0, duration: T, ease: "power4.inOut" }, tin);
+          tl.fromTo(bgl, { x: 100 }, { x: 0, duration: T, ease: "power4.inOut" }, tin);
           tl.fromTo(slow, { x: -420, y: 40 * d, rotation: -1.5 }, { x: 0, y: 0, rotation: 0, duration: T + 0.4, ease: EASE }, tin + 0.12);
           tl.fromTo(fast, { x: -900, y: -60 * d, rotation: 2 }, { x: 0, y: 0, rotation: 0, duration: T + 0.6, ease: "back.out(1.1)" }, tin + 0.22);
         }
         if (!last) {
           // Salida hacia la derecha: cada capa se va a su propio ritmo y en un arco suave.
           const tout = E - T / 2;
-          tl.fromTo(bgl, { x: 0 }, { x: 480, duration: T, ease: "power3.inOut" }, tout);
+          tl.fromTo(bgl, { x: 0 }, { x: 100, duration: T, ease: "power3.inOut" }, tout);
           tl.fromTo(slow, { x: 0, y: 0, rotation: 0, opacity: 1 }, { x: 420, y: -40 * dn, rotation: 1.5, opacity: 0, duration: T * 0.85, ease: "power3.in" }, tout);
           tl.fromTo(fast, { x: 0, y: 0, rotation: 0, opacity: 1 }, { x: 900, y: 60 * dn, rotation: -2, opacity: 0, duration: T * 0.85, ease: "power3.in" }, tout);
           tl.set(scene, { opacity: 0 }, tend);
@@ -697,9 +750,10 @@
           const span = s.images.length * CARD_STEP - 1020 + 160;
           tl.fromTo(strip, { x: -span }, { x: 120, duration: tend - tin, ease: "sine.inOut" }, tin);
           q(scene, ".card").forEach((card, j) => {
-            const at = S + 0.5 + j * 0.18;
-            tl.fromTo(card, { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "expo.inOut" }, at);
-            tl.fromTo(card, { y: 0, rotation: j % 2 ? 1.6 : -1.4 }, { y: j % 2 ? -28 : 24, rotation: j % 2 ? -0.6 : 0.8, duration: tend - tin, ease: "sine.inOut" }, tin);
+            const at = S + 0.6 + j * 0.35;
+            tl.fromTo(card.querySelector(".mask"), { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut" }, at);
+            tl.fromTo(card.querySelector(".cap"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 1.0, ease: EASE }, at + 0.7);
+            tl.fromTo(card, { y: 0, rotation: j % 2 ? 1.2 : -1 }, { y: j % 2 ? -22 : 18, rotation: j % 2 ? -0.4 : 0.6, duration: tend - tin, ease: "sine.inOut" }, tin);
             const img = card.querySelector("img");
             if (img) tl.fromTo(img, { scale: 1.12, x: -16 }, { scale: 1, x: 16, duration: tend - tin, ease: "sine.inOut" }, tin);
           });
