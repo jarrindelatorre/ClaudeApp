@@ -1,7 +1,7 @@
 {
   "version": 1,
   "historyId": "47d4fe95-1cf2-414e-a306-4fb648a3666f",
-  "currentRevision": "9705723f-adfd-4497-b3e5-c5dd8d2a0a76",
+  "currentRevision": "7ea4c5be-48ec-4b33-b344-1de33fbfd82a",
   "pendingChanges": false,
   "files": {
     "assets/fonts/inter-var.woff2": {
@@ -17,8 +17,8 @@
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/53/53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
     },
     "index.html": {
-      "hash": "ba812cf71f4becb30bb4f96be18d849245c6458fb9d2c577570c6dae3a1d4275",
-      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/ba/ba812cf71f4becb30bb4f96be18d849245c6458fb9d2c577570c6dae3a1d4275"
+      "hash": "095d3f30518ad90a98cbe60af0a673395e334f08c57e4c02057bdeaf57532100",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/09/095d3f30518ad90a98cbe60af0a673395e334f08c57e4c02057bdeaf57532100"
     },
     "meta.json": {
       "hash": "50ca7a1280d2df13e54267f16f15231aa641a2a27f9fde4d60401849b6f0545f",
@@ -51,6 +51,10 @@
     "assets/fonts/archivo-var.woff2": {
       "hash": "e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e",
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/e3/e3a28eade21a900c7155a247757f4b2834c07bb7ef07ad7efa55cebaac1e8f5e"
+    },
+    "assets/jarrindelatorre-white.png": {
+      "hash": "3c95edffafa387080b85046b59135d9cf32d49b9ecb7539ece9b949180e6f1bd",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/3c/3c95edffafa387080b85046b59135d9cf32d49b9ecb7539ece9b949180e6f1bd"
     }
   },
   "revisions": {
@@ -152,6 +156,25 @@
           "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/ba/ba812cf71f4becb30bb4f96be18d849245c6458fb9d2c577570c6dae3a1d4275"
         }
       }
+    },
+    "7ea4c5be-48ec-4b33-b344-1de33fbfd82a": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792577297111,
+      "endedAt": 1792577297123,
+      "files": {
+        "assets/jarrindelatorre-white.png": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/3c/3c95edffafa387080b85046b59135d9cf32d49b9ecb7539ece9b949180e6f1bd"
+        },
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/ba/ba812cf71f4becb30bb4f96be18d849245c6458fb9d2c577570c6dae3a1d4275",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/09/095d3f30518ad90a98cbe60af0a673395e334f08c57e4c02057bdeaf57532100"
+        }
+      }
     }
   },
   "checks": {
@@ -166,15 +189,15 @@
   },
   "renders": {
     "latest": {
-      "id": "c91d0f06-3e10-4514-b87c-f7f0f6e91535",
-      "completedAt": 1792577002328,
+      "id": "89e4f656-2961-4f78-a0f0-184223050966",
+      "completedAt": 1792577572286,
       "output": "/home/user/ClaudeApp/videos/promo-trayectoria/promo-trayectoria.mp4",
-      "status": "completed_with_warnings",
-      "revision": "9705723f-adfd-4497-b3e5-c5dd8d2a0a76"
+      "status": "completed",
+      "revision": "7ea4c5be-48ec-4b33-b344-1de33fbfd82a"
     },
     "retainedRevisions": [
-      "9705723f-adfd-4497-b3e5-c5dd8d2a0a76",
-      "73543fd8-561b-4bd5-8cb7-3699c580c8b8"
+      "7ea4c5be-48ec-4b33-b344-1de33fbfd82a",
+      "9705723f-adfd-4497-b3e5-c5dd8d2a0a76"
     ]
   },
   "pendingArtifactCleanup": []
