@@ -2,7 +2,7 @@
 # Grid: 4 bars per 10.5 s scene (≈91.4 bpm); scene cuts land on bar lines.
 import numpy as np, soundfile as sf, sys
 # Scene durations must match SCENES in index.html (each is a whole number of bars).
-SCENES = [9, 10.5, 15.75, 10.5, 10.5, 10.5, 10.5, 10.5, 10.5, 9]
+SCENES = [6, 10.5, 15.75, 15.75, 15.75, 15.75, 10.5, 10.5, 10.5, 9]
 sr = 44100
 T = float(sum(SCENES))
 n = int(sr * T)
@@ -10,7 +10,7 @@ t = np.arange(n) / sr
 rng = np.random.default_rng(11)
 BAR = 10.5 / 4
 BEAT = BAR / 4
-GRID0 = 9.0 - 4 * BAR  # bar lines at GRID0 + k*BAR
+GRID0 = SCENES[0] - 4 * BAR  # bar lines at GRID0 + k*BAR; first cut on a bar line
 CUTS = [sum(SCENES[: i + 1]) for i in range(len(SCENES) - 1)]  # scene cuts land on bar lines
 END_DRUMS = CUTS[-1]  # drums stop when the closing scene starts
 
@@ -58,7 +58,7 @@ for k, b0 in enumerate(bars):
         if st < 0 or st > T - 0.5: continue
         f = hz(ch[pat[i]] + 12); ln = int(0.5 * sr); tt = np.arange(ln) / sr
         sig = (np.sin(2 * np.pi * f * tt) + 0.35 * np.sin(4 * np.pi * f * tt) + 0.12 * np.sin(6 * np.pi * f * tt)) * np.exp(-tt * 9)
-        g = 0.05 * (0.6 if st < 9 else 1.0)
+        g = 0.05 * (0.6 if st < CUTS[0] else 1.0)
         pan = 0.5 + 0.35 * np.sin(i * 1.1 + k)
         for rep, dl in enumerate([0, 3 * BEAT / 4, 6 * BEAT / 4]):
             gg = g * (0.45 ** rep)
@@ -69,7 +69,7 @@ for k, b0 in enumerate(bars):
     f = hz(ROOTS[k % 4] - 12)
     for i in range(8):
         st = b0 + i * BEAT / 2
-        if st < 9.0 or st >= END_DRUMS: continue
+        if st < CUTS[0] or st >= END_DRUMS: continue
         ln = int(BEAT / 2 * sr); tt = np.arange(ln) / sr
         env = np.minimum(1, tt / 0.03) * np.exp(-tt * 3) * (0.55 + 0.45 * np.minimum(1, tt / 0.12))
         sig = np.tanh(1.6 * (np.sin(2 * np.pi * f * tt) + 0.25 * np.sin(4 * np.pi * f * tt))) * env * 0.13
@@ -79,15 +79,15 @@ for k, b0 in enumerate(bars):
 for k, b0 in enumerate(bars):
     for bt in range(4):
         st = b0 + bt * BEAT
-        if st < 9.0 or st >= END_DRUMS: continue
+        if st < CUTS[0] or st >= END_DRUMS: continue
         ln = int(0.35 * sr); tt = np.arange(ln) / sr
         kick = np.sin(2 * np.pi * (48 * tt + 70 * (1 - np.exp(-tt * 28)) / 28)) * np.exp(-tt * 9) * 0.32
         add(kick, st)
-        if st >= 19.5 and bt in (1, 3):
+        if st >= CUTS[1] and bt in (1, 3):
             ln2 = int(0.25 * sr); t2 = np.arange(ln2) / sr
             clap = np.diff(rng.standard_normal(ln2 + 1)) * np.exp(-t2 * 22) * 0.035
             add(clap, st, 0.9, 1.0)
-        if st >= 30.0:
+        if st >= CUTS[2]:
             for off in (BEAT / 2,):
                 ln3 = int(0.06 * sr); t3 = np.arange(ln3) / sr
                 hat = np.diff(np.diff(rng.standard_normal(ln3 + 2))) * np.exp(-t3 * 70) * 0.012

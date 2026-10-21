@@ -219,7 +219,8 @@
         color: var(--text-2);
         font: 400 16px/1.35 var(--font-body);
       }
-      .card img {
+      .card img,
+      .card video {
         display: block;
         width: 100%;
         height: 100%;
@@ -394,11 +395,11 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="107.25"
+      data-duration="120"
       data-width="1920"
       data-height="1080"
     >
-      <div id="stage" class="clip" data-start="0" data-duration="107.25" data-track-index="0">
+      <div id="stage" class="clip" data-start="0" data-duration="120" data-track-index="0">
         <div id="scenes"></div>
         <img id="watermark" src="assets/jarrindelatorre-white.png" alt="" />
         <div id="vignette"></div>
@@ -412,7 +413,7 @@
       </div>
 
       <!-- Música original (assets/musica.mp3): 4 compases por escena, cortes sobre el compás. -->
-      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="107.25" data-track-index="1" data-volume="0.85"></audio>
+      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="120" data-track-index="1" data-volume="0.85"></audio>
     </div>
 
     <script>
@@ -420,11 +421,12 @@
       const LOGO = "assets/jarrindelatorre-white.png"; // logo Jarrín De la Torre (blanco)
       const IMG = "assets/";
 
-      // images: 3 por sección para el carrusel ({ src, title, note }); null = placeholder (imagen pendiente).
+      // images: carrusel de cada sección ({ src | video, title, note }); null = placeholder (imagen pendiente).
+      // Con 4 tarjetas la escena dura 15.75 s (6 compases) para que el carrusel mantenga la misma velocidad.
       const SCENES = [
         {
           type: "brand",
-          duration: 9,
+          duration: 6,
           bg: "fondo-portada-comunica.webp", // foto de fondo opaca (una distinta por tema)
           bgAspect: 16 / 9, // proporción del fondo si no es 4:3
           banner: "banner-portada.jpg",
@@ -444,7 +446,7 @@
         {
           type: "area",
           bg: "branding-publica-fm.webp",
-          duration: 10.5,
+          duration: 15.75,
           kicker: "03 · Marca",
           title: ["Branding", "e identidad"],
           orgs: ["Comunica EP", "Koen", "Alpha Technologies"],
@@ -453,20 +455,22 @@
             { src: "branding-comunica-ep.webp", title: "Comunica EP", note: "Sistema de identidad y aplicaciones" },
             { src: "branding-alpha-technologies.webp", title: "Alpha Technologies", note: "Identidad corporativa y web" },
             { src: "branding-comunica-cobertura.webp", title: "Comunica EP", note: "Los medios con mayor cobertura · Campaña" },
+            { src: "branding-comunica-camara.jpg", title: "Comunica EP", note: "Identidad aplicada en producción · Medios públicos" },
           ],
         },
         {
           type: "area",
           bg: "editorial-compassion.jpg",
-          duration: 10.5,
+          duration: 15.75,
           kicker: "04 · Editorial",
           title: ["Diseño", "editorial e", "ilustración"],
           titleSize: 66,
           orgs: ["BID", "OIT", "Compassion International"],
           skills: ["Revistas", "Publicaciones", "Diagramación", "Cómics", "Ilustración"],
           images: [
-            { src: "editorial-yo-si-puedo-03.webp", title: "Yo Sí Puedo", note: "Guía del tutor · Compassion International" },
+            { src: "editorial-yo-si-puedo-03.webp", title: "Yo Sí Puedo", note: "Páginas interiores · Compassion International" },
             { src: "ilustracion-personajes.webp", title: "Ilustración", note: "Personajes para material educativo" },
+            { src: "editorial-yo-si-puedo-01.webp", title: "Yo Sí Puedo", note: "Portada · Guía del tutor" },
             { src: "editorial-compassion.jpg", title: "Compassion International", note: "Manuales y material educativo" },
           ],
         },
@@ -488,7 +492,7 @@
         {
           type: "area",
           bg: "branding-alpha-technologies.webp",
-          duration: 10.5,
+          duration: 15.75,
           kicker: "06 · Digital",
           title: ["Diseño web y", "social media"],
           titleSize: 66,
@@ -496,6 +500,7 @@
           skills: ["UX/UI", "Diseño web", "Figma", "HTML/CSS", "Contenidos digitales", "Gestión de redes"],
           images: [
             { src: "koen-group-portada-web.webp", title: "Koen Group", note: "Sitio web corporativo" },
+            { video: "web-fime-2027.mp4", title: "FIME 2027", note: "Sitio web · Festival Internacional de Música de Esmeraldas" },
             { src: "app-golf-live.jpg", title: "Golf Live", note: "App móvil · UX/UI" },
             { src: "danny-ghosen-portada-web.webp", title: "Danny Ghosen", note: "Sitio web personal" },
           ],
@@ -628,7 +633,20 @@
             card.style.left = `${(s.images.length - 1 - j) * CARD_STEP}px`;
             card.style.top = `${j % 2 ? 130 : 30}px`;
             const mask = el("div", "mask");
-            if (it) {
+            if (it && it.video) {
+              const vid = el("video");
+              vid.id = `video-${i}-${j}`;
+              vid.src = IMG + it.video;
+              vid.muted = true;
+              vid.setAttribute("muted", "");
+              vid.setAttribute("playsinline", "");
+              const vStart = s.start - T / 2;
+              const vDur = s.duration + T;
+              vid.dataset.start = vStart.toFixed(3);
+              vid.dataset.duration = vDur.toFixed(3);
+              vid.dataset.playbackRate = Math.min(1, (it.length || 14.2) / vDur).toFixed(3);
+              mask.appendChild(vid);
+            } else if (it) {
               const img = el("img");
               img.src = IMG + it.src;
               img.alt = "";
@@ -741,7 +759,7 @@
             tl.fromTo(card.querySelector(".mask"), { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut" }, at);
             tl.fromTo(card.querySelector(".cap"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 1.0, ease: EASE }, at + 0.7);
             tl.fromTo(card, { y: 0, rotation: j % 2 ? 1.2 : -1 }, { y: j % 2 ? -22 : 18, rotation: j % 2 ? -0.4 : 0.6, duration: tend - tin, ease: "sine.inOut" }, tin);
-            const img = card.querySelector("img");
+            const img = card.querySelector("img, video");
             if (img) tl.fromTo(img, { scale: 1.14, x: -14 }, { scale: 1.07, x: 14, duration: tend - tin, ease: "sine.inOut" }, tin);
           });
           tl.fromTo(q(scene, ".left"), { x: 0, y: 0 }, { x: -20, y: -8, duration: s.duration + T, ease: "sine.inOut" }, tin);
