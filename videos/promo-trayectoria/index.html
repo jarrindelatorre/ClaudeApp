@@ -249,6 +249,16 @@
         height: 295px;
         overflow: hidden;
       }
+      /* Línea blanca que divide el fondo y la foto del banner */
+      .banner-rule {
+        position: absolute;
+        left: 0;
+        top: 783px;
+        width: 1920px;
+        height: 3px;
+        background: #fff;
+        transform-origin: left center;
+      }
       .banner img {
         display: block;
         width: 2240px;
@@ -260,7 +270,7 @@
       .brand {
         position: absolute;
         left: 0;
-        top: 320px;
+        top: 440px;
         width: 1920px;
         display: flex;
         flex-direction: column;
@@ -269,7 +279,7 @@
       }
       .brand-logo {
         display: block;
-        width: 780px;
+        width: 620px;
       }
 
       /* 02 · Formación y visión */
@@ -395,11 +405,11 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="127.875"
+      data-duration="133.125"
       data-width="1920"
       data-height="1080"
     >
-      <div id="stage" class="clip" data-start="0" data-duration="127.875" data-track-index="0">
+      <div id="stage" class="clip" data-start="0" data-duration="133.125" data-track-index="0">
         <div id="scenes"></div>
         <img id="watermark" src="assets/jarrindelatorre-white.png" alt="" />
         <div id="vignette"></div>
@@ -413,7 +423,7 @@
       </div>
 
       <!-- Música original (assets/musica.mp3): 4 compases por escena, cortes sobre el compás. -->
-      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="127.875" data-track-index="1" data-volume="0.85"></audio>
+      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="133.125" data-track-index="1" data-volume="0.85"></audio>
     </div>
 
     <script>
@@ -524,7 +534,7 @@
         {
           type: "area",
           bg: "editorial-yo-si-puedo-03.webp",
-          duration: 10.5,
+          duration: 15.75,
           kicker: "08 · Internacional",
           title: ["Proyectos", "internacionales"],
           titleSize: 56,
@@ -532,8 +542,9 @@
           skills: ["Coordinación", "Gestión de contenidos", "Traducción", "Comunicación intercultural", "Desarrollo digital"],
           images: [
             { src: "thetechcoup-portada-web.webp", title: "The Tech Coup", note: "Sitio web del libro de Marietje Schaake" },
+            { src: "web-wildfire-action.webp", title: "Wildfire Action Accelerator", note: "Sitio web · wildfireaction.org" },
             { src: "belen-la-radio-portada-web.webp", title: "Belén La Radio", note: "Sitio web y reproductor en vivo" },
-            null,
+            { src: "web-gopa-cleaning.webp", title: "GOPA Cleaning Services", note: "Sitio web · gopacleaning.services" },
           ],
         },
         {
@@ -545,9 +556,9 @@
           orgs: ["UDLA", "Pontificia Universidad Católica del Ecuador", "CEC de la Escuela Politécnica"],
           skills: ["Diseño gráfico", "Comunicación", "Interfaces UX/UI", "Actualización profesional", "Formación de nuevas generaciones"],
           images: [
-            null,
-            null,
-            null,
+            { src: "docencia-ilustracion-digital.webp", title: "Ilustración digital", note: "Estudiantes en el aula" },
+            { src: "docencia-bocetos.webp", title: "Taller de ilustración", note: "Bocetos, personajes y storyboard" },
+            { src: "docencia-taller.webp", title: "Clase práctica", note: "Técnicas mixtas y collage" },
           ],
         },
         {
@@ -615,6 +626,7 @@
           bImg.alt = "";
           banner.appendChild(bImg);
           fast.appendChild(banner);
+          fast.appendChild(el("div", "banner-rule"));
         }
 
         if (s.type === "area") {
@@ -735,6 +747,7 @@
 
         if (s.type === "brand") {
           tl.fromTo(q(scene, ".brand-logo"), { clipPath: "inset(0% 100% 0% 0%)", scale: 1.05, x: -30 }, { clipPath: "inset(0% 0% 0% 0%)", scale: 1, x: 0, duration: 1.6, ease: "expo.inOut" }, S + 0.2);
+          tl.fromTo(q(scene, ".banner-rule"), { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: "expo.inOut" }, S + 0.3);
           tl.fromTo(q(scene, ".banner"), { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut" }, S + 0.5);
           tl.fromTo(q(scene, ".banner img"), { x: -320 }, { x: 0, duration: tend - tin, ease: "sine.inOut" }, tin);
           // Respiración continua del bloque: nunca queda quieto.
