@@ -417,6 +417,10 @@
       </div>
 
       <!-- Música original (assets/musica.mp3): 4 compases por escena, cortes sobre el compás. -->
+      <!-- Video del carrusel (06 · Digital). Va declarado aquí, fuera de #stage, para que el renderizador
+           extraiga sus cuadros; el script lo mueve a su tarjeta. Tiempos globales: inicio de la escena 06
+           menos T/2 (63.75 - 0.85) y duración de la escena + T (15.75 + 1.7), ralentizado para cubrirla. -->
+      <video id="video-fime" src="assets/web-fime-2027.mp4" muted playsinline data-start="62.9" data-duration="17.45" data-playback-rate="0.814"></video>
       <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="133.125" data-track-index="1" data-volume="0.85"></audio>
     </div>
 
@@ -425,7 +429,7 @@
       const LOGO = "assets/jarrindelatorre-white.png"; // logo Jarrín De la Torre (blanco)
       const IMG = "assets/";
 
-      // images: carrusel de cada sección ({ src | video, title, note }); null = placeholder (imagen pendiente).
+      // images: carrusel de cada sección ({ src | video: id del <video> declarado en el HTML, title, note }); null = placeholder (imagen pendiente).
       // Con 4 tarjetas la escena dura 15.75 s (6 compases) y con 5, 18.375 s (7), para que el carrusel mantenga una velocidad lenta.
       const SCENES = [
         {
@@ -504,7 +508,7 @@
           skills: ["UX/UI", "Diseño web", "Figma", "HTML/CSS", "Contenidos digitales", "Gestión de redes"],
           images: [
             { src: "koen-group-portada-web.webp", title: "Koen Group", note: "Sitio web corporativo" },
-            { video: "web-fime-2027.mp4", title: "FIME 2027", note: "Sitio web · Festival Internacional de Música de Esmeraldas" },
+            { video: "video-fime", title: "FIME 2027", note: "Sitio web · Festival Internacional de Música de Esmeraldas" },
             { src: "app-golf-live.jpg", title: "Golf Live", note: "App móvil · UX/UI" },
             { src: "danny-ghosen-portada-web.webp", title: "Danny Ghosen", note: "Sitio web personal" },
           ],
@@ -641,17 +645,11 @@
             card.style.top = `${j % 2 ? 130 : 30}px`;
             const mask = el("div", "mask");
             if (it && it.video) {
-              const vid = el("video");
-              vid.id = `video-${i}-${j}`;
-              vid.src = IMG + it.video;
-              vid.muted = true;
-              vid.setAttribute("muted", "");
-              vid.setAttribute("playsinline", "");
+              // El <video> está declarado en el HTML (ver arriba); aquí solo se mueve a la tarjeta.
+              const vid = document.getElementById(it.video);
               const vStart = s.start - T / 2;
-              const vDur = s.duration + T;
-              vid.dataset.start = vStart.toFixed(3);
-              vid.dataset.duration = vDur.toFixed(3);
-              vid.dataset.playbackRate = Math.min(1, (it.length || 14.2) / vDur).toFixed(3);
+              if (Math.abs(parseFloat(vid.dataset.start) - vStart) > 0.01)
+                console.warn(`Ajusta data-start de #${it.video} a ${vStart.toFixed(3)} (cambió la duración de una escena)`);
               mask.appendChild(vid);
             } else if (it) {
               const img = el("img");
