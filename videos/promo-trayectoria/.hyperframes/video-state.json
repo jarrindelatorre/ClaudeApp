@@ -1,7 +1,7 @@
 {
   "version": 1,
   "historyId": "47d4fe95-1cf2-414e-a306-4fb648a3666f",
-  "currentRevision": "7ea4c5be-48ec-4b33-b344-1de33fbfd82a",
+  "currentRevision": "cb27efae-0c14-4d3d-b520-9859eb8f83ab",
   "pendingChanges": false,
   "files": {
     "assets/fonts/inter-var.woff2": {
@@ -17,8 +17,8 @@
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/53/53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
     },
     "index.html": {
-      "hash": "095d3f30518ad90a98cbe60af0a673395e334f08c57e4c02057bdeaf57532100",
-      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/09/095d3f30518ad90a98cbe60af0a673395e334f08c57e4c02057bdeaf57532100"
+      "hash": "d5970f7cd8bac868e7f6535e08df62f0172839f3aa35a0146eb733eb022f57dd",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/d5/d5970f7cd8bac868e7f6535e08df62f0172839f3aa35a0146eb733eb022f57dd"
     },
     "meta.json": {
       "hash": "50ca7a1280d2df13e54267f16f15231aa641a2a27f9fde4d60401849b6f0545f",
@@ -55,6 +55,26 @@
     "assets/jarrindelatorre-white.png": {
       "hash": "3c95edffafa387080b85046b59135d9cf32d49b9ecb7539ece9b949180e6f1bd",
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/3c/3c95edffafa387080b85046b59135d9cf32d49b9ecb7539ece9b949180e6f1bd"
+    },
+    "assets/danny-ghosen-portada-web.webp": {
+      "hash": "f298317294fdcdbe756e3f1bc276314d0af15043bf1e3029a2f4cee5cd3533d0",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/f2/f298317294fdcdbe756e3f1bc276314d0af15043bf1e3029a2f4cee5cd3533d0"
+    },
+    "assets/koen-group-portada-web.webp": {
+      "hash": "dfa23ce06e172f212b4b3c6a18b016e003613f371f83a2243c7fd86f2af2d9ce",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/df/dfa23ce06e172f212b4b3c6a18b016e003613f371f83a2243c7fd86f2af2d9ce"
+    },
+    "assets/editorial-yo-si-puedo-01.webp": {
+      "hash": "8d643d1fa7831487fc40d145d7046afe7673eeb9e55e301c471c8fffd3a008ff",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/8d/8d643d1fa7831487fc40d145d7046afe7673eeb9e55e301c471c8fffd3a008ff"
+    },
+    "assets/editorial-yo-si-puedo-03.webp": {
+      "hash": "158dbd950c783b8df81a0170ecd6d7f7e4ad97738ea86790c8cbd23f70906fc5",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/15/158dbd950c783b8df81a0170ecd6d7f7e4ad97738ea86790c8cbd23f70906fc5"
+    },
+    "assets/cartel-corovozandes.webp": {
+      "hash": "e8fe8d3b3b830992cad9f79fdd9fdb039c543126da159f293361e1435104060e",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/e8/e8fe8d3b3b830992cad9f79fdd9fdb039c543126da159f293361e1435104060e"
     }
   },
   "revisions": {
@@ -175,6 +195,41 @@
           "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/09/095d3f30518ad90a98cbe60af0a673395e334f08c57e4c02057bdeaf57532100"
         }
       }
+    },
+    "cb27efae-0c14-4d3d-b520-9859eb8f83ab": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792577839530,
+      "endedAt": 1792577839557,
+      "files": {
+        "assets/cartel-corovozandes.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/e8/e8fe8d3b3b830992cad9f79fdd9fdb039c543126da159f293361e1435104060e"
+        },
+        "assets/danny-ghosen-portada-web.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/f2/f298317294fdcdbe756e3f1bc276314d0af15043bf1e3029a2f4cee5cd3533d0"
+        },
+        "assets/editorial-yo-si-puedo-01.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/8d/8d643d1fa7831487fc40d145d7046afe7673eeb9e55e301c471c8fffd3a008ff"
+        },
+        "assets/editorial-yo-si-puedo-03.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/15/158dbd950c783b8df81a0170ecd6d7f7e4ad97738ea86790c8cbd23f70906fc5"
+        },
+        "assets/koen-group-portada-web.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/df/dfa23ce06e172f212b4b3c6a18b016e003613f371f83a2243c7fd86f2af2d9ce"
+        },
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/09/095d3f30518ad90a98cbe60af0a673395e334f08c57e4c02057bdeaf57532100",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/d5/d5970f7cd8bac868e7f6535e08df62f0172839f3aa35a0146eb733eb022f57dd"
+        }
+      }
     }
   },
   "checks": {
@@ -189,15 +244,15 @@
   },
   "renders": {
     "latest": {
-      "id": "89e4f656-2961-4f78-a0f0-184223050966",
-      "completedAt": 1792577572286,
+      "id": "f87cea6a-3b0c-4647-9192-de90e46a5d50",
+      "completedAt": 1792578113706,
       "output": "/home/user/ClaudeApp/videos/promo-trayectoria/promo-trayectoria.mp4",
       "status": "completed",
-      "revision": "7ea4c5be-48ec-4b33-b344-1de33fbfd82a"
+      "revision": "cb27efae-0c14-4d3d-b520-9859eb8f83ab"
     },
     "retainedRevisions": [
-      "7ea4c5be-48ec-4b33-b344-1de33fbfd82a",
-      "9705723f-adfd-4497-b3e5-c5dd8d2a0a76"
+      "cb27efae-0c14-4d3d-b520-9859eb8f83ab",
+      "7ea4c5be-48ec-4b33-b344-1de33fbfd82a"
     ]
   },
   "pendingArtifactCleanup": []
