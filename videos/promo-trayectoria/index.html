@@ -169,15 +169,20 @@
       }
 
       /* Carrusel de imágenes (columna derecha, sangra hasta el borde) */
+      /* El carrusel nace bajo el texto: un fade amplio lo funde detrás de las letras. */
       .carousel {
         position: absolute;
-        left: 900px;
+        left: 120px;
         top: 200px;
-        width: 1020px;
+        width: 1800px;
         height: 700px;
         overflow: hidden;
-        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 120px, #000 100%);
-        mask-image: linear-gradient(90deg, transparent 0, #000 120px, #000 100%);
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 180px, rgba(0, 0, 0, 0.35) 520px, #000 860px, #000 100%);
+        mask-image: linear-gradient(90deg, transparent 0, transparent 180px, rgba(0, 0, 0, 0.35) 520px, #000 860px, #000 100%);
+      }
+      /* El texto siempre por encima del carrusel */
+      .layer-slow {
+        z-index: 2;
       }
       .strip {
         position: absolute;
@@ -747,8 +752,9 @@
 
           // Carrusel: la tira avanza de izquierda a derecha durante toda la escena; cada tarjeta flota a su ritmo.
           const strip = scene.querySelector(".strip");
-          const span = s.images.length * CARD_STEP - 1020 + 160;
-          tl.fromTo(strip, { x: -span }, { x: 120, duration: tend - tin, ease: "sine.inOut" }, tin);
+          // Empieza con la primera imagen en la zona nítida y termina con la última; las demás pasan por el fade bajo el texto.
+          const from = 1000 - (s.images.length - 1) * CARD_STEP;
+          tl.fromTo(strip, { x: from }, { x: 1100, duration: tend - tin, ease: "sine.inOut" }, tin);
           q(scene, ".card").forEach((card, j) => {
             const at = S + 0.6 + j * 0.35;
             tl.fromTo(card.querySelector(".mask"), { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut" }, at);
