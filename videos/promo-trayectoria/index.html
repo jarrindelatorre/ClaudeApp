@@ -132,11 +132,16 @@
       }
 
       /* Columna izquierda: 5 columnas (9 si la escena no tiene imágenes) */
+      /* Columna de texto centrada verticalmente en el cuadro */
       .left {
         position: absolute;
         left: var(--margin);
-        top: 240px;
+        top: 0;
+        height: 1080px;
         width: calc(5 * var(--col) + 4 * var(--gutter));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
       .left.wide {
         width: calc(9 * var(--col) + 8 * var(--gutter));
@@ -359,7 +364,11 @@
         width: 760px;
       }
       .outro-url {
-        margin-top: 56px;
+        position: absolute;
+        left: 0;
+        bottom: 96px;
+        width: 1920px;
+        text-align: center;
         color: var(--text);
         font: 500 34px/1 var(--font-body);
         letter-spacing: 0.06em;
@@ -429,7 +438,8 @@
       const LOGO = "assets/jarrindelatorre-white.png"; // logo Jarrín De la Torre (blanco)
       const IMG = "assets/";
 
-      // images: carrusel de cada sección ({ src | video: id del <video> declarado en el HTML, title, note }); null = placeholder (imagen pendiente).
+      // images: carrusel de cada sección ({ src | video: id del <video> declarado en el HTML, title, note, fit? });
+      // fit: "top" conserva la parte superior sin zoom; "contain" muestra la foto completa. card: { w, h } cambia el tamaño de tarjeta. null = placeholder (imagen pendiente).
       // Con 4 tarjetas la escena dura 15.75 s (6 compases) y con 5, 18.375 s (7), para que el carrusel mantenga una velocidad lenta.
       const SCENES = [
         {
@@ -510,7 +520,7 @@
             { src: "koen-group-portada-web.webp", title: "Koen Group", note: "Sitio web corporativo" },
             { video: "video-fime", title: "FIME 2027", note: "Sitio web · Festival Internacional de Música de Esmeraldas" },
             { src: "app-golf-live.jpg", title: "Golf Live", note: "App móvil · UX/UI" },
-            { src: "danny-ghosen-portada-web.webp", title: "Danny Ghosen", note: "Sitio web personal" },
+            { src: "danny-ghosen-portada-web.webp", title: "Danny Ghosen", note: "Sitio web personal", fit: "top" },
           ],
         },
         {
@@ -553,6 +563,8 @@
           title: ["Docencia", "universitaria"],
           orgs: ["UDLA", "Pontificia Universidad Católica del Ecuador", "CEC de la Escuela Politécnica"],
           skills: ["Diseño gráfico", "Comunicación", "Interfaces UX/UI", "Actualización profesional", "Formación de nuevas generaciones"],
+          card: { w: 315, h: 420 }, // tarjetas verticales: fotos completas
+          fit: "contain",
           images: [
             { src: "docencia-ilustracion-digital.webp", title: "Ilustración digital", note: "Estudiantes en el aula" },
             { src: "docencia-bocetos.webp", title: "Taller de ilustración", note: "Bocetos, personajes y storyboard" },
@@ -573,7 +585,6 @@
       const EASE = "expo.out";
       // Cada escena entra desde un lado distinto (alternando) y con un leve giro: el recorrido es curvo, no recto.
       const dirOf = (i) => (i % 2 ? 1 : -1);
-      const CARD_STEP = 620; // ancho de tarjeta + separación en el carrusel
 
       /* ───────────── Construcción del DOM ───────────── */
       const host = document.getElementById("scenes");
@@ -638,11 +649,18 @@
 
           const car = el("div", "carousel");
           const strip = el("div", "strip");
-          s.images.forEach((it, j) => {
+          // Orden invertido: la última imagen de la lista se ve primero.
+          const cards = [...s.images].reverse();
+          const cw = s.card ? s.card.w : 560;
+          const ch = s.card ? s.card.h : 420;
+          s.step = cw + 60;
+          cards.forEach((it, j) => {
             const card = el("div", it ? "card" : "card ph");
-            // La tira avanza hacia la derecha: la primera imagen va al extremo derecho para verse primero.
-            card.style.left = `${(s.images.length - 1 - j) * CARD_STEP}px`;
+            // La tira avanza hacia la derecha: la primera tarjeta va al extremo derecho para verse primero.
+            card.style.left = `${(cards.length - 1 - j) * s.step}px`;
             card.style.top = `${j % 2 ? 130 : 30}px`;
+            card.style.width = `${cw}px`;
+            card.style.height = `${ch}px`;
             const mask = el("div", "mask");
             if (it && it.video) {
               // El <video> está declarado en el HTML (ver arriba); aquí solo se mueve a la tarjeta.
@@ -655,12 +673,19 @@
               const img = el("img");
               img.src = IMG + it.src;
               img.alt = "";
+              const fit = it.fit || s.fit;
+              if (fit) img.dataset.fit = fit;
+              if (fit === "top") img.style.objectPosition = "50% 0%";
+              if (fit === "contain") img.style.objectFit = "contain";
               mask.appendChild(img);
             } else {
               mask.textContent = `Imagen ${j + 1} · pendiente`;
             }
             card.appendChild(mask);
-            card.appendChild(el("div", "cap", it ? `${it.title}<small>${it.note}</small>` : `Imagen pendiente<small>Agrega aquí un proyecto</small>`));
+            const cap = el("div", "cap", it ? `${it.title}<small>${it.note}</small>` : `Imagen pendiente<small>Agrega aquí un proyecto</small>`);
+            cap.style.top = `${ch + 18}px`;
+            cap.style.width = `${cw - 4}px`;
+            card.appendChild(cap);
             strip.appendChild(card);
           });
           car.appendChild(strip);
@@ -757,7 +782,7 @@
           // Carrusel: la tira avanza de izquierda a derecha durante toda la escena; cada tarjeta flota a su ritmo.
           const strip = scene.querySelector(".strip");
           // Empieza con la primera imagen en la zona nítida y termina con la última; las demás pasan por el fade bajo el texto.
-          const from = 1000 - (s.images.length - 1) * CARD_STEP;
+          const from = 1000 - (s.images.length - 1) * s.step;
           tl.fromTo(strip, { x: from }, { x: 1100, duration: tend - tin, ease: "sine.inOut" }, tin);
           q(scene, ".card").forEach((card, j) => {
             const at = S + 0.6 + j * 0.35;
@@ -765,7 +790,9 @@
             tl.fromTo(card.querySelector(".cap"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 1.0, ease: EASE }, at + 0.7);
             tl.fromTo(card, { y: 0, rotation: j % 2 ? 1.2 : -1 }, { y: j % 2 ? -22 : 18, rotation: j % 2 ? -0.4 : 0.6, duration: tend - tin, ease: "sine.inOut" }, tin);
             const img = card.querySelector("img, video");
-            if (img) tl.fromTo(img, { scale: 1.14, x: -14 }, { scale: 1.07, x: 14, duration: tend - tin, ease: "sine.inOut" }, tin);
+            const fit = img && img.dataset.fit;
+            if (fit === "top") tl.fromTo(img, { scale: 1.05 }, { scale: 1, duration: tend - tin, ease: "sine.inOut", transformOrigin: "50% 0%" }, tin);
+            else if (img && fit !== "contain") tl.fromTo(img, { scale: 1.14, x: -14 }, { scale: 1.07, x: 14, duration: tend - tin, ease: "sine.inOut" }, tin);
           });
           tl.fromTo(q(scene, ".left"), { x: 0, y: 0 }, { x: -20, y: -8, duration: s.duration + T, ease: "sine.inOut" }, tin);
         }
