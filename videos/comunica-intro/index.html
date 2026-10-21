@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #06121f;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+      #scene {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      #stage {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      #bg {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: radial-gradient(ellipse at 45% 30%, #123459 0%, #0f2c4b 45%, #0a2038 100%);
+      }
+      #snakes,
+      #final {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      #final {
+        object-fit: cover;
+      }
+      #finalWrap {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      /* Hides a stray screenshot icon in the corner of the source art. */
+      #patch {
+        position: absolute;
+        left: 1866px;
+        top: 1030px;
+        width: 60px;
+        height: 56px;
+        background: #061624;
+        filter: blur(4px);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="5"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div id="scene" class="clip" data-start="0" data-duration="5" data-track-index="0">
+        <div id="stage">
+          <div id="bg"></div>
+          <svg id="snakes" viewBox="0 0 2000 1120" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="gTeal" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stop-color="#2a7f86" stop-opacity="0.55" />
+                <stop offset="0.6" stop-color="#36a9a8" />
+                <stop offset="1" stop-color="#3bb7b4" />
+              </linearGradient>
+              <linearGradient id="gBlue" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#0d4f72" />
+                <stop offset="0.7" stop-color="#0b5f86" />
+                <stop offset="1" stop-color="#0989b4" />
+              </linearGradient>
+              <linearGradient id="gYellow" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#8a7a3a" />
+                <stop offset="0.25" stop-color="#e2ae1f" />
+                <stop offset="1" stop-color="#e8b41b" />
+              </linearGradient>
+            </defs>
+            <g id="thin" fill="none" stroke="#cfe3f5" stroke-opacity="0.32" stroke-width="1.6"></g>
+            <path id="teal" fill="none" stroke="url(#gTeal)" stroke-width="46" stroke-linecap="round" stroke-linejoin="round" />
+            <path id="blue" fill="none" stroke="url(#gBlue)" stroke-width="110" stroke-linecap="round" />
+            <path id="yellow" fill="none" stroke="url(#gYellow)" stroke-width="30" stroke-linecap="round" />
+
+            <!-- Head: bell with clock (blue snake). Drawn pointing up (-y). -->
+            <g id="bellHead">
+              <g id="bellInner">
+                <path d="M-52 60 L-52 -28 A52 52 0 0 1 52 -28 L52 60 Z" fill="#0989b4" />
+                <path d="M-52 -10 L-72 -24 L-52 -40 Z M52 -10 L72 -24 L52 -40 Z" fill="#0989b4" />
+                <path d="M-8 -78 L0 -100 L8 -78 Z" fill="#0989b4" />
+                <path d="M-14 -40 Q0 -70 14 -40 Z" fill="#0b2a45" />
+                <circle cx="0" cy="22" r="32" fill="none" stroke="#0b2a45" stroke-width="9" />
+                <path d="M0 22 L12 2 M0 22 L-14 28" stroke="#0b2a45" stroke-width="7" stroke-linecap="round" />
+              </g>
+            </g>
+
+            <!-- Head: microphone + headphones (yellow snake). Drawn pointing up (-y). -->
+            <g id="micHead">
+              <g id="micInner">
+                <path d="M-112 10 A112 112 0 0 1 112 10" fill="none" stroke="#e8b41b" stroke-width="26" stroke-linecap="round" />
+                <rect x="-138" y="-10" width="52" height="96" rx="24" fill="#e8b41b" />
+                <rect x="86" y="-10" width="52" height="96" rx="24" fill="#e8b41b" />
+                <ellipse cx="0" cy="30" rx="70" ry="74" fill="#e8b41b" />
+                <path d="M-66 18 L66 42" stroke="#0b2a45" stroke-width="12" stroke-linecap="round" />
+              </g>
+            </g>
+          </svg>
+          <div id="finalWrap">
+            <img id="final" src="arte-final.webp" alt="" />
+            <div id="patch"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Each snake is a chain of cubic Béziers in the artwork's 2000x1120 space.
+      // While it travels, the control points undulate; the wave decays to zero so
+      // every snake lands exactly on its pose in the final art.
+      const SNAKES = [
+        {
+          id: "teal",
+          start: 0.0,
+          end: 3.7,
+          amp: 260,
+          freq: 2.6,
+          phase: 0.0,
+          pts: [
+            [-40, 590], [140, 860], [360, 1080], [620, 1080],
+            [900, 1080], [1140, 720], [1300, 450],
+            [1380, 315], [1430, 225], [1470, 150],
+            [1490, 110], [1470, 92], [1440, 92],
+            [1400, 92], [1360, 92], [1318, 104],
+          ],
+          lock: 3, // last N segments never wiggle (the "7" head)
+        },
+        {
+          id: "blue",
+          start: 0.12,
+          end: 3.85,
+          amp: 300,
+          freq: 2.1,
+          phase: 1.7,
+          pts: [
+            [-80, 55], [240, 30], [390, 250], [490, 430],
+            [660, 730], [800, 890], [990, 890],
+            [1250, 890], [1420, 580], [1545, 330],
+          ],
+          lock: 0,
+        },
+        {
+          id: "yellow",
+          start: 0.25,
+          end: 4.0,
+          amp: 320,
+          freq: 2.9,
+          phase: 3.1,
+          pts: [
+            [-30, 330], [230, 250], [400, 520], [560, 760],
+            [700, 975], [820, 1045], [960, 1045],
+            [1160, 1045], [1360, 840], [1515, 600],
+          ],
+          lock: 0,
+        },
+      ];
+
+      // Thin decorative lines that draw across and gently sway.
+      const THIN = [
+        [[0, 230], [260, 20], [600, -20], [800, 230], [1000, 480], [1150, 760], [1400, 860], [1650, 960], [1850, 1020], [2050, 1000]],
+        [[0, 400], [400, 520], [700, 820], [900, 900], [1150, 1000], [1550, 900], [2050, 230]],
+        [[-20, 860], [300, 900], [700, 820], [1000, 520], [1300, 260], [1700, 250], [2050, 400]],
+        [[150, 1120], [500, 760], [900, 300], [1150, 120], [1350, -20], [1700, 60], [2050, -40]],
+      ];
+      const thinGroup = document.getElementById("thin");
+      const thinEls = THIN.map(() => {
+        const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        thinGroup.appendChild(p);
+        return p;
+      });
+
+      const easeHead = gsap.parseEase("power2.inOut");
+      const easeThin = gsap.parseEase("power1.inOut");
+      const clamp = (v) => Math.max(0, Math.min(1, v));
+
+      function buildD(pts, amp, freq, phase, t, decay, lock) {
+        const segs = (pts.length - 1) / 3;
+        const out = pts.map(([x, y], i) => {
+          if (i === 0) return [x, y];
+          const seg = Math.ceil(i / 3);
+          if (seg > segs - lock) return [x, y];
+          const k = amp * decay * Math.sin(freq * t * Math.PI + phase + i * 0.9);
+          const k2 = amp * 0.6 * decay * Math.cos(freq * 0.8 * t * Math.PI + phase * 1.3 + i * 1.3);
+          return [x + k2, y + k];
+        });
+        let d = `M${out[0][0]} ${out[0][1]}`;
+        for (let i = 1; i < out.length; i += 3) {
+          d += ` C${out[i][0]} ${out[i][1]} ${out[i + 1][0]} ${out[i + 1][1]} ${out[i + 2][0]} ${out[i + 2][1]}`;
+        }
+        return d;
+      }
+
+      const heads = {
+        blue: { el: document.getElementById("bellHead"), inner: document.getElementById("bellInner"), scale: 1.0 },
+        yellow: { el: document.getElementById("micHead"), inner: document.getElementById("micInner"), scale: 1.0 },
+      };
+
+      function render(t) {
+        SNAKES.forEach((s) => {
+          const el = document.getElementById(s.id);
+          const p = easeHead(clamp((t - s.start) / (s.end - s.start)));
+          const decay = Math.pow(1 - clamp(t / s.end), 1.2);
+          el.setAttribute("d", buildD(s.pts, s.amp, s.freq, s.phase, t, decay, s.lock));
+          const L = el.getTotalLength();
+          const drawn = Math.max(0.001, p * L);
+          el.setAttribute("stroke-dasharray", `${drawn} ${L + 10}`);
+          el.setAttribute("stroke-dashoffset", "0");
+          el.style.opacity = p > 0 ? 1 : 0;
+
+          const h = heads[s.id];
+          if (h) {
+            const a = el.getPointAtLength(drawn);
+            const b = el.getPointAtLength(Math.max(0, drawn - 6));
+            const ang = (Math.atan2(a.y - b.y, a.x - b.x) * 180) / Math.PI + 90;
+            // Heads grow in quickly, then settle upright to match the art.
+            const grow = gsap.parseEase("back.out(2)")(clamp(p * 6));
+            const settle = clamp((t - s.end + 0.5) / 0.5);
+            const finalAng = s.id === "blue" ? 28 : 34;
+            const rot = ang + (finalAng - ang) * settle;
+            h.el.setAttribute("transform", `translate(${a.x} ${a.y}) rotate(${rot})`);
+            h.inner.setAttribute("transform", `translate(0 -70) scale(${grow * h.scale})`);
+            h.el.style.opacity = p > 0 ? 1 : 0;
+          }
+        });
+
+        thinEls.forEach((el, i) => {
+          const pts = THIN[i];
+          const decay = 1 - clamp(t / 4.2);
+          const sway = pts.map(([x, y], j) => [x, y + 40 * decay * Math.sin(t * 2.2 + i * 1.4 + j)]);
+          let d = `M${sway[0][0]} ${sway[0][1]}`;
+          for (let j = 1; j + 2 < sway.length + 1 && j + 1 < sway.length; j += 2) {
+            d += ` Q${sway[j][0]} ${sway[j][1]} ${sway[j + 1][0]} ${sway[j + 1][1]}`;
+          }
+          el.setAttribute("d", d);
+          const L = el.getTotalLength();
+          const p = easeThin(clamp((t - i * 0.12) / 2.4));
+          el.setAttribute("stroke-dasharray", `${p * L} ${L + 10}`);
+        });
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      const clock = { t: 0 };
+      tl.to(clock, { t: 5, duration: 5, ease: "none", onUpdate: () => render(clock.t) }, 0);
+      // Dark screen lifts into the navy background.
+      tl.fromTo("#bg", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0);
+      // Gentle push-in for energy, settling on the final framing.
+      tl.fromTo("#stage", { scale: 1.12, rotation: -1.5 }, { scale: 1, rotation: 0, duration: 4.2, ease: "power3.out" }, 0);
+      // Land on the exact artwork (with logo).
+      tl.fromTo("#finalWrap", { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "power1.inOut" }, 3.95);
+      render(0);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
