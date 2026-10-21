@@ -1,7 +1,7 @@
 {
   "version": 1,
   "historyId": "9a175298-3daf-49ac-afa7-030ced89938a",
-  "currentRevision": "b6d07ef0-2f3f-4d5a-b732-d91c8b097198",
+  "currentRevision": "c778c647-f22a-49e4-b0b4-38a41af8e2fb",
   "pendingChanges": false,
   "files": {
     "arte-final.webp": {
@@ -17,8 +17,8 @@
       "content": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/53/53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
     },
     "index.html": {
-      "hash": "6eb555930c0b28395fc16e54f29a237e4780e618b0ab3c73c99f39fb98585a39",
-      "content": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/6e/6eb555930c0b28395fc16e54f29a237e4780e618b0ab3c73c99f39fb98585a39"
+      "hash": "c1c1e58b100e2e068105d2f38e87677a9b2bb556b0de82b2ece9dca368b99647",
+      "content": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/c1/c1c1e58b100e2e068105d2f38e87677a9b2bb556b0de82b2ece9dca368b99647"
     },
     "meta.json": {
       "hash": "3c6932d0598c0b75c466e608e5868a730fe33e8ecce034035e9b045c55d009d7",
@@ -27,6 +27,14 @@
     "package.json": {
       "hash": "f21a362e6c3b4e02fff3d232c4860fd0399806e7742f58d563d2ac4a3df884dc",
       "content": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/f2/f21a362e6c3b4e02fff3d232c4860fd0399806e7742f58d563d2ac4a3df884dc"
+    },
+    "audio/music.wav": {
+      "hash": "ffa0b01c469e02f0e627531034b72ae2d9bb29d7bec9eedf36c7de3c9dc2f5eb",
+      "content": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/ff/ffa0b01c469e02f0e627531034b72ae2d9bb29d7bec9eedf36c7de3c9dc2f5eb"
+    },
+    "audio/voiceover.wav": {
+      "hash": "3e1ab02960cc7463249aa50fcb6c60ebe80accdc5e1a966e7bc217c2b5255340",
+      "content": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/3e/3e1ab02960cc7463249aa50fcb6c60ebe80accdc5e1a966e7bc217c2b5255340"
     }
   },
   "revisions": {
@@ -44,6 +52,44 @@
           "after": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/6e/6eb555930c0b28395fc16e54f29a237e4780e618b0ab3c73c99f39fb98585a39"
         }
       }
+    },
+    "a32feb1f-1c40-4c3b-ba2f-179bf6ba63bc": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792552788154,
+      "endedAt": 1792552788193,
+      "files": {
+        "audio/music.wav": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/ff/ffa0b01c469e02f0e627531034b72ae2d9bb29d7bec9eedf36c7de3c9dc2f5eb"
+        },
+        "audio/voiceover.wav": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/3e/3e1ab02960cc7463249aa50fcb6c60ebe80accdc5e1a966e7bc217c2b5255340"
+        },
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/6e/6eb555930c0b28395fc16e54f29a237e4780e618b0ab3c73c99f39fb98585a39",
+          "after": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/f6/f61008238adcdc4df2df49e660c3ef6b8d1d61c95c6c585a21ca2371d8721bc1"
+        }
+      }
+    },
+    "c778c647-f22a-49e4-b0b4-38a41af8e2fb": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792552823910,
+      "endedAt": 1792552823911,
+      "files": {
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/f6/f61008238adcdc4df2df49e660c3ef6b8d1d61c95c6c585a21ca2371d8721bc1",
+          "after": "/root/.cache/hyperframes/history/9a175298-3daf-49ac-afa7-030ced89938a/blobs/c1/c1c1e58b100e2e068105d2f38e87677a9b2bb556b0de82b2ece9dca368b99647"
+        }
+      }
     }
   },
   "checks": {
@@ -58,14 +104,15 @@
   },
   "renders": {
     "latest": {
-      "id": "f666edc6-b1e7-4eb0-a27c-8d1927f1b246",
-      "completedAt": 1792552657640,
+      "id": "14af3c26-39b6-4af9-b65e-e3ff3a3fffa2",
+      "completedAt": 1792552842323,
       "output": "/home/user/ClaudeApp/videos/comunica-intro/comunica-intro.mp4",
       "status": "completed",
-      "revision": "b6d07ef0-2f3f-4d5a-b732-d91c8b097198"
+      "revision": "c778c647-f22a-49e4-b0b4-38a41af8e2fb"
     },
     "retainedRevisions": [
-      "b6d07ef0-2f3f-4d5a-b732-d91c8b097198"
+      "c778c647-f22a-49e4-b0b4-38a41af8e2fb",
+      "a32feb1f-1c40-4c3b-ba2f-179bf6ba63bc"
     ]
   },
   "pendingArtifactCleanup": []
