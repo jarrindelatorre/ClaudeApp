@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="gsap.min.js"></script>
+    <style>
+      /* ───────────── Sistema de diseño (editable) ───────────── */
+      :root {
+        --bg: #121212;
+        --text: #f4f1ec;
+        --text-2: #a39e8f;
+        --accent: #c8553d;
+        --font-display: "Archivo", "Inter", system-ui, sans-serif;
+        --display-stretch: 118%; /* ancho de la tipografía display (62%–125%) */
+        --display-weight: 600;
+        --bg-shade: 0.8; /* oscuridad del fondo fotográfico (0–1) */
+        --font-body: "Inter", system-ui, sans-serif;
+        --margin: 80px; /* márgenes laterales */
+        --col: 118px; /* ancho de columna (12 col) */
+        --gutter: 24px;
+        --radius: 4px;
+        --title-size: 84px;
+        --title-tracking: 0.02em;
+      }
+
+      @font-face {
+        font-family: "Archivo";
+        src: url("assets/fonts/archivo-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--bg);
+      }
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+      }
+      #stage {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+        opacity: 0;
+        overflow: hidden;
+        background: var(--bg);
+        box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.6);
+      }
+      /* Foto de fondo opaca (más grande que el cuadro para el parallax) */
+      /* Fondo: la foto se ve casi completa (caja 4:3 apenas más ancha que el cuadro)
+         y un paneo lento la recorre de arriba a abajo durante la escena. */
+      .bgl {
+        position: absolute;
+        left: -120px;
+        top: -40px;
+        width: 2800px;
+        height: 2000px;
+      }
+      .bgl img {
+        display: block;
+        width: 2800px;
+        height: 2000px;
+        object-fit: cover;
+        filter: grayscale(0.4) blur(0.6px);
+      }
+      .shade {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+        background:
+          linear-gradient(180deg, rgba(18, 18, 18, 0.95) 0%, rgba(18, 18, 18, 0.84) 46%, rgba(18, 18, 18, 0.72) 100%),
+          rgba(18, 18, 18, calc(var(--bg-shade) - 0.6));
+      }
+      .content,
+      .layer-slow,
+      .layer-fast {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+      }
+
+      /* Encabezado de escena: "03 · MARCA" + línea fina */
+      .kicker {
+        position: absolute;
+        left: var(--margin);
+        top: 170px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: var(--accent);
+        font: 500 22px/1 var(--font-body);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .kicker .rule {
+        display: block;
+        width: 120px;
+        height: 1px;
+        background: var(--accent);
+        transform-origin: left center;
+      }
+
+      /* Columna izquierda: 5 columnas (9 si la escena no tiene imágenes) */
+      /* Columna de texto centrada verticalmente en el cuadro */
+      .left {
+        position: absolute;
+        left: var(--margin);
+        top: 230px;
+        height: 760px;
+        width: 920px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .left.wide {
+        width: calc(9 * var(--col) + 8 * var(--gutter));
+      }
+      .title {
+        font: var(--display-weight) var(--title-size) / 1.02 var(--font-display);
+        font-stretch: var(--display-stretch);
+        letter-spacing: var(--title-tracking);
+        text-transform: uppercase;
+        color: var(--text);
+      }
+      .title .line {
+        display: block;
+        overflow: hidden;
+        padding-bottom: 6px;
+      }
+      .title .line span {
+        display: block;
+        transform-origin: left bottom;
+      }
+      .orgs {
+        margin-top: 44px;
+        color: var(--text);
+        font: 500 31px/1.45 var(--font-body);
+      }
+      .skills {
+        margin-top: 26px;
+        color: var(--text-2);
+        font: 400 25px/1.55 var(--font-body);
+      }
+
+      /* Carrusel de imágenes (columna derecha, sangra hasta el borde) */
+      /* El carrusel nace bajo el texto: un fade amplio lo funde detrás de las letras. */
+      .carousel {
+        position: absolute;
+        left: 0;
+        top: 1020px;
+        width: 1080px;
+        height: 780px;
+        overflow: hidden;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 90px, #000 990px, transparent 1080px);
+        mask-image: linear-gradient(90deg, transparent 0, #000 90px, #000 990px, transparent 1080px);
+      }
+      /* El texto siempre por encima del carrusel */
+      .layer-slow {
+        z-index: 2;
+      }
+      .strip {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2400px;
+        height: 700px;
+      }
+      .card {
+        position: absolute;
+        width: 560px;
+        height: 420px;
+      }
+      .card .mask {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        border-radius: var(--radius);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 4px 14px rgba(0, 0, 0, 0.35);
+        background: #1d1d1d;
+      }
+      /* Texto bajo cada imagen del carrusel */
+      .card .cap {
+        position: absolute;
+        left: 2px;
+        top: 438px;
+        width: 556px;
+        color: var(--text);
+        font: 500 23px/1.35 var(--font-body);
+      }
+      .card .cap small {
+        display: block;
+        margin-top: 4px;
+        color: var(--text-2);
+        font: 400 19px/1.35 var(--font-body);
+      }
+      .card img,
+      .card video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      /* Placeholder: marca dónde irá una imagen que aún no está */
+      .card.ph .mask {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed rgba(244, 241, 236, 0.28);
+        background: linear-gradient(135deg, #222 0%, #1a1a1a 100%);
+        color: var(--text-2);
+        font: 500 18px/1.4 var(--font-body);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      /* Banner de portada pegado al borde inferior */
+      .banner {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 1080px;
+        height: 420px;
+        overflow: hidden;
+      }
+      /* Línea blanca que divide el fondo y la foto del banner */
+      .banner-rule {
+        position: absolute;
+        left: 0;
+        top: 1497px;
+        width: 1080px;
+        height: 3px;
+        background: #fff;
+        transform-origin: left center;
+      }
+      .banner img {
+        display: block;
+        width: 2736px;
+        height: 420px;
+        object-fit: cover;
+      }
+
+      /* 01 · Logo personal */
+      .brand {
+        position: absolute;
+        left: 0;
+        top: 690px;
+        width: 1080px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .brand-logo {
+        display: block;
+        width: 820px;
+      }
+
+      /* 02 · Formación y visión */
+      .edu-title-main {
+        position: absolute;
+        left: var(--margin);
+        top: 300px;
+        font: var(--display-weight) 84px / 1.02 var(--font-display);
+        font-stretch: var(--display-stretch);
+        letter-spacing: var(--title-tracking);
+        text-transform: uppercase;
+      }
+      .edu-title-main .line {
+        display: block;
+        overflow: hidden;
+        padding-bottom: 6px;
+      }
+      .edu-title-main .line span {
+        display: block;
+        transform-origin: left bottom;
+      }
+      .edu {
+        position: absolute;
+        left: var(--margin);
+        width: 920px;
+      }
+      .edu.a {
+        top: 640px;
+      }
+      .edu.b {
+        top: 1090px;
+      }
+      .edu-title {
+        font: var(--display-weight) 52px / 1.16 var(--font-display);
+        font-stretch: var(--display-stretch);
+        color: var(--text);
+      }
+      .edu-school {
+        margin-top: 24px;
+        color: var(--text-2);
+        font: 500 29px/1.45 var(--font-body);
+      }
+      .edu-rule {
+        position: absolute;
+        left: var(--margin);
+        top: 1010px;
+        width: 220px;
+        height: 2px;
+        background: var(--accent);
+        transform-origin: left center;
+      }
+      .edu-vision {
+        position: absolute;
+        left: var(--margin);
+        top: 1520px;
+        width: 920px;
+        color: var(--text-2);
+        font: 500 28px/1.5 var(--font-body);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      /* Cierre */
+      .outro {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 1920px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .outro-logo {
+        display: block;
+        width: 860px;
+      }
+      .outro-url {
+        position: absolute;
+        left: 0;
+        bottom: 220px;
+        width: 1080px;
+        text-align: center;
+        color: var(--text);
+        font: 500 40px/1 var(--font-body);
+        letter-spacing: 0.06em;
+      }
+
+      /* Marca de agua (todas las escenas entre la 01 y el cierre) */
+      #watermark {
+        position: absolute;
+        right: var(--margin);
+        bottom: 80px;
+        width: 220px;
+        opacity: 0;
+      }
+
+      /* Viñeteado + grano muy sutil */
+      #vignette {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+        background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.45) 100%);
+        pointer-events: none;
+      }
+      #grain {
+        position: absolute;
+        inset: 0;
+        width: 1080px;
+        height: 1920px;
+        opacity: 0.07;
+        mix-blend-mode: overlay;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="133.125"
+      data-width="1080"
+      data-height="1920"
+    >
+      <div id="stage" class="clip" data-start="0" data-duration="133.125" data-track-index="0">
+        <div id="scenes"></div>
+        <img id="watermark" src="assets/jarrindelatorre-white.png" alt="" />
+        <div id="vignette"></div>
+        <svg id="grain" viewBox="0 0 1080 1920" preserveAspectRatio="none">
+          <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="1080" height="1920" filter="url(#noise)" />
+        </svg>
+      </div>
+
+      <!-- Música original (assets/musica.mp3): 4 compases por escena, cortes sobre el compás. -->
+      <!-- Video del carrusel (06 · Digital). Va declarado aquí, fuera de #stage, para que el renderizador
+           extraiga sus cuadros; el script lo mueve a su tarjeta. Tiempos globales: inicio de la escena 06
+           menos T/2 (63.75 - 0.85) y duración de la escena + T (15.75 + 1.7), ralentizado para cubrirla. -->
+      <video id="video-fime" src="assets/web-fime-2027.mp4" muted playsinline data-start="62.9" data-duration="17.45" data-playback-rate="0.814"></video>
+      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="133.125" data-track-index="1" data-volume="0.85"></audio>
+    </div>
+
+    <script>
+      /* ───────────── Contenido (editable) ───────────── */
+      const LOGO = "assets/jarrindelatorre-white.png"; // logo Jarrín De la Torre (blanco)
+      const IMG = "assets/";
+
+      // images: carrusel de cada sección ({ src | video: id del <video> declarado en el HTML, title, note, fit? });
+      // fit: "top" conserva la parte superior sin zoom; "contain" muestra la foto completa. card: { w, h } cambia el tamaño de tarjeta. null = placeholder (imagen pendiente).
+      // Con 4 tarjetas la escena dura 15.75 s (6 compases) y con 5, 18.375 s (7), para que el carrusel mantenga una velocidad lenta.
+      const SCENES = [
+        {
+          type: "brand",
+          duration: 6,
+          bg: "fondo-portada-comunica.webp", // foto de fondo opaca (una distinta por tema)
+          bgAspect: 16 / 9, // proporción del fondo si no es 4:3
+          banner: "banner-portada.jpg",
+        },
+        {
+          type: "education",
+          bg: "app-golf-live.jpg",
+          duration: 10.5,
+          kicker: "02 · Visión",
+          title: ["Formación", "y visión"],
+          items: [
+            { title: "Máster en Diseño de Interfaces Multidispositivo UX/UI", school: "Escuela Superior de Diseño de Barcelona" },
+            { title: "Máster en Inteligencia Artificial Aplicada", school: "Universidad de Las Américas, Quito" },
+          ],
+          vision: "Diseño multidisciplinario · Pensamiento estratégico · Enfoque humano",
+        },
+        {
+          type: "area",
+          bg: "branding-publica-fm.webp",
+          duration: 15.75,
+          kicker: "03 · Marca",
+          title: ["Branding", "e identidad"],
+          orgs: ["Comunica EP", "Koen", "Alpha Technologies"],
+          skills: ["Creación de marcas", "Imagen corporativa", "Sistemas visuales", "Aplicaciones de marca"],
+          images: [
+            { src: "branding-comunica-ep.webp", title: "Comunica EP", note: "Sistema de identidad y aplicaciones" },
+            { src: "branding-alpha-technologies.webp", title: "Alpha Technologies", note: "Identidad corporativa y web" },
+            { src: "branding-comunica-cobertura.webp", title: "Comunica EP", note: "Los medios con mayor cobertura · Campaña" },
+            { src: "branding-comunica-camara.jpg", title: "Comunica EP", note: "Identidad aplicada en producción · Medios públicos" },
+          ],
+        },
+        {
+          type: "area",
+          bg: "editorial-compassion.jpg",
+          duration: 15.75,
+          kicker: "04 · Editorial",
+          title: ["Diseño", "editorial e", "ilustración"],
+          titleSize: 80,
+          orgs: ["BID", "OIT", "Compassion International"],
+          skills: ["Revistas", "Publicaciones", "Diagramación", "Cómics", "Ilustración"],
+          images: [
+            { src: "editorial-yo-si-puedo-03.webp", title: "Yo Sí Puedo", note: "Páginas interiores · Compassion International" },
+            { src: "ilustracion-personajes.webp", title: "Ilustración", note: "Personajes para material educativo" },
+            { src: "editorial-yo-si-puedo-01.webp", title: "Yo Sí Puedo", note: "Portada · Guía del tutor" },
+            { src: "editorial-compassion.jpg", title: "Compassion International", note: "Manuales y material educativo" },
+          ],
+        },
+        {
+          type: "area",
+          bg: "branding-ecuador-tv.webp",
+          duration: 15.75, // 6 compases: 4 imágenes a la misma velocidad que el resto
+          kicker: "05 · Audiovisual",
+          title: ["Producción", "audiovisual"],
+          orgs: ["Presidencia de la República del Ecuador", "Ecuador TV"],
+          skills: ["Dirección de cámaras", "Realización", "Edición", "Postproducción"],
+          images: [
+            { src: "audiovisual-control-2025.webp", title: "Cobertura electoral 2025", note: "Realización en vivo · Sala de control" },
+            { src: "audiovisual-debate-2023.webp", title: "Ecuador Debate 2023", note: "Producción del debate presidencial" },
+            { src: "audiovisual-estudio.webp", title: "Estudio de televisión", note: "Dirección de cámaras" },
+            { src: "audiovisual-entrevista.webp", title: "Entrevistas en locación", note: "Rodaje y producción multicámara" },
+          ],
+        },
+        {
+          type: "area",
+          bg: "branding-alpha-technologies.webp",
+          duration: 15.75,
+          kicker: "06 · Digital",
+          title: ["Diseño web y", "social media"],
+          titleSize: 80,
+          orgs: ["Comunica EP", "Koen", "Danny Ghosen", "El Ciudadano", "Ruta Viva"],
+          skills: ["UX/UI", "Diseño web", "Figma", "HTML/CSS", "Contenidos digitales", "Gestión de redes"],
+          images: [
+            { src: "koen-group-portada-web.webp", title: "Koen Group", note: "Sitio web corporativo" },
+            { video: "video-fime", title: "FIME 2027", note: "Sitio web · Festival Internacional de Música de Esmeraldas" },
+            { src: "app-golf-live.jpg", title: "Golf Live", note: "App móvil · UX/UI" },
+            { src: "danny-ghosen-portada-web.webp", title: "Danny Ghosen", note: "Sitio web personal", fit: "top" },
+          ],
+        },
+        {
+          type: "area",
+          bg: "cartel-dam-desde-el-silencio.webp",
+          duration: 18.375,
+          kicker: "07 · Gestión",
+          title: ["Dirección de", "proyectos"],
+          orgs: ["Presidencia de la República", "Ruta Viva", "DAM", "Misión Metal"],
+          skills: ["Coordinación de equipos", "Eventos", "Festivales", "Conciertos", "Campañas"],
+          images: [
+            { src: "gestion-dam-concierto.webp", title: "DAM en concierto", note: "Producción y dirección del show" },
+            { src: "gestion-concierto.webp", title: "Concierto en vivo", note: "Coordinación de evento y escenario" },
+            { src: "gestion-transmision.webp", title: "Transmisión en vivo", note: "Realización multicámara y streaming" },
+            { src: "gestion-coordinacion-tecnica.jpg", title: "Coordinación técnica", note: "Evento institucional" },
+            { src: "gestion-el-ciudadano.webp", title: "El Ciudadano", note: "Cobertura y transmisión web" },
+          ],
+        },
+        {
+          type: "area",
+          bg: "editorial-yo-si-puedo-03.webp",
+          duration: 15.75,
+          kicker: "08 · Internacional",
+          title: ["Proyectos", "internacionales"],
+          titleSize: 70,
+          orgs: ["The Tech Coup", "Festival Internacional de Música de Esmeraldas", "Belén La Radio"],
+          skills: ["Coordinación", "Gestión de contenidos", "Traducción", "Comunicación intercultural", "Desarrollo digital"],
+          images: [
+            { src: "thetechcoup-portada-web.webp", title: "The Tech Coup", note: "Sitio web del libro de Marietje Schaake" },
+            { src: "web-wildfire-action.webp", title: "Wildfire Action Accelerator", note: "Sitio web · wildfireaction.org" },
+            { src: "belen-la-radio-portada-web.webp", title: "Belén La Radio", note: "Sitio web y reproductor en vivo" },
+            { src: "web-gopa-cleaning.webp", title: "GOPA Cleaning Services", note: "Sitio web · gopacleaning.services" },
+          ],
+        },
+        {
+          type: "area",
+          bg: "editorial-bid.webp",
+          duration: 10.5,
+          kicker: "09 · Docencia",
+          title: ["Docencia", "universitaria"],
+          orgs: ["UDLA", "Pontificia Universidad Católica del Ecuador", "CEC de la Escuela Politécnica"],
+          skills: ["Diseño gráfico", "Comunicación", "Interfaces UX/UI", "Actualización profesional", "Formación de nuevas generaciones"],
+          card: { w: 360, h: 480 }, // tarjetas verticales: fotos completas
+          fit: "contain",
+          images: [
+            { src: "docencia-ilustracion-digital.webp", title: "Ilustración digital", note: "Estudiantes en el aula" },
+            { src: "docencia-bocetos.webp", title: "Taller de ilustración", note: "Bocetos, personajes y storyboard" },
+            { src: "docencia-taller.webp", title: "Clase práctica", note: "Técnicas mixtas y collage" },
+          ],
+        },
+        {
+          type: "outro",
+          bg: "branding-comunica-ep.webp",
+          duration: 9,
+          url: "jarrindelatorre.com",
+        },
+      ];
+
+      /* ───────────── Timing y movimiento ───────────── */
+      const EXIT = 0.5; // salida de la marca de agua
+      const T = 1.7; // duración de la transición entre escenas
+      const EASE = "expo.out";
+      // Cada escena entra desde un lado distinto (alternando) y con un leve giro: el recorrido es curvo, no recto.
+      const dirOf = (i) => (i % 2 ? 1 : -1);
+
+      /* ───────────── Construcción del DOM ───────────── */
+      const host = document.getElementById("scenes");
+      const el = (tag, cls, html) => {
+        const n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (html != null) n.innerHTML = html;
+        return n;
+      };
+      const titleLines = (lines) => lines.map((l) => `<span class="line"><span>${l}</span></span>`).join("");
+      const kicker = (text) => el("div", "kicker", `<span class="num">${text}</span><span class="rule"></span>`);
+
+      let t0 = 0;
+      SCENES.forEach((s, i) => {
+        s.start = t0;
+        t0 += s.duration;
+        const scene = el("div", "scene");
+        scene.id = `scene-${i}`;
+        const bgl = el("div", "bgl");
+        const bgImg = el("img");
+        bgImg.src = IMG + s.bg;
+        // Caja del fondo a la altura del cuadro (+ margen) con la proporción de la foto;
+        // un paneo lento la recorre de lado a lado durante la escena.
+        s.bgW = Math.round(2000 * (s.bgAspect || 4 / 3));
+        bgl.style.width = bgImg.style.width = `${s.bgW}px`;
+        bgImg.alt = "";
+        bgl.appendChild(bgImg);
+        scene.appendChild(bgl);
+        scene.appendChild(el("div", "shade"));
+        const content = el("div", "content");
+        // Dos capas de parallax: texto (lenta) e imágenes (rápida).
+        const slow = el("div", "layer-slow");
+        const fast = el("div", "layer-fast");
+        content.appendChild(slow);
+        content.appendChild(fast);
+        scene.appendChild(content);
+
+        if (s.type === "brand") {
+          const b = el("div", "brand");
+          const logo = el("img", "brand-logo");
+          logo.src = LOGO;
+          logo.alt = "";
+          b.appendChild(logo);
+          slow.appendChild(b);
+          const banner = el("div", "banner");
+          const bImg = el("img");
+          bImg.src = IMG + s.banner;
+          bImg.alt = "";
+          banner.appendChild(bImg);
+          fast.appendChild(banner);
+          fast.appendChild(el("div", "banner-rule"));
+        }
+
+        if (s.type === "area") {
+          slow.appendChild(kicker(s.kicker));
+          const left = el("div", "left");
+          const title = el("div", "title", titleLines(s.title));
+          if (s.titleSize) title.style.fontSize = `${s.titleSize}px`;
+          left.appendChild(title);
+          left.appendChild(el("div", "orgs", s.orgs.join(" · ")));
+          left.appendChild(el("div", "skills", s.skills.join(" · ")));
+          slow.appendChild(left);
+
+          const car = el("div", "carousel");
+          const strip = el("div", "strip");
+          // Orden invertido: la última imagen de la lista se ve primero.
+          const cards = [...s.images].reverse();
+          const cw = s.card ? s.card.w : 600;
+          const ch = s.card ? s.card.h : 450;
+          s.step = cw + 60;
+          s.cw = cw;
+          cards.forEach((it, j) => {
+            const card = el("div", it ? "card" : "card ph");
+            // La tira avanza hacia la derecha: la primera tarjeta va al extremo derecho para verse primero.
+            card.style.left = `${(cards.length - 1 - j) * s.step}px`;
+            card.style.top = `${j % 2 ? 110 : 20}px`;
+            card.style.width = `${cw}px`;
+            card.style.height = `${ch}px`;
+            const mask = el("div", "mask");
+            if (it && it.video) {
+              // El <video> está declarado en el HTML (ver arriba); aquí solo se mueve a la tarjeta.
+              const vid = document.getElementById(it.video);
+              const vStart = s.start - T / 2;
+              if (Math.abs(parseFloat(vid.dataset.start) - vStart) > 0.01)
+                console.warn(`Ajusta data-start de #${it.video} a ${vStart.toFixed(3)} (cambió la duración de una escena)`);
+              mask.appendChild(vid);
+            } else if (it) {
+              const img = el("img");
+              img.src = IMG + it.src;
+              img.alt = "";
+              const fit = it.fit || s.fit;
+              if (fit) img.dataset.fit = fit;
+              if (fit === "top") img.style.objectPosition = "50% 0%";
+              if (fit === "contain") img.style.objectFit = "contain";
+              mask.appendChild(img);
+            } else {
+              mask.textContent = `Imagen ${j + 1} · pendiente`;
+            }
+            card.appendChild(mask);
+            const cap = el("div", "cap", it ? `${it.title}<small>${it.note}</small>` : `Imagen pendiente<small>Agrega aquí un proyecto</small>`);
+            cap.style.top = `${ch + 18}px`;
+            cap.style.width = `${cw - 4}px`;
+            card.appendChild(cap);
+            strip.appendChild(card);
+          });
+          car.appendChild(strip);
+          fast.appendChild(car);
+        }
+
+        if (s.type === "education") {
+          slow.appendChild(kicker(s.kicker));
+          slow.appendChild(el("div", "edu-title-main", titleLines(s.title)));
+          s.items.forEach((it, j) => {
+            const b = el("div", `edu ${j ? "b" : "a"}`);
+            b.appendChild(el("div", "edu-title", it.title));
+            b.appendChild(el("div", "edu-school", it.school));
+            fast.appendChild(b);
+          });
+          slow.appendChild(el("div", "edu-rule"));
+          slow.appendChild(el("div", "edu-vision", s.vision));
+        }
+
+        if (s.type === "outro") {
+          const o = el("div", "outro");
+          const logo = el("img", "outro-logo");
+          logo.src = LOGO;
+          logo.alt = "";
+          o.appendChild(logo);
+          o.appendChild(el("div", "outro-url", s.url));
+          slow.appendChild(o);
+        }
+
+        host.appendChild(scene);
+      });
+
+      /* ───────────── Animación ───────────── */
+      const tl = gsap.timeline({ paused: true });
+      const q = (scene, sel) => scene.querySelectorAll(sel);
+      // Entrada de líneas de título: suben girando levemente desde la base, como una página que se asienta.
+      const lineIn = (targets, at) =>
+        tl.fromTo(targets, { yPercent: 110, rotation: 4, opacity: 0 }, { yPercent: 0, rotation: 0, opacity: 1, duration: 1.2, ease: EASE, stagger: 0.11 }, at);
+      const riseIn = (targets, at, stagger = 0) =>
+        tl.fromTo(targets, { opacity: 0, y: 26, x: -10 }, { opacity: 1, y: 0, x: 0, duration: 1.0, ease: EASE, stagger }, at);
+
+      SCENES.forEach((s, i) => {
+        const S = s.start;
+        const E = s.start + s.duration;
+        const scene = document.getElementById(`scene-${i}`);
+        const last = i === SCENES.length - 1;
+        const bgl = scene.querySelector(".bgl");
+        const slow = scene.querySelector(".layer-slow");
+        const fast = scene.querySelector(".layer-fast");
+        const tin = i === 0 ? 0 : S - T / 2;
+        const tend = last ? E : E + T / 2;
+        const d = dirOf(i);
+        const dn = dirOf(i + 1);
+
+        tl.set(scene, { opacity: 1 }, tin);
+        // Fondo: Ken Burns con deriva diagonal suave durante toda la escena.
+        tl.fromTo(bgl.querySelector("img"), { scale: 1.06, y: 0, x: 0 }, { scale: 1, x: -Math.max(0, s.bgW - 1080 - 240), y: -40, duration: tend - tin, ease: "sine.inOut" }, tin);
+
+        if (i > 0) {
+          // Entrada lateral: la lámina llega desde la izquierda con una leve ondulación y giro que se endereza.
+          tl.fromTo(scene, { x: -1080, y: 50 * d, rotation: -2.5 }, { x: 0, y: 0, rotation: 0, duration: T, ease: "power4.inOut", transformOrigin: "100% 50%" }, tin);
+          tl.fromTo(bgl, { x: 100 }, { x: 0, duration: T, ease: "power4.inOut" }, tin);
+          tl.fromTo(slow, { x: -300, y: 40 * d, rotation: -1.5 }, { x: 0, y: 0, rotation: 0, duration: T + 0.4, ease: EASE }, tin + 0.12);
+          tl.fromTo(fast, { x: -640, y: -60 * d, rotation: 2 }, { x: 0, y: 0, rotation: 0, duration: T + 0.6, ease: "back.out(1.1)" }, tin + 0.22);
+        }
+        if (!last) {
+          // Salida hacia la derecha: cada capa se va a su propio ritmo y en un arco suave.
+          const tout = E - T / 2;
+          tl.fromTo(bgl, { x: 0 }, { x: 100, duration: T, ease: "power3.inOut" }, tout);
+          tl.fromTo(slow, { x: 0, y: 0, rotation: 0, opacity: 1 }, { x: 300, y: -40 * dn, rotation: 1.5, opacity: 0, duration: T * 0.85, ease: "power3.in" }, tout);
+          tl.fromTo(fast, { x: 0, y: 0, rotation: 0, opacity: 1 }, { x: 640, y: 60 * dn, rotation: -2, opacity: 0, duration: T * 0.85, ease: "power3.in" }, tout);
+          tl.set(scene, { opacity: 0 }, tend);
+        }
+
+        if (s.type === "brand") {
+          tl.fromTo(q(scene, ".brand-logo"), { clipPath: "inset(0% 100% 0% 0%)", scale: 1.05, x: -30 }, { clipPath: "inset(0% 0% 0% 0%)", scale: 1, x: 0, duration: 1.6, ease: "expo.inOut" }, S + 0.2);
+          tl.fromTo(q(scene, ".banner-rule"), { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: "expo.inOut" }, S + 0.3);
+          tl.fromTo(q(scene, ".banner"), { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut" }, S + 0.5);
+          tl.fromTo(q(scene, ".banner img"), { x: -700 }, { x: -1150, duration: tend - tin, ease: "sine.inOut" }, tin);
+          // Respiración continua del bloque: nunca queda quieto.
+          tl.fromTo(q(scene, ".brand"), { x: 0, y: 0, rotation: 0 }, { x: -26, y: -10, rotation: -0.4, duration: tend - tin, ease: "sine.inOut" }, tin);
+        }
+
+        if (s.type === "area" || s.type === "education") {
+          tl.fromTo(q(scene, ".kicker .rule"), { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "expo.inOut" }, S + 0.05);
+          tl.fromTo(q(scene, ".kicker .num"), { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: 0.8, ease: EASE }, S + 0.1);
+        }
+
+        if (s.type === "area") {
+          lineIn(q(scene, ".title .line span"), S + 0.3);
+          riseIn(q(scene, ".orgs"), S + 0.95);
+          riseIn(q(scene, ".skills"), S + 1.3);
+
+          // Carrusel: la tira avanza de izquierda a derecha durante toda la escena; cada tarjeta flota a su ritmo.
+          const strip = scene.querySelector(".strip");
+          // Empieza con la primera imagen centrada y termina con la última centrada.
+          const center = (1080 - s.cw) / 2;
+          const from = center - (s.images.length - 1) * s.step;
+          tl.fromTo(strip, { x: from }, { x: center, duration: tend - tin, ease: "sine.inOut" }, tin);
+          q(scene, ".card").forEach((card, j) => {
+            const at = S + 0.6 + j * 0.35;
+            tl.fromTo(card.querySelector(".mask"), { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut" }, at);
+            tl.fromTo(card.querySelector(".cap"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 1.0, ease: EASE }, at + 0.7);
+            tl.fromTo(card, { y: 0, rotation: j % 2 ? 1.2 : -1 }, { y: j % 2 ? -22 : 18, rotation: j % 2 ? -0.4 : 0.6, duration: tend - tin, ease: "sine.inOut" }, tin);
+            const img = card.querySelector("img, video");
+            const fit = img && img.dataset.fit;
+            if (fit === "top") tl.fromTo(img, { scale: 1.05 }, { scale: 1, duration: tend - tin, ease: "sine.inOut", transformOrigin: "50% 0%" }, tin);
+            else if (img && fit !== "contain") tl.fromTo(img, { scale: 1.14, x: -14 }, { scale: 1.07, x: 14, duration: tend - tin, ease: "sine.inOut" }, tin);
+          });
+          tl.fromTo(q(scene, ".left"), { x: 0, y: 0 }, { x: -20, y: -8, duration: s.duration + T, ease: "sine.inOut" }, tin);
+        }
+
+        if (s.type === "education") {
+          lineIn(q(scene, ".edu-title-main .line span"), S + 0.3);
+          tl.fromTo(q(scene, ".edu-rule"), { scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: "expo.inOut" }, S + 0.5);
+          riseIn(q(scene, ".edu-title"), S + 0.75, 0.25);
+          riseIn(q(scene, ".edu-school"), S + 1.15, 0.25);
+          riseIn(q(scene, ".edu-vision"), S + 1.7);
+          tl.fromTo(q(scene, ".edu.a"), { x: 0, y: 0 }, { x: -14, y: 8, duration: s.duration + T, ease: "sine.inOut" }, tin);
+          tl.fromTo(q(scene, ".edu.b"), { x: 0, y: 0 }, { x: 14, y: -8, duration: s.duration + T, ease: "sine.inOut" }, tin);
+        }
+
+        if (s.type === "outro") {
+          tl.fromTo(q(scene, ".outro-logo"), { opacity: 0, clipPath: "inset(0% 100% 0% 0%)" }, { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut" }, S + 0.3);
+          // Escala y deriva continuas hasta el último cuadro: el cierre respira, nunca se congela.
+          tl.fromTo(q(scene, ".outro-logo"), { scale: 0.92, rotation: -0.6 }, { scale: 1.04, rotation: 0, duration: E - S - 0.3, ease: "sine.out" }, S + 0.3);
+          riseIn(q(scene, ".outro-url"), S + 1.3);
+          tl.fromTo(q(scene, ".outro"), { y: 12 }, { y: -12, duration: E - S, ease: "sine.inOut" }, S);
+        }
+      });
+
+      // Marca de agua discreta entre la escena 02 y el cierre.
+      const wmIn = SCENES[1].start;
+      const wmOut = SCENES[SCENES.length - 1].start;
+      tl.fromTo("#watermark", { opacity: 0 }, { opacity: 0.5, duration: 0.6, ease: "power1.out" }, wmIn);
+      tl.to("#watermark", { opacity: 0, duration: EXIT, ease: "power1.in" }, wmOut - EXIT);
+
+      tl.set({}, {}, t0); // la línea de tiempo dura exactamente la suma de escenas
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
