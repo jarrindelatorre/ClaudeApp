@@ -1,7 +1,7 @@
 {
   "version": 1,
   "historyId": "47d4fe95-1cf2-414e-a306-4fb648a3666f",
-  "currentRevision": "5e7be90c-1e6d-49e0-b2d6-01606c39ca70",
+  "currentRevision": "e128d6a6-e4bf-410e-b6eb-2115252ff23c",
   "pendingChanges": false,
   "files": {
     "assets/fonts/inter-var.woff2": {
@@ -17,8 +17,8 @@
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/53/53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
     },
     "index.html": {
-      "hash": "081742a32f78549531750172ed0a09922036e7503e8d236e10dc299d3830b8c5",
-      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/08/081742a32f78549531750172ed0a09922036e7503e8d236e10dc299d3830b8c5"
+      "hash": "96335f93bd74e079c50b05fccfd9f411c049b6bf031b0a7952b1665eb711fd8e",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/96/96335f93bd74e079c50b05fccfd9f411c049b6bf031b0a7952b1665eb711fd8e"
     },
     "meta.json": {
       "hash": "50ca7a1280d2df13e54267f16f15231aa641a2a27f9fde4d60401849b6f0545f",
@@ -83,6 +83,26 @@
     "assets/thetechcoup-portada-web.webp": {
       "hash": "b39f1acebaf47548d73aa1b13bb103b2d0802c8b80f07b27e3247a9cbd704c6f",
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/b3/b39f1acebaf47548d73aa1b13bb103b2d0802c8b80f07b27e3247a9cbd704c6f"
+    },
+    "assets/app-golf-live.jpg": {
+      "hash": "0c9505b6370810dcf5d4cd15b8306d0beaf73b4ea23f63323aa288c69b7e3a32",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/0c/0c9505b6370810dcf5d4cd15b8306d0beaf73b4ea23f63323aa288c69b7e3a32"
+    },
+    "assets/banner-portada.jpg": {
+      "hash": "34e06ff0b993f0f933f74847e1456b71d326630af768d096a42dd82d483543c3",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/34/34e06ff0b993f0f933f74847e1456b71d326630af768d096a42dd82d483543c3"
+    },
+    "assets/editorial-bid.webp": {
+      "hash": "77dd45cb75551f86f9d036ae88aeb609d0a23cef7b13ee17a3186da2d57a4a8c",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/77/77dd45cb75551f86f9d036ae88aeb609d0a23cef7b13ee17a3186da2d57a4a8c"
+    },
+    "assets/editorial-compassion.jpg": {
+      "hash": "63d0c97c247f2b265e90ea0c8e6a99361f63cacb4ac6b11762d88e637c6413c8",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/63/63d0c97c247f2b265e90ea0c8e6a99361f63cacb4ac6b11762d88e637c6413c8"
+    },
+    "assets/web-dam-movil.webp": {
+      "hash": "61bf4677e75a3ec130530c8251d67c446d5cfdf033dc4c7e6c8e053cf49d493d",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/61/61bf4677e75a3ec130530c8251d67c446d5cfdf033dc4c7e6c8e053cf49d493d"
     }
   },
   "revisions": {
@@ -276,6 +296,71 @@
           "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/08/081742a32f78549531750172ed0a09922036e7503e8d236e10dc299d3830b8c5"
         }
       }
+    },
+    "2aa4c29a-f4dd-4e58-b05b-2d4a2abe2f6f": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792579979254,
+      "endedAt": 1792579979284,
+      "files": {
+        "assets/app-golf-live.jpg": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/0c/0c9505b6370810dcf5d4cd15b8306d0beaf73b4ea23f63323aa288c69b7e3a32"
+        },
+        "assets/banner-portada.jpg": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/34/34e06ff0b993f0f933f74847e1456b71d326630af768d096a42dd82d483543c3"
+        },
+        "assets/editorial-bid.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/77/77dd45cb75551f86f9d036ae88aeb609d0a23cef7b13ee17a3186da2d57a4a8c"
+        },
+        "assets/editorial-compassion.jpg": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/63/63d0c97c247f2b265e90ea0c8e6a99361f63cacb4ac6b11762d88e637c6413c8"
+        },
+        "assets/web-dam-movil.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/61/61bf4677e75a3ec130530c8251d67c446d5cfdf033dc4c7e6c8e053cf49d493d"
+        },
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/08/081742a32f78549531750172ed0a09922036e7503e8d236e10dc299d3830b8c5",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/83/83e6c273bf8e7773a523a8e586ff05f5b6db08ce9db8b34b1ec3931ff54666c3"
+        }
+      }
+    },
+    "127cdd92-c6be-4743-b0a1-66674e9dd997": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792580134973,
+      "endedAt": 1792580134974,
+      "files": {
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/83/83e6c273bf8e7773a523a8e586ff05f5b6db08ce9db8b34b1ec3931ff54666c3",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/f9/f9562930c2f5a07a6f96593dc1b6cc9bca0151503eb97365723c1f8451aa22fb"
+        }
+      }
+    },
+    "e128d6a6-e4bf-410e-b6eb-2115252ff23c": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792580405327,
+      "endedAt": 1792580405328,
+      "files": {
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/f9/f9562930c2f5a07a6f96593dc1b6cc9bca0151503eb97365723c1f8451aa22fb",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/96/96335f93bd74e079c50b05fccfd9f411c049b6bf031b0a7952b1665eb711fd8e"
+        }
+      }
     }
   },
   "checks": {
@@ -290,15 +375,15 @@
   },
   "renders": {
     "latest": {
-      "id": "5e9525cf-f3c6-4a77-8d7a-8f2493cf75bf",
-      "completedAt": 1792579123836,
+      "id": "bb476580-3dbf-4806-a8e0-3316e52a5d59",
+      "completedAt": 1792580941743,
       "output": "/home/user/ClaudeApp/videos/promo-trayectoria/promo-trayectoria.mp4",
       "status": "completed",
-      "revision": "5e7be90c-1e6d-49e0-b2d6-01606c39ca70"
+      "revision": "e128d6a6-e4bf-410e-b6eb-2115252ff23c"
     },
     "retainedRevisions": [
-      "5e7be90c-1e6d-49e0-b2d6-01606c39ca70",
-      "8525b714-d6aa-4c08-ab44-2276985692b1"
+      "e128d6a6-e4bf-410e-b6eb-2115252ff23c",
+      "127cdd92-c6be-4743-b0a1-66674e9dd997"
     ]
   },
   "pendingArtifactCleanup": []

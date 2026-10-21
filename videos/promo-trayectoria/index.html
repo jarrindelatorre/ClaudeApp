@@ -78,15 +78,15 @@
       /* Foto de fondo opaca (más grande que el cuadro para el parallax) */
       .bgl {
         position: absolute;
-        left: -160px;
+        left: -520px;
         top: -60px;
-        width: 2240px;
-        height: 1860px;
+        width: 2960px;
+        height: 1200px;
       }
       .bgl img {
         display: block;
-        width: 2240px;
-        height: 1240px;
+        width: 2960px;
+        height: 1200px;
         object-fit: cover;
         filter: grayscale(0.55) blur(1.5px);
       }
@@ -166,56 +166,79 @@
         font: 400 21px/1.55 var(--font-body);
       }
 
-      /* Columna derecha: 6 columnas, imágenes superpuestas */
-      .right {
+      /* Carrusel de imágenes (columna derecha, sangra hasta el borde) */
+      .carousel {
         position: absolute;
-        left: calc(var(--margin) + 6 * (var(--col) + var(--gutter)));
-        top: 210px;
-        width: calc(6 * var(--col) + 5 * var(--gutter));
-        height: 640px;
+        left: 900px;
+        top: 200px;
+        width: 1020px;
+        height: 700px;
+        overflow: hidden;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 120px, #000 100%);
+        mask-image: linear-gradient(90deg, transparent 0, #000 120px, #000 100%);
       }
-      .shot {
+      .strip {
         position: absolute;
+        left: 0;
+        top: 0;
+        width: 2400px;
+        height: 700px;
+      }
+      .card {
+        position: absolute;
+        width: 560px;
+        height: 420px;
         border-radius: var(--radius);
         box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 4px 14px rgba(0, 0, 0, 0.35);
         background: #1d1d1d;
       }
-      .shot .mask {
+      .card .mask {
         position: absolute;
         inset: 0;
         overflow: hidden;
         border-radius: var(--radius);
       }
-      .shot img {
+      .card img {
         display: block;
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
-      .shot.big {
-        left: 0;
-        top: 0;
-        width: 640px;
-        height: 450px;
+      /* Placeholder: marca dónde irá una imagen que aún no está */
+      .card.ph .mask {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed rgba(244, 241, 236, 0.28);
+        background: linear-gradient(135deg, #222 0%, #1a1a1a 100%);
+        color: var(--text-2);
+        font: 500 18px/1.4 var(--font-body);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        text-align: center;
       }
-      .shot.small {
-        right: 0;
+
+      /* Banner de portada pegado al borde inferior */
+      .banner {
+        position: absolute;
+        left: 0;
         bottom: 0;
-        width: 370px;
-        height: 290px;
+        width: 1920px;
+        height: 295px;
+        overflow: hidden;
       }
-      .shot.solo {
-        left: 0;
-        top: 40px;
-        width: 828px;
-        height: 540px;
+      .banner img {
+        display: block;
+        width: 2240px;
+        height: 344px;
+        object-fit: cover;
       }
 
       /* 01 · Logo personal */
       .brand {
         position: absolute;
         left: var(--margin);
-        top: 380px;
+        top: 250px;
         width: 1300px;
       }
       .brand-logo {
@@ -386,17 +409,19 @@
       const LOGO = "assets/jarrindelatorre-white.png"; // logo Jarrín De la Torre (blanco)
       const IMG = "assets/";
 
+      // images: hasta 4 por sección para el carrusel; null = placeholder (imagen pendiente).
       const SCENES = [
         {
           type: "brand",
-          bg: "branding-comunica-ep.webp", // foto de fondo opaca
+          bg: "web-dam-movil.webp", // foto de fondo opaca (una distinta por tema)
+          banner: "banner-portada.jpg",
           duration: 5,
           tag: "Diseño · Comunicación · Tecnología",
           url: "jarrindelatorre.com",
         },
         {
           type: "education",
-          bg: "branding-alpha-technologies.webp",
+          bg: "app-golf-live.jpg",
           duration: 6.5,
           kicker: "02 · Visión",
           title: ["Formación y visión"],
@@ -414,70 +439,70 @@
           title: ["Branding", "e identidad"],
           orgs: ["Comunica EP", "Koen", "Alpha Technologies"],
           skills: ["Creación de marcas", "Imagen corporativa", "Sistemas visuales", "Aplicaciones de marca"],
-          images: ["branding-comunica-ep.webp", "branding-alpha-technologies.webp"],
+          images: ["branding-comunica-ep.webp", "branding-alpha-technologies.webp", null, null],
         },
         {
           type: "area",
-          bg: "branding-ecuador-tv.webp",
+          bg: "editorial-compassion.jpg",
           duration: 5.5,
           kicker: "04 · Editorial",
           title: ["Diseño", "editorial e", "ilustración"],
           titleSize: 66,
           orgs: ["BID", "OIT", "Compassion International"],
           skills: ["Revistas", "Publicaciones", "Diagramación", "Cómics", "Ilustración"],
-          images: ["editorial-yo-si-puedo-03.webp", "editorial-yo-si-puedo-01.webp"],
+          images: ["editorial-yo-si-puedo-03.webp", "editorial-bid.webp", "editorial-yo-si-puedo-01.webp", "editorial-compassion.jpg"],
         },
         {
           type: "area",
-          bg: "branding-publica-fm.webp",
+          bg: "branding-ecuador-tv.webp",
           duration: 5.5,
           kicker: "05 · Audiovisual",
           title: ["Producción", "audiovisual"],
           orgs: ["Presidencia de la República del Ecuador", "Ecuador TV"],
           skills: ["Dirección de cámaras", "Realización", "Edición", "Postproducción"],
-          images: ["branding-ecuador-tv.webp"],
+          images: ["branding-ecuador-tv.webp", null, null, null],
         },
         {
           type: "area",
-          bg: "branding-comunica-ep.webp",
+          bg: "branding-alpha-technologies.webp",
           duration: 5.5,
           kicker: "06 · Digital",
           title: ["Diseño web y", "social media"],
           titleSize: 66,
           orgs: ["Comunica EP", "Koen", "Danny Ghosen", "El Ciudadano", "Ruta Viva"],
           skills: ["UX/UI", "Diseño web", "Figma", "HTML/CSS", "Contenidos digitales", "Gestión de redes"],
-          images: ["koen-group-portada-web.webp", "danny-ghosen-portada-web.webp"],
+          images: ["koen-group-portada-web.webp", "app-golf-live.jpg", "danny-ghosen-portada-web.webp", "web-dam-movil.webp"],
         },
         {
           type: "area",
-          bg: "branding-alpha-technologies.webp",
+          bg: "cartel-dam-desde-el-silencio.webp",
           duration: 5.5,
           kicker: "07 · Gestión",
           title: ["Dirección de", "proyectos"],
           orgs: ["Presidencia de la República", "Ruta Viva", "DAM", "Misión Metal"],
           skills: ["Coordinación de equipos", "Eventos", "Festivales", "Conciertos", "Campañas"],
-          images: ["cartel-dam-desde-el-silencio.webp", "cartel-corovozandes.webp"],
+          images: ["cartel-dam-desde-el-silencio.webp", "cartel-corovozandes.webp", null, null],
         },
         {
           type: "area",
-          bg: "branding-ecuador-tv.webp",
+          bg: "editorial-yo-si-puedo-03.webp",
           duration: 5.5,
           kicker: "08 · Internacional",
           title: ["Proyectos", "internacionales"],
           titleSize: 56,
           orgs: ["The Tech Coup", "Festival Internacional de Música de Esmeraldas", "Belén La Radio"],
           skills: ["Coordinación", "Gestión de contenidos", "Traducción", "Comunicación intercultural", "Desarrollo digital"],
-          images: ["thetechcoup-portada-web.webp", "belen-la-radio-portada-web.webp"],
+          images: ["thetechcoup-portada-web.webp", "belen-la-radio-portada-web.webp", null, null],
         },
         {
           type: "area",
-          bg: "branding-publica-fm.webp",
+          bg: "editorial-bid.webp",
           duration: 5.5,
           kicker: "09 · Docencia",
           title: ["Docencia", "universitaria"],
           orgs: ["UDLA", "Pontificia Universidad Católica del Ecuador", "CEC de la Escuela Politécnica"],
           skills: ["Diseño gráfico", "Comunicación", "Interfaces UX/UI", "Actualización profesional", "Formación de nuevas generaciones"],
-          images: [],
+          images: [null, null, null, null],
         },
         {
           type: "outro",
@@ -494,6 +519,7 @@
       const EASE = "expo.out";
       // Cada escena entra desde un lado distinto (alternando) y con un leve giro: el recorrido es curvo, no recto.
       const dirOf = (i) => (i % 2 ? 1 : -1);
+      const CARD_STEP = 596; // ancho de tarjeta + separación en el carrusel
 
       /* ───────────── Construcción del DOM ───────────── */
       const host = document.getElementById("scenes");
@@ -536,12 +562,17 @@
           b.appendChild(el("div", "brand-tag", s.tag));
           b.appendChild(el("div", "brand-url", s.url));
           slow.appendChild(b);
+          const banner = el("div", "banner");
+          const bImg = el("img");
+          bImg.src = IMG + s.banner;
+          bImg.alt = "";
+          banner.appendChild(bImg);
+          fast.appendChild(banner);
         }
 
         if (s.type === "area") {
           slow.appendChild(kicker(s.kicker));
           const left = el("div", "left");
-          if (!s.images.length) left.classList.add("wide");
           const title = el("div", "title", titleLines(s.title));
           if (s.titleSize) title.style.fontSize = `${s.titleSize}px`;
           left.appendChild(title);
@@ -549,19 +580,27 @@
           left.appendChild(el("div", "skills", s.skills.join(" · ")));
           slow.appendChild(left);
 
-          const right = el("div", "right");
-          const kinds = s.images.length === 1 ? ["solo"] : ["big", "small"];
+          const car = el("div", "carousel");
+          const strip = el("div", "strip");
           s.images.forEach((src, j) => {
-            const shot = el("div", `shot ${kinds[j]}`);
+            const card = el("div", src ? "card" : "card ph");
+            // La tira avanza hacia la derecha: la primera imagen va al extremo derecho para verse primero.
+            card.style.left = `${(s.images.length - 1 - j) * CARD_STEP}px`;
+            card.style.top = `${j % 2 ? 150 : 40}px`;
             const mask = el("div", "mask");
-            const img = el("img");
-            img.src = IMG + src;
-            img.alt = "";
-            mask.appendChild(img);
-            shot.appendChild(mask);
-            right.appendChild(shot);
+            if (src) {
+              const img = el("img");
+              img.src = IMG + src;
+              img.alt = "";
+              mask.appendChild(img);
+            } else {
+              mask.textContent = `Imagen ${j + 1} · pendiente`;
+            }
+            card.appendChild(mask);
+            strip.appendChild(card);
           });
-          fast.appendChild(right);
+          car.appendChild(strip);
+          fast.appendChild(car);
         }
 
         if (s.type === "education") {
@@ -618,18 +657,18 @@
         tl.fromTo(bgl.querySelector("img"), { scale: 1.16, x: 40 * d, y: 0 }, { scale: 1.02, x: -40 * d, y: -30, duration: tend - tin, ease: "sine.inOut" }, tin);
 
         if (i > 0) {
-          // Entrada: la lámina llega en curva (desde abajo y un costado) con un leve giro que se endereza.
-          tl.fromTo(scene, { y: 1080, x: 260 * d, rotation: 5 * d }, { y: 0, x: 0, rotation: 0, duration: T, ease: "power4.inOut", transformOrigin: "50% 100%" }, tin);
-          tl.fromTo(bgl, { y: -620, x: -140 * d }, { y: 0, x: 0, duration: T, ease: "power4.inOut" }, tin);
-          tl.fromTo(slow, { y: 380, x: 120 * d, rotation: 2.5 * d }, { y: 0, x: 0, rotation: 0, duration: T + 0.4, ease: EASE }, tin + 0.12);
-          tl.fromTo(fast, { y: 760, x: 300 * d, rotation: -4 * d }, { y: 0, x: 0, rotation: 0, duration: T + 0.6, ease: "back.out(1.15)" }, tin + 0.22);
+          // Entrada lateral: la lámina llega desde la izquierda con una leve ondulación y giro que se endereza.
+          tl.fromTo(scene, { x: -1920, y: 50 * d, rotation: -2.5 }, { x: 0, y: 0, rotation: 0, duration: T, ease: "power4.inOut", transformOrigin: "100% 50%" }, tin);
+          tl.fromTo(bgl, { x: 460 }, { x: 0, duration: T, ease: "power4.inOut" }, tin);
+          tl.fromTo(slow, { x: -420, y: 40 * d, rotation: -1.5 }, { x: 0, y: 0, rotation: 0, duration: T + 0.4, ease: EASE }, tin + 0.12);
+          tl.fromTo(fast, { x: -900, y: -60 * d, rotation: 2 }, { x: 0, y: 0, rotation: 0, duration: T + 0.6, ease: "back.out(1.1)" }, tin + 0.22);
         }
         if (!last) {
-          // Salida: las capas se separan en arco hacia el lado contrario, cada una a su ritmo.
+          // Salida hacia la derecha: cada capa se va a su propio ritmo y en un arco suave.
           const tout = E - T / 2;
-          tl.fromTo(bgl, { y: 0, x: 0 }, { y: -380, x: -160 * dn, duration: T, ease: "power3.inOut" }, tout);
-          tl.fromTo(slow, { y: 0, x: 0, rotation: 0, opacity: 1 }, { y: -300, x: -180 * dn, rotation: -3 * dn, opacity: 0, duration: T * 0.85, ease: "power3.in" }, tout);
-          tl.fromTo(fast, { y: 0, x: 0, rotation: 0, opacity: 1 }, { y: -640, x: -340 * dn, rotation: 5 * dn, opacity: 0, duration: T * 0.85, ease: "power3.in" }, tout);
+          tl.fromTo(bgl, { x: 0 }, { x: 480, duration: T, ease: "power3.inOut" }, tout);
+          tl.fromTo(slow, { x: 0, y: 0, rotation: 0, opacity: 1 }, { x: 420, y: -40 * dn, rotation: 1.5, opacity: 0, duration: T * 0.85, ease: "power3.in" }, tout);
+          tl.fromTo(fast, { x: 0, y: 0, rotation: 0, opacity: 1 }, { x: 900, y: 60 * dn, rotation: -2, opacity: 0, duration: T * 0.85, ease: "power3.in" }, tout);
           tl.set(scene, { opacity: 0 }, tend);
         }
 
@@ -637,6 +676,8 @@
           tl.fromTo(q(scene, ".brand-logo"), { clipPath: "inset(0% 100% 0% 0%)", scale: 1.05, x: -30 }, { clipPath: "inset(0% 0% 0% 0%)", scale: 1, x: 0, duration: 1.6, ease: "expo.inOut" }, S + 0.2);
           riseIn(q(scene, ".brand-tag"), S + 1.2);
           riseIn(q(scene, ".brand-url"), S + 1.5);
+          tl.fromTo(q(scene, ".banner"), { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut" }, S + 0.5);
+          tl.fromTo(q(scene, ".banner img"), { x: -320 }, { x: 0, duration: tend - tin, ease: "sine.inOut" }, tin);
           // Respiración continua del bloque: nunca queda quieto.
           tl.fromTo(q(scene, ".brand"), { x: 0, y: 0, rotation: 0 }, { x: -26, y: -10, rotation: -0.4, duration: tend - tin, ease: "sine.inOut" }, tin);
         }
@@ -651,17 +692,16 @@
           riseIn(q(scene, ".orgs"), S + 0.95);
           riseIn(q(scene, ".skills"), S + 1.3);
 
-          // Revelado con máscara de barrido + leve zoom-out; luego flotan en curvas suaves.
-          q(scene, ".shot").forEach((shot, j) => {
-            const at = S + 0.7 + j * 0.3;
-            tl.fromTo(shot, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: "expo.inOut" }, at);
-            tl.fromTo(shot.querySelector("img"), { scale: 1.1 }, { scale: 1, duration: 2.2, ease: "power2.out" }, at);
-            tl.fromTo(
-              shot,
-              { y: 0, x: 0, rotation: 0 },
-              { y: j ? 30 : -24, x: j ? -14 : 12, rotation: j ? 1.2 : -0.8, duration: s.duration + T, ease: "sine.inOut" },
-              tin
-            );
+          // Carrusel: la tira avanza de izquierda a derecha durante toda la escena; cada tarjeta flota a su ritmo.
+          const strip = scene.querySelector(".strip");
+          const span = s.images.length * CARD_STEP - 1020 + 160;
+          tl.fromTo(strip, { x: -span }, { x: 120, duration: tend - tin, ease: "sine.inOut" }, tin);
+          q(scene, ".card").forEach((card, j) => {
+            const at = S + 0.5 + j * 0.18;
+            tl.fromTo(card, { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "expo.inOut" }, at);
+            tl.fromTo(card, { y: 0, rotation: j % 2 ? 1.6 : -1.4 }, { y: j % 2 ? -28 : 24, rotation: j % 2 ? -0.6 : 0.8, duration: tend - tin, ease: "sine.inOut" }, tin);
+            const img = card.querySelector("img");
+            if (img) tl.fromTo(img, { scale: 1.12, x: -16 }, { scale: 1, x: 16, duration: tend - tin, ease: "sine.inOut" }, tin);
           });
           tl.fromTo(q(scene, ".left"), { x: 0, y: 0 }, { x: -20, y: -8, duration: s.duration + T, ease: "sine.inOut" }, tin);
         }
