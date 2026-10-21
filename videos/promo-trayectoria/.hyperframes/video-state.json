@@ -1,7 +1,7 @@
 {
   "version": 1,
   "historyId": "47d4fe95-1cf2-414e-a306-4fb648a3666f",
-  "currentRevision": "cb27efae-0c14-4d3d-b520-9859eb8f83ab",
+  "currentRevision": "5e7be90c-1e6d-49e0-b2d6-01606c39ca70",
   "pendingChanges": false,
   "files": {
     "assets/fonts/inter-var.woff2": {
@@ -17,8 +17,8 @@
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/53/53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
     },
     "index.html": {
-      "hash": "d5970f7cd8bac868e7f6535e08df62f0172839f3aa35a0146eb733eb022f57dd",
-      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/d5/d5970f7cd8bac868e7f6535e08df62f0172839f3aa35a0146eb733eb022f57dd"
+      "hash": "081742a32f78549531750172ed0a09922036e7503e8d236e10dc299d3830b8c5",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/08/081742a32f78549531750172ed0a09922036e7503e8d236e10dc299d3830b8c5"
     },
     "meta.json": {
       "hash": "50ca7a1280d2df13e54267f16f15231aa641a2a27f9fde4d60401849b6f0545f",
@@ -56,13 +56,13 @@
       "hash": "3c95edffafa387080b85046b59135d9cf32d49b9ecb7539ece9b949180e6f1bd",
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/3c/3c95edffafa387080b85046b59135d9cf32d49b9ecb7539ece9b949180e6f1bd"
     },
+    "assets/cartel-corovozandes.webp": {
+      "hash": "e8fe8d3b3b830992cad9f79fdd9fdb039c543126da159f293361e1435104060e",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/e8/e8fe8d3b3b830992cad9f79fdd9fdb039c543126da159f293361e1435104060e"
+    },
     "assets/danny-ghosen-portada-web.webp": {
       "hash": "f298317294fdcdbe756e3f1bc276314d0af15043bf1e3029a2f4cee5cd3533d0",
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/f2/f298317294fdcdbe756e3f1bc276314d0af15043bf1e3029a2f4cee5cd3533d0"
-    },
-    "assets/koen-group-portada-web.webp": {
-      "hash": "dfa23ce06e172f212b4b3c6a18b016e003613f371f83a2243c7fd86f2af2d9ce",
-      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/df/dfa23ce06e172f212b4b3c6a18b016e003613f371f83a2243c7fd86f2af2d9ce"
     },
     "assets/editorial-yo-si-puedo-01.webp": {
       "hash": "8d643d1fa7831487fc40d145d7046afe7673eeb9e55e301c471c8fffd3a008ff",
@@ -72,9 +72,17 @@
       "hash": "158dbd950c783b8df81a0170ecd6d7f7e4ad97738ea86790c8cbd23f70906fc5",
       "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/15/158dbd950c783b8df81a0170ecd6d7f7e4ad97738ea86790c8cbd23f70906fc5"
     },
-    "assets/cartel-corovozandes.webp": {
-      "hash": "e8fe8d3b3b830992cad9f79fdd9fdb039c543126da159f293361e1435104060e",
-      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/e8/e8fe8d3b3b830992cad9f79fdd9fdb039c543126da159f293361e1435104060e"
+    "assets/koen-group-portada-web.webp": {
+      "hash": "dfa23ce06e172f212b4b3c6a18b016e003613f371f83a2243c7fd86f2af2d9ce",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/df/dfa23ce06e172f212b4b3c6a18b016e003613f371f83a2243c7fd86f2af2d9ce"
+    },
+    "assets/cartel-dam-desde-el-silencio.webp": {
+      "hash": "92eecf3a624b9e4823f0ddc664d369c5f1983ee9a907311a1f60d221f4c487ae",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/92/92eecf3a624b9e4823f0ddc664d369c5f1983ee9a907311a1f60d221f4c487ae"
+    },
+    "assets/thetechcoup-portada-web.webp": {
+      "hash": "b39f1acebaf47548d73aa1b13bb103b2d0802c8b80f07b27e3247a9cbd704c6f",
+      "content": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/b3/b39f1acebaf47548d73aa1b13bb103b2d0802c8b80f07b27e3247a9cbd704c6f"
     }
   },
   "revisions": {
@@ -230,6 +238,44 @@
           "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/d5/d5970f7cd8bac868e7f6535e08df62f0172839f3aa35a0146eb733eb022f57dd"
         }
       }
+    },
+    "8525b714-d6aa-4c08-ab44-2276985692b1": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792578209361,
+      "endedAt": 1792578209375,
+      "files": {
+        "assets/cartel-dam-desde-el-silencio.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/92/92eecf3a624b9e4823f0ddc664d369c5f1983ee9a907311a1f60d221f4c487ae"
+        },
+        "assets/thetechcoup-portada-web.webp": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/b3/b39f1acebaf47548d73aa1b13bb103b2d0802c8b80f07b27e3247a9cbd704c6f"
+        },
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/d5/d5970f7cd8bac868e7f6535e08df62f0172839f3aa35a0146eb733eb022f57dd",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/09/09ade6dcb5624119c03666d22be0dc26258183f5f012d72f14d1693e620e16bb"
+        }
+      }
+    },
+    "5e7be90c-1e6d-49e0-b2d6-01606c39ca70": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792578614544,
+      "endedAt": 1792578614545,
+      "files": {
+        "index.html": {
+          "before": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/09/09ade6dcb5624119c03666d22be0dc26258183f5f012d72f14d1693e620e16bb",
+          "after": "/root/.cache/hyperframes/history/47d4fe95-1cf2-414e-a306-4fb648a3666f/blobs/08/081742a32f78549531750172ed0a09922036e7503e8d236e10dc299d3830b8c5"
+        }
+      }
     }
   },
   "checks": {
@@ -244,15 +290,15 @@
   },
   "renders": {
     "latest": {
-      "id": "f87cea6a-3b0c-4647-9192-de90e46a5d50",
-      "completedAt": 1792578113706,
+      "id": "5e9525cf-f3c6-4a77-8d7a-8f2493cf75bf",
+      "completedAt": 1792579123836,
       "output": "/home/user/ClaudeApp/videos/promo-trayectoria/promo-trayectoria.mp4",
       "status": "completed",
-      "revision": "cb27efae-0c14-4d3d-b520-9859eb8f83ab"
+      "revision": "5e7be90c-1e6d-49e0-b2d6-01606c39ca70"
     },
     "retainedRevisions": [
-      "cb27efae-0c14-4d3d-b520-9859eb8f83ab",
-      "7ea4c5be-48ec-4b33-b344-1de33fbfd82a"
+      "5e7be90c-1e6d-49e0-b2d6-01606c39ca70",
+      "8525b714-d6aa-4c08-ab44-2276985692b1"
     ]
   },
   "pendingArtifactCleanup": []
