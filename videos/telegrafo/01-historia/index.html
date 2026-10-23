@@ -13,6 +13,7 @@
         --yellow: #f4ba1a; /* fechas y acentos */
         --text: #f4f1ec;
         --text-2: #b9c4d0;
+        --count: #c9d1da; /* años intermedios del conteo */
         --font-display: "Archivo", "Inter", system-ui, sans-serif;
         --display-stretch: 118%;
         --display-weight: 600;
@@ -378,15 +379,13 @@
 
       /* Entrada lateral (como en el promo): cada capa llega desde la izquierda a su ritmo,
          luego deriva lentamente en curvas suaves durante el resto del video. */
-      tl.fromTo("#layer-bg", { x: 220 }, { x: 0, duration: 1.4, ease: "power4.out" }, 0);
-      tl.fromTo("#layer-copy", { x: -260, y: 30, rotation: -1.2 }, { x: 0, y: 0, rotation: 0, duration: 1.6, ease: EASE }, 0.05);
+      tl.fromTo("#layer-copy", { x: -160, y: 20, rotation: -0.8 }, { x: 0, y: 0, rotation: 0, duration: 1.4, ease: EASE }, 0);
       tl.fromTo("#layer-photos", { x: -200 }, { x: 0, duration: 1.9, ease: "power4.out" }, 0.15);
       tl.fromTo(".bgl img", { scale: 1.1, x: 60, y: 0 }, { scale: 1, x: -80, y: -60, duration: DUR, ease: "sine.inOut" }, 0);
       tl.fromTo(".left", { x: 0, y: 0 }, { x: -20, y: -8, duration: DUR, ease: "sine.inOut" }, 0);
 
       /* Collage: las fotos llegan una sobre otra; después flotan a ritmos distintos */
-      tl.fromTo("#card-old", { x: -160, y: 40, rotation: -10, opacity: 0 }, { x: 0, y: 0, rotation: -3, opacity: 1, duration: 1.2, ease: "expo.out" }, 0.35);
-      tl.fromTo("#card-old .mask", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "expo.inOut" }, 0.35);
+      tl.fromTo("#card-old", { x: -120, y: 50, rotation: -9, scale: 0.88, opacity: 0 }, { x: 0, y: 0, rotation: -3, scale: 1, opacity: 1, duration: 1.2, ease: "expo.out" }, 0.25);
       tl.fromTo("#card-old img", { scale: 1.18 }, { scale: 1.04, duration: DUR, ease: "sine.out" }, 0.35);
       tl.fromTo("#card-front", { x: -120, y: 220, rotation: 12, opacity: 0 }, { x: 0, y: 0, rotation: 4, opacity: 1, duration: 1.3, ease: "back.out(1.3)" }, 1.0);
       tl.fromTo("#card-front img", { scale: 1.14 }, { scale: 1.04, duration: DUR, ease: "sine.out" }, 1.0);
@@ -420,7 +419,14 @@
       /* Conteo 1884 → 2020 (determinista: el texto depende solo del tiempo del timeline) */
       const counter = { v: FROM_YEAR };
       const yearEl = document.getElementById("year");
-      tl.fromTo(counter, { v: FROM_YEAR }, { v: TO_YEAR, duration: 2.0, ease: "power2.inOut", onUpdate: () => (yearEl.textContent = Math.round(counter.v)) }, CHANGE + 0.1);
+      tl.fromTo(counter, { v: FROM_YEAR }, { v: TO_YEAR, duration: 2.0, ease: "power2.inOut", onUpdate: () => {
+        // Amarillo solo en el año inicial y el final; los años intermedios en gris claro.
+        const y = Math.round(counter.v);
+        yearEl.textContent = y;
+        yearEl.style.color = y === FROM_YEAR || y === TO_YEAR ? "var(--yellow)" : "var(--count)";
+      } }, CHANGE + 0.1);
+      // Pequeño pulso al llegar a 2020.
+      tl.fromTo("#year", { scale: 1 }, { scale: 1.05, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }, CHANGE + 2.1);
       tl.fromTo("#tl-fill", { scaleX: 0 }, { scaleX: 1, duration: 2.0, ease: "power2.inOut" }, CHANGE + 0.1);
 
       tl.set({}, {}, DUR);
