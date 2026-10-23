@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Sistema de diseño · serie El Telégrafo ───────────── */
+      :root {
+        --navy: #002c4f;
+        --logo-blue: #1b91bc;
+        --teal: #35b9b8;
+        --yellow: #f4ba1a;
+        --text: #f4f1ec;
+        --text-2: #b9c4d0;
+        --font-display: "Archivo", "Inter", system-ui, sans-serif;
+        --display-stretch: 118%;
+        --display-weight: 600;
+        --font-body: "Inter", system-ui, sans-serif;
+        --margin: 120px;
+      }
+      @font-face {
+        font-family: "Archivo";
+        src: url("assets/fonts/archivo-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--navy);
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--navy);
+        color: var(--text);
+        font-family: var(--font-body);
+      }
+      #stage,
+      .layer {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+
+      /* Fondo de ondas (capa más lenta) */
+      .bgl {
+        position: absolute;
+        left: -100px;
+        top: -40px;
+        width: 2160px;
+        height: 1440px;
+      }
+      .bgl img {
+        display: block;
+        width: 2160px;
+        height: 1440px;
+        object-fit: cover;
+      }
+      .shade {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: linear-gradient(90deg, rgba(0, 24, 44, 0.9) 0%, rgba(0, 24, 44, 0.62) 50%, rgba(0, 24, 44, 0.35) 100%);
+      }
+
+      /* Encabezado */
+      .kicker {
+        position: absolute;
+        left: var(--margin);
+        top: 104px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: var(--yellow);
+        font: 500 18px/1 var(--font-body);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .kicker .rule {
+        display: block;
+        width: 120px;
+        height: 1px;
+        background: var(--yellow);
+        transform-origin: left center;
+      }
+
+      /* Texto: El reloj de la Torre es nuestra identidad */
+      .left {
+        position: absolute;
+        left: var(--margin);
+        top: 0;
+        height: 1080px;
+        width: 900px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .line-wrap {
+        overflow: hidden;
+        padding-bottom: 6px;
+      }
+      .line-wrap > * {
+        display: block;
+      }
+      .title {
+        color: var(--text);
+        font: var(--display-weight) 72px / 1.04 var(--font-display);
+        font-stretch: var(--display-stretch);
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .label {
+        margin-top: 26px;
+        color: var(--text);
+        font: 500 34px/1.3 var(--font-body);
+      }
+      .hero {
+        color: var(--yellow);
+        font: var(--display-weight) 116px / 1.02 var(--font-display);
+        font-stretch: var(--display-stretch);
+        letter-spacing: 0.01em;
+        text-transform: uppercase;
+      }
+      .rule-under {
+        margin-top: 30px;
+        width: 220px;
+        height: 3px;
+        background: var(--yellow);
+        transform-origin: left center;
+      }
+
+      /* Torre silueteada: el fondo se ve en movimiento alrededor */
+      .tower {
+        position: absolute;
+        display: block;
+        filter: drop-shadow(0 30px 50px rgba(0, 10, 25, 0.55));
+      }
+      #tower-full {
+        left: 1340px;
+        top: 130px;
+        width: 391px;
+        height: 960px;
+        transform-origin: 53% 31%; /* el reloj */
+      }
+      #tower-detail {
+        left: 1150px;
+        top: 70px;
+        width: 615px;
+        height: 989px;
+        transform-origin: 61% 55%;
+      }
+
+      /* Logo que se dibuja sobre la torre */
+      #logo {
+        position: absolute;
+        left: 1230px;
+        top: 250px;
+        width: 600px;
+        height: 554px;
+        overflow: visible;
+      }
+
+      #vignette {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(0, 10, 25, 0.5) 100%);
+      }
+      #grain {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        opacity: 0.07;
+        mix-blend-mode: overlay;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="25" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="25" data-track-index="0">
+        <div id="layer-bg" class="layer">
+          <div class="bgl"><img src="assets/fondo-ondas-2.png" alt="" /></div>
+          <div class="shade"></div>
+        </div>
+
+        <div id="layer-tower" class="layer">
+          <img class="tower" id="tower-full" src="assets/torre-reloj-completa.png" alt="" />
+          <img class="tower" id="tower-detail" src="assets/torre-reloj-detalle.png" alt="" />
+
+          <!-- Logo de la Torre redibujado en vectores (original: assets/logo-torre.png, 1500×1385) -->
+          <svg id="logo" viewBox="0 0 1500 1385">
+            <defs>
+              <clipPath id="logo-clip"><rect x="0" y="0" width="1500" height="1385" /></clipPath>
+            </defs>
+            <g clip-path="url(#logo-clip)">
+              <circle id="lg-circle-fill" cx="748" cy="748" r="740" fill="#1b91bc" />
+              <circle id="lg-circle-line" cx="748" cy="748" r="740" fill="none" stroke="#1b91bc" stroke-width="16" pathLength="1" stroke-dasharray="1 1" />
+              <path
+                id="lg-tower"
+                d="M343 1400 L343 692 L278 587 L421 571 C430 360 570 214 725 200 L765 200 C920 214 1060 360 1069 571 L1213 587 L1147 692 L1147 1400 Z"
+                fill="#ffffff"
+                fill-opacity="0"
+                stroke="#ffffff"
+                stroke-width="14"
+                stroke-linejoin="round"
+                pathLength="1"
+                stroke-dasharray="1 1"
+              />
+              <line id="lg-spire" x1="745" y1="200" x2="745" y2="120" stroke="#ffffff" stroke-width="40" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" />
+              <path id="lg-window" d="M689 575 L805 575 C808 480 790 420 747 392 C704 420 686 480 689 575 Z" fill="#1b91bc" />
+              <circle id="lg-clock" cx="745" cy="1035" r="228" fill="#1b91bc" />
+              <polyline id="lg-hands" points="751,903 751,1040 678,1113" fill="none" stroke="#ffffff" stroke-width="38" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" />
+            </g>
+          </svg>
+        </div>
+
+        <div id="layer-copy" class="layer">
+          <div class="kicker"><span class="num">02 · Identidad</span><span class="rule"></span></div>
+          <div class="left">
+            <div class="line-wrap"><span class="title" id="t1">El reloj</span></div>
+            <div class="line-wrap"><span class="title" id="t2">de la Torre</span></div>
+            <div class="label" id="lbl">es nuestra</div>
+            <div class="line-wrap"><span class="hero" id="hero">identidad</span></div>
+            <div class="rule-under" id="rule-under"></div>
+          </div>
+        </div>
+
+        <div id="vignette"></div>
+        <svg id="grain" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+          <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="1920" height="1080" filter="url(#noise)" />
+        </svg>
+      </div>
+    </div>
+
+    <script>
+      /* ───────────── Timing ───────────── */
+      const DUR = 25; // duración total
+      const ANIM = 10; // la animación principal ocurre en los primeros 10 s
+      const ZOOM = 3.2; // la cámara se acerca al reloj
+      const DRAW = 5.4; // empieza a dibujarse el logo
+      const EASE = "expo.out";
+
+      const tl = gsap.timeline({ paused: true });
+      const lineIn = (t, at) => tl.fromTo(t, { yPercent: 110, rotation: 4, opacity: 0 }, { yPercent: 0, rotation: 0, opacity: 1, duration: 1.5, ease: EASE }, at);
+      const riseIn = (t, at) => tl.fromTo(t, { opacity: 0, y: 26, x: -10 }, { opacity: 1, y: 0, x: 0, duration: 1.3, ease: EASE }, at);
+      const draw = (t, at, d) => tl.fromTo(t, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+
+      /* Parallax: fondo lento, torre media, texto rápido */
+      tl.fromTo(".bgl img", { scale: 1.1, x: 60, y: 0 }, { scale: 1, x: -80, y: -60, duration: DUR, ease: "sine.inOut" }, 0);
+      tl.fromTo("#layer-copy", { x: -160, y: 20, rotation: -0.8 }, { x: 0, y: 0, rotation: 0, duration: 2.0, ease: EASE }, 0);
+      tl.fromTo(".left", { x: 0, y: 0 }, { x: -24, y: -10, duration: DUR, ease: "sine.inOut" }, 0);
+
+      /* Texto */
+      tl.fromTo(".kicker .rule", { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "expo.inOut" }, 0.3);
+      tl.fromTo(".kicker .num", { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: 1.0, ease: EASE }, 0.4);
+      lineIn("#t1", 0.7);
+      lineIn("#t2", 0.95);
+      riseIn("#lbl", 2.0);
+      lineIn("#hero", 2.4);
+      tl.fromTo("#rule-under", { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "expo.inOut" }, 3.0);
+
+      /* 1 · La torre completa sube desde abajo */
+      tl.fromTo("#tower-full", { y: 420, opacity: 0, scale: 0.94 }, { y: 0, opacity: 1, scale: 1, duration: 2.2, ease: EASE }, 0.4);
+      /* 2 · La cámara se acerca al reloj y pasa a la foto de detalle */
+      tl.to("#tower-full", { scale: 2.6, y: 120, opacity: 0, duration: 2.0, ease: "power2.in" }, ZOOM);
+      tl.fromTo("#tower-detail", { scale: 0.62, y: 140, opacity: 0 }, { scale: 1, y: 0, opacity: 1, duration: 2.0, ease: "power3.out" }, ZOOM + 0.9);
+
+      /* 3 · Se dibuja el logo sobre la torre */
+      draw("#lg-circle-line", DRAW, 1.4);
+      tl.fromTo("#lg-circle-fill", { opacity: 0 }, { opacity: 0.92, duration: 1.0, ease: "power1.inOut" }, DRAW + 1.0);
+      draw("#lg-tower", DRAW + 0.6, 1.6);
+      tl.fromTo("#lg-tower", { fillOpacity: 0 }, { fillOpacity: 1, duration: 0.9, ease: "power1.inOut" }, DRAW + 1.9);
+      draw("#lg-spire", DRAW + 1.9, 0.5);
+      tl.fromTo("#lg-window", { scale: 0, transformOrigin: "50% 100%" }, { scale: 1, duration: 0.7, ease: "back.out(2)" }, DRAW + 2.4);
+      tl.fromTo("#lg-clock", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.8, ease: "back.out(1.8)" }, DRAW + 2.5);
+      draw("#lg-hands", DRAW + 3.0, 0.8);
+      tl.fromTo("#lg-hands", { rotation: -90, svgOrigin: "751 1040" }, { rotation: 0, svgOrigin: "751 1040", duration: 1.2, ease: "back.out(1.6)" }, DRAW + 3.0);
+      // La foto de la torre se atenúa para que el logo sea protagonista.
+      tl.to("#tower-detail", { opacity: 0.32, duration: 1.4, ease: "power1.inOut" }, DRAW + 2.4);
+      tl.fromTo("#logo", { scale: 0.96 }, { scale: 1, duration: 1.2, ease: "back.out(1.6)" }, DRAW + 3.4);
+
+      /* 4 · De 10 a 25 s: flotación lenta para hablar encima */
+      tl.to("#tower-detail", { y: -24, scale: 1.04, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
+      tl.to("#logo", { y: -14, rotation: -1, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
+
+      tl.set({}, {}, DUR);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
