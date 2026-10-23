@@ -192,38 +192,20 @@
         right: -2px;
       }
 
-      /* Carrusel: nace bajo el texto con un fade amplio, igual que en el promo */
-      .carousel {
-        position: absolute;
-        left: 120px;
-        top: 200px;
-        width: 1800px;
-        height: 700px;
-        overflow: hidden;
-        -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 220px, rgba(0, 0, 0, 0.12) 520px, rgba(0, 0, 0, 0.45) 720px, #000 920px, #000 100%);
-        mask-image: linear-gradient(90deg, transparent 0, transparent 220px, rgba(0, 0, 0, 0.12) 520px, rgba(0, 0, 0, 0.45) 720px, #000 920px, #000 100%);
-      }
+      /* Collage de fotos grandes que se apilan unas sobre otras */
       #layer-copy {
         z-index: 2;
       }
-      .strip {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 1800px;
-        height: 700px;
-      }
       .card {
         position: absolute;
-        width: 560px;
-        height: 420px;
       }
       .card .mask {
         position: absolute;
         inset: 0;
         overflow: hidden;
         border-radius: var(--radius);
-        box-shadow: 0 24px 60px rgba(0, 10, 25, 0.55), 0 4px 14px rgba(0, 10, 25, 0.35);
+        border: 6px solid #f4f1ec;
+        box-shadow: 0 34px 80px rgba(0, 10, 25, 0.6), 0 6px 18px rgba(0, 10, 25, 0.4);
         background: #0b2238;
       }
       .card img {
@@ -234,57 +216,73 @@
         height: 100%;
         object-fit: cover;
       }
-      .card .cap {
-        position: absolute;
-        left: 2px;
-        top: 438px;
-        width: 556px;
-        color: var(--text);
-        font: 500 19px/1.35 var(--font-body);
+      #card-old {
+        left: 880px;
+        top: 130px;
+        width: 700px;
+        height: 420px;
+        z-index: 1;
       }
-      .card .cap small {
-        display: block;
-        margin-top: 4px;
-        color: var(--text-2);
-        font: 400 16px/1.35 var(--font-body);
-      }
-      /* Tarjeta del edificio: la foto de archivo se transforma en la actual (transformación digital) */
-      #card-building .old {
+      #card-old img {
         object-position: 50% 40%;
         filter: sepia(0.35) contrast(1.05);
       }
-      #card-building .new {
-        object-position: 50% 35%;
+      #card-front {
+        left: 960px;
+        top: 500px;
+        width: 560px;
+        height: 420px;
+        z-index: 2;
       }
+      #card-new {
+        left: 1340px;
+        top: 200px;
+        width: 480px;
+        height: 640px;
+        z-index: 3;
+      }
+      #card-new img {
+        object-position: 50% 30%;
+      }
+      /* Etiqueta sobre cada foto */
+      .pill {
+        position: absolute;
+        left: 18px;
+        bottom: 18px;
+        padding: 9px 14px;
+        border-radius: 3px;
+        background: rgba(0, 24, 44, 0.86);
+        color: var(--text);
+        font: 500 17px/1.2 var(--font-body);
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+        z-index: 2;
+      }
+      .pill b {
+        color: var(--yellow);
+        font-weight: 600;
+      }
+      /* Barrido digital que revela la foto actual */
       #scan {
         position: absolute;
         left: 0;
         top: 0;
-        width: 560px;
+        width: 100%;
         height: 5px;
         background: var(--teal);
         box-shadow: 0 0 22px 6px rgba(53, 185, 184, 0.75), 0 0 70px 18px rgba(53, 185, 184, 0.35);
         opacity: 0;
+        z-index: 3;
       }
       #grid {
         position: absolute;
         inset: 0;
         background-image:
-          linear-gradient(rgba(53, 185, 184, 0.22) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(53, 185, 184, 0.22) 1px, transparent 1px);
+          linear-gradient(rgba(53, 185, 184, 0.25) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(53, 185, 184, 0.25) 1px, transparent 1px);
         background-size: 22px 22px;
         opacity: 0;
-      }
-      .cap .swap {
-        position: relative;
-        display: block;
-        height: 26px;
-      }
-      .cap .swap span {
-        position: absolute;
-        left: 0;
-        top: 0;
-        white-space: nowrap;
+        z-index: 1;
       }
 
       /* Viñeteado + grano muy sutil */
@@ -313,31 +311,25 @@
           <div class="shade"></div>
         </div>
 
-        <!-- Carrusel (capa rápida del parallax) -->
+        <!-- Collage de fotos (capa rápida del parallax) -->
         <div id="layer-photos" class="layer">
-          <div class="carousel">
-            <div class="strip">
-              <div class="card" id="card-front" style="left: 0px; top: 130px">
-                <div class="mask"><img src="assets/portada-1926.webp" alt="" /></div>
-                <div class="cap">El Telégrafo · Edición de la mañana<small>Portada del 12 de octubre de 1926</small></div>
-              </div>
-              <div class="card" id="card-building" style="left: 620px; top: 30px">
-                <div class="mask">
-                  <img class="old" src="assets/edificio-antiguo.webp" alt="" />
-                  <img class="new" src="assets/edificio-actual.webp" alt="" />
-                  <div id="grid"></div>
-                  <div id="scan"></div>
-                </div>
-                <div class="cap">
-                  <span class="swap"><span id="cap-a">Edificio de El Telégrafo</span><span id="cap-b">Edificio de El Telégrafo hoy</span></span>
-                  <small>Guayaquil</small>
-                </div>
-              </div>
+          <div class="card" id="card-old">
+            <div class="mask"><img src="assets/edificio-antiguo.webp" alt="" /><div class="pill">Archivo · <b>Edificio de El Telégrafo</b></div></div>
+          </div>
+          <div class="card" id="card-front">
+            <div class="mask"><img src="assets/portada-1926.webp" alt="" /><div class="pill">Portada · <b>12 de octubre de 1926</b></div></div>
+          </div>
+          <div class="card" id="card-new">
+            <div class="mask">
+              <img src="assets/edificio-actual.webp" alt="" />
+              <div id="grid"></div>
+              <div id="scan"></div>
+              <div class="pill">Hoy · <b>Guayaquil</b></div>
             </div>
           </div>
         </div>
 
-        <!-- Texto (siempre por encima del carrusel) -->
+        <!-- Texto (siempre por encima de las fotos) -->
         <div id="layer-copy" class="layer">
           <div class="kicker"><span class="num">01 · Historia</span><span class="rule"></span></div>
           <div class="left">
@@ -388,19 +380,31 @@
          luego deriva lentamente en curvas suaves durante el resto del video. */
       tl.fromTo("#layer-bg", { x: 220 }, { x: 0, duration: 1.4, ease: "power4.out" }, 0);
       tl.fromTo("#layer-copy", { x: -260, y: 30, rotation: -1.2 }, { x: 0, y: 0, rotation: 0, duration: 1.6, ease: EASE }, 0.05);
-      tl.fromTo("#layer-photos", { x: -520, y: -40, rotation: 1.6 }, { x: 0, y: 0, rotation: 0, duration: 1.9, ease: "back.out(1.1)" }, 0.15);
+      tl.fromTo("#layer-photos", { x: -200 }, { x: 0, duration: 1.9, ease: "power4.out" }, 0.15);
       tl.fromTo(".bgl img", { scale: 1.1, x: 60, y: 0 }, { scale: 1, x: -80, y: -60, duration: DUR, ease: "sine.inOut" }, 0);
       tl.fromTo(".left", { x: 0, y: 0 }, { x: -20, y: -8, duration: DUR, ease: "sine.inOut" }, 0);
 
-      /* Carrusel: la tira avanza de izquierda a derecha muy despacio durante todo el video */
-      tl.fromTo(".strip", { x: 500 }, { x: 600, duration: DUR, ease: "sine.inOut" }, 0);
-      [["#card-building", 0.4, 1], ["#card-front", 0.75, -1]].forEach(([sel, at, s]) => {
-        tl.fromTo(`${sel} .mask`, { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: "expo.inOut" }, at);
-        tl.fromTo(`${sel} .cap`, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, at + 0.6);
-        tl.fromTo(sel, { y: 0, rotation: s * -1 }, { y: s * 20, rotation: s * 0.6, duration: DUR, ease: "sine.inOut" }, 0);
-      });
-      tl.fromTo("#card-front img", { scale: 1.14, x: -14 }, { scale: 1.07, x: 14, duration: DUR, ease: "sine.inOut" }, 0);
-      tl.fromTo("#card-building .old", { scale: 1.16 }, { scale: 1.05, duration: CHANGE + 0.5, ease: "sine.out" }, 0);
+      /* Collage: las fotos llegan una sobre otra; después flotan a ritmos distintos */
+      tl.fromTo("#card-old", { x: -160, y: 40, rotation: -10, opacity: 0 }, { x: 0, y: 0, rotation: -3, opacity: 1, duration: 1.2, ease: "expo.out" }, 0.35);
+      tl.fromTo("#card-old .mask", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "expo.inOut" }, 0.35);
+      tl.fromTo("#card-old img", { scale: 1.18 }, { scale: 1.04, duration: DUR, ease: "sine.out" }, 0.35);
+      tl.fromTo("#card-front", { x: -120, y: 220, rotation: 12, opacity: 0 }, { x: 0, y: 0, rotation: 4, opacity: 1, duration: 1.3, ease: "back.out(1.3)" }, 1.0);
+      tl.fromTo("#card-front img", { scale: 1.14 }, { scale: 1.04, duration: DUR, ease: "sine.out" }, 1.0);
+      // La foto actual entra por encima de las dos, revelada por el barrido digital.
+      tl.fromTo("#card-new", { x: 220, y: 60, rotation: 8, opacity: 0 }, { x: 0, y: 0, rotation: 2, opacity: 1, duration: 1.2, ease: "expo.out" }, CHANGE - 0.1);
+      tl.fromTo("#card-new img", { clipPath: "inset(100% 0% 0% 0%)", scale: 1.14 }, { clipPath: "inset(0% 0% 0% 0%)", scale: 1.02, duration: 2.0, ease: "power2.inOut" }, CHANGE + 0.1);
+      tl.fromTo("#grid", { opacity: 0 }, { opacity: 1, duration: 0.4 }, CHANGE);
+      tl.fromTo("#scan", { y: 640, opacity: 1 }, { y: -5, opacity: 1, duration: 2.0, ease: "power2.inOut" }, CHANGE + 0.1);
+      tl.to("#scan", { opacity: 0, duration: 0.3 }, CHANGE + 2.1);
+      tl.fromTo("#card-new .pill", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: "expo.out" }, CHANGE + 1.9);
+      tl.to("#grid", { opacity: 0, duration: 0.6 }, CHANGE + 2.0);
+      // Las fotos de archivo se apartan un poco cuando llega la actual: juego de capas.
+      tl.to("#card-old", { x: -40, y: -24, rotation: -5, duration: 1.4, ease: "power2.out" }, CHANGE + 0.2);
+      tl.to("#card-front", { x: -70, y: 30, rotation: 6, duration: 1.4, ease: "power2.out" }, CHANGE + 0.3);
+      // Flotación lenta después de los 5 s.
+      tl.to("#card-old", { x: -60, y: -36, rotation: -4, duration: DUR - 5, ease: "sine.inOut" }, 5);
+      tl.to("#card-front", { x: -90, y: 46, rotation: 5, duration: DUR - 5, ease: "sine.inOut" }, 5);
+      tl.to("#card-new", { x: 14, y: -18, rotation: 1, duration: DUR - 5, ease: "sine.inOut" }, 5);
 
       /* Texto · 1884 */
       tl.fromTo(".kicker .rule", { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "expo.inOut" }, 0.2);
@@ -412,22 +416,12 @@
       /* Cambio de etiqueta */
       tl.to("#label-a", { opacity: 0, y: -24, duration: 0.4, ease: "power2.in" }, CHANGE - 0.2);
       riseIn("#label-b", CHANGE + 0.2);
-      tl.to("#cap-a", { opacity: 0, duration: 0.4 }, CHANGE + 1.2);
-      tl.fromTo("#cap-b", { opacity: 0 }, { opacity: 1, duration: 0.6 }, CHANGE + 1.5);
 
       /* Conteo 1884 → 2020 (determinista: el texto depende solo del tiempo del timeline) */
       const counter = { v: FROM_YEAR };
       const yearEl = document.getElementById("year");
       tl.fromTo(counter, { v: FROM_YEAR }, { v: TO_YEAR, duration: 2.0, ease: "power2.inOut", onUpdate: () => (yearEl.textContent = Math.round(counter.v)) }, CHANGE + 0.1);
       tl.fromTo("#tl-fill", { scaleX: 0 }, { scaleX: 1, duration: 2.0, ease: "power2.inOut" }, CHANGE + 0.1);
-
-      /* Transformación digital del edificio: retícula + barrido de abajo hacia arriba */
-      tl.fromTo("#grid", { opacity: 0 }, { opacity: 1, duration: 0.4 }, CHANGE);
-      tl.fromTo("#card-building .new", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 2.0, ease: "power2.inOut" }, CHANGE + 0.1);
-      tl.fromTo("#scan", { y: 420, opacity: 1 }, { y: -5, opacity: 1, duration: 2.0, ease: "power2.inOut" }, CHANGE + 0.1);
-      tl.to("#scan", { opacity: 0, duration: 0.3 }, CHANGE + 2.1);
-      tl.to("#grid", { opacity: 0, duration: 0.6 }, CHANGE + 2.0);
-      tl.fromTo("#card-building .new", { scale: 1.12 }, { scale: 1.02, duration: DUR - CHANGE, ease: "sine.out" }, CHANGE);
 
       tl.set({}, {}, DUR);
       window.__timelines["main"] = tl;
