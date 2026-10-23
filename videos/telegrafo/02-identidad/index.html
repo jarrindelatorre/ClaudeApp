@@ -136,7 +136,7 @@
       }
       .hero {
         color: var(--yellow);
-        font: var(--display-weight) 116px / 1.02 var(--font-display);
+        font: var(--display-weight) 100px / 1.02 var(--font-display);
         font-stretch: var(--display-stretch);
         letter-spacing: 0.01em;
         text-transform: uppercase;
@@ -155,13 +155,6 @@
         display: block;
         filter: drop-shadow(0 30px 50px rgba(0, 10, 25, 0.55));
       }
-      #tower-full {
-        left: 1340px;
-        top: 130px;
-        width: 391px;
-        height: 960px;
-        transform-origin: 53% 31%; /* el reloj */
-      }
       #tower-detail {
         left: 1150px;
         top: 70px;
@@ -173,10 +166,10 @@
       /* Logo que se dibuja sobre la torre */
       #logo {
         position: absolute;
-        left: 1230px;
-        top: 250px;
-        width: 600px;
-        height: 554px;
+        left: 1390px;
+        top: 290px;
+        width: 470px;
+        height: 434px;
         overflow: visible;
       }
 
@@ -206,7 +199,6 @@
         </div>
 
         <div id="layer-tower" class="layer">
-          <img class="tower" id="tower-full" src="assets/torre-reloj-completa.png" alt="" />
           <img class="tower" id="tower-detail" src="assets/torre-reloj-detalle.png" alt="" />
 
           <!-- Logo de la Torre en vectores (original: assets/logo-torre.png, 1500×1385).
@@ -260,8 +252,8 @@
       /* ───────────── Timing ───────────── */
       const DUR = 25; // duración total
       const ANIM = 10; // la animación principal ocurre en los primeros 10 s
-      const ZOOM = 3.2; // la cámara se acerca al reloj
-      const DRAW = 5.4; // empieza a dibujarse el logo
+      const MOVE = 3.4; // la foto de la torre se desplaza a la izquierda
+      const DRAW = 4.6; // empieza a dibujarse el logo a su derecha
       const EASE = "expo.out";
 
       const tl = gsap.timeline({ paused: true });
@@ -283,13 +275,12 @@
       lineIn("#hero", 2.4);
       tl.fromTo("#rule-under", { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "expo.inOut" }, 3.0);
 
-      /* 1 · La torre completa sube desde abajo */
-      tl.fromTo("#tower-full", { y: 420, opacity: 0, scale: 0.94 }, { y: 0, opacity: 1, scale: 1, duration: 2.2, ease: EASE }, 0.4);
-      /* 2 · La cámara se acerca al reloj y pasa a la foto de detalle */
-      tl.to("#tower-full", { scale: 2.6, y: 120, opacity: 0, duration: 2.0, ease: "power2.in" }, ZOOM);
-      tl.fromTo("#tower-detail", { scale: 0.62, y: 140, opacity: 0 }, { scale: 1, y: 0, opacity: 1, duration: 2.0, ease: "power3.out" }, ZOOM + 0.9);
+      /* 1 · La foto cercana de la torre sube desde abajo */
+      tl.fromTo("#tower-detail", { y: 320, opacity: 0, scale: 0.94 }, { y: 0, opacity: 1, scale: 1, duration: 2.2, ease: EASE }, 0.4);
+      /* 2 · La torre se desplaza a la izquierda para dejar sitio al logo */
+      tl.to("#tower-detail", { x: -300, scale: 0.9, duration: 1.8, ease: "power3.inOut" }, MOVE);
 
-      /* 3 · Se dibuja el logo sobre la torre */
+      /* 3 · Se dibuja el logo junto a la torre */
       draw("#lg-circle-line", DRAW, 1.4);
       draw("#lg-tower", DRAW + 0.6, 1.6);
       // El círculo se rellena de azul y la torre queda recortada: se ve la foto a través.
@@ -302,12 +293,10 @@
       // Los trazos guía blancos desaparecen: el logo final no tiene relleno ni contorno blanco.
       tl.to("#lg-tower", { opacity: 0, duration: 0.8, ease: "power1.inOut" }, DRAW + 2.8);
       tl.to("#lg-circle-line", { opacity: 0, duration: 0.6 }, DRAW + 2.8);
-      // La foto de la torre se atenúa un poco para que el logo sea protagonista (sigue viéndose por el recorte).
-      tl.to("#tower-detail", { opacity: 0.7, duration: 1.4, ease: "power1.inOut" }, DRAW + 2.4);
       tl.fromTo("#logo", { scale: 0.96 }, { scale: 1, duration: 1.2, ease: "back.out(1.6)" }, DRAW + 3.4);
 
       /* 4 · De 10 a 25 s: flotación lenta para hablar encima */
-      tl.to("#tower-detail", { y: -24, scale: 1.04, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
+      tl.to("#tower-detail", { y: -24, scale: 0.93, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
       tl.to("#logo", { y: -14, rotation: -1, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
 
       tl.set({}, {}, DUR);
