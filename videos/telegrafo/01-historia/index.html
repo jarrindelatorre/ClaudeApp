@@ -117,27 +117,31 @@
         flex-direction: column;
         justify-content: center;
       }
-      .labels {
-        position: relative;
-        height: 44px;
+      /* Frase completa: EL TELÉGRAFO nació en 1884 y su transformación digital fue en 2020 */
+      .brand-name {
+        color: var(--text);
+        font: var(--display-weight) 64px / 1.05 var(--font-display);
+        font-stretch: var(--display-stretch);
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .line-wrap {
+        overflow: hidden;
+        padding-bottom: 6px;
+      }
+      .line-wrap > * {
+        display: block;
       }
       .label {
-        position: absolute;
-        left: 0;
-        top: 0;
+        margin-top: 22px;
         color: var(--text);
         font: 500 32px/1.3 var(--font-body);
         letter-spacing: 0.02em;
         white-space: nowrap;
       }
-      .year-wrap {
-        overflow: hidden;
-        padding-bottom: 8px;
-      }
-      #year {
-        display: block;
+      .year {
         color: var(--yellow);
-        font: var(--display-weight) 230px / 1 var(--font-display);
+        font: var(--display-weight) 150px / 1 var(--font-display);
         font-stretch: var(--display-stretch);
         letter-spacing: 0.01em;
         font-variant-numeric: tabular-nums;
@@ -334,11 +338,11 @@
         <div id="layer-copy" class="layer">
           <div class="kicker"><span class="num">01 · Historia</span><span class="rule"></span></div>
           <div class="left">
-            <div class="labels">
-              <div class="label" id="label-a">Nació en</div>
-              <div class="label" id="label-b">Su transformación digital fue en</div>
-            </div>
-            <div class="year-wrap"><span id="year">1884</span></div>
+            <div class="line-wrap"><div class="brand-name" id="brand-name">El Telégrafo</div></div>
+            <div class="label" id="label-a">nació en</div>
+            <div class="line-wrap"><span class="year" id="year-a">1884</span></div>
+            <div class="label" id="label-b">y su transformación digital fue en</div>
+            <div class="line-wrap"><span class="year" id="year" style="color: var(--count)">1884</span></div>
             <div id="timeline">
               <div id="tl-track"></div>
               <div id="tl-fill"></div>
@@ -408,22 +412,23 @@
       /* Texto · 1884 */
       tl.fromTo(".kicker .rule", { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "expo.inOut" }, 0.2);
       tl.fromTo(".kicker .num", { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: 0.8, ease: EASE }, 0.25);
-      riseIn("#label-a", 0.35);
-      lineIn("#year", 0.5);
-      riseIn("#timeline", 0.95);
+      lineIn("#brand-name", 0.3);
+      riseIn("#label-a", 0.5);
+      lineIn("#year-a", 0.65);
+      riseIn("#timeline", 1.0);
 
-      /* Cambio de etiqueta */
-      tl.to("#label-a", { opacity: 0, y: -24, duration: 0.4, ease: "power2.in" }, CHANGE - 0.2);
-      riseIn("#label-b", CHANGE + 0.2);
+      /* Segunda parte de la frase: transformación digital */
+      riseIn("#label-b", CHANGE - 0.1);
+      lineIn("#year", CHANGE);
 
       /* Conteo 1884 → 2020 (determinista: el texto depende solo del tiempo del timeline) */
       const counter = { v: FROM_YEAR };
       const yearEl = document.getElementById("year");
       tl.fromTo(counter, { v: FROM_YEAR }, { v: TO_YEAR, duration: 2.0, ease: "power2.inOut", onUpdate: () => {
-        // Amarillo solo en el año inicial y el final; los años intermedios en gris claro.
+        // Amarillo solo en el año final; los años intermedios en gris claro (1884 ya está en amarillo arriba).
         const y = Math.round(counter.v);
         yearEl.textContent = y;
-        yearEl.style.color = y === FROM_YEAR || y === TO_YEAR ? "var(--yellow)" : "var(--count)";
+        yearEl.style.color = y === TO_YEAR ? "var(--yellow)" : "var(--count)";
       } }, CHANGE + 0.1);
       // Pequeño pulso al llegar a 2020.
       tl.fromTo("#year", { scale: 1 }, { scale: 1.05, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }, CHANGE + 2.1);
