@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Sistema de diseño · serie El Telégrafo (mismo lenguaje que el promo Jarrín De la Torre) ───────────── */
+      :root {
+        --navy: #002c4f;
+        --blue: #0090bd;
+        --teal: #35b9b8;
+        --yellow: #f4ba1a; /* fechas y acentos */
+        --text: #f4f1ec;
+        --text-2: #b9c4d0;
+        --font-display: "Archivo", "Inter", system-ui, sans-serif;
+        --display-stretch: 118%;
+        --display-weight: 600;
+        --font-body: "Inter", system-ui, sans-serif;
+        --margin: 120px;
+        --radius: 4px;
+      }
+      @font-face {
+        font-family: "Archivo";
+        src: url("assets/fonts/archivo-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--navy);
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--navy);
+        color: var(--text);
+        font-family: var(--font-body);
+      }
+      #stage,
+      .layer {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+
+      /* Fondo de ondas: la capa más lenta del parallax */
+      .bgl {
+        position: absolute;
+        left: -100px;
+        top: -40px;
+        width: 2160px;
+        height: 1440px;
+      }
+      .bgl img {
+        display: block;
+        width: 2160px;
+        height: 1440px;
+        object-fit: cover;
+      }
+      .shade {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: linear-gradient(90deg, rgba(0, 24, 44, 0.9) 0%, rgba(0, 24, 44, 0.66) 48%, rgba(0, 24, 44, 0.42) 100%);
+      }
+
+      /* Encabezado: "01 · HISTORIA" + línea fina */
+      .kicker {
+        position: absolute;
+        left: var(--margin);
+        top: 104px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: var(--yellow);
+        font: 500 18px/1 var(--font-body);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .kicker .rule {
+        display: block;
+        width: 120px;
+        height: 1px;
+        background: var(--yellow);
+        transform-origin: left center;
+      }
+
+      /* Columna de texto centrada verticalmente */
+      .left {
+        position: absolute;
+        left: var(--margin);
+        top: 0;
+        height: 1080px;
+        width: 780px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .labels {
+        position: relative;
+        height: 44px;
+      }
+      .label {
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: var(--text);
+        font: 500 32px/1.3 var(--font-body);
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+      .year-wrap {
+        overflow: hidden;
+        padding-bottom: 8px;
+      }
+      #year {
+        display: block;
+        color: var(--yellow);
+        font: var(--display-weight) 230px / 1 var(--font-display);
+        font-stretch: var(--display-stretch);
+        letter-spacing: 0.01em;
+        font-variant-numeric: tabular-nums;
+        transform-origin: left bottom;
+      }
+
+      /* Línea de tiempo 1884 → 2020 */
+      #timeline {
+        position: relative;
+        margin-top: 34px;
+        width: 640px;
+        height: 64px;
+      }
+      #tl-track,
+      #tl-fill {
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 640px;
+        height: 2px;
+        background: rgba(244, 241, 236, 0.2);
+      }
+      #tl-fill {
+        background: var(--yellow);
+        transform-origin: left center;
+      }
+      .tl-dot {
+        position: absolute;
+        top: 3px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid var(--yellow);
+        background: var(--navy);
+      }
+      .tl-dot.a {
+        left: -8px;
+      }
+      .tl-dot.b {
+        left: 632px;
+      }
+      .tl-year {
+        position: absolute;
+        top: 34px;
+        color: var(--text-2);
+        font: 500 20px/1 var(--font-body);
+        letter-spacing: 0.12em;
+      }
+      .tl-year.a {
+        left: -2px;
+      }
+      .tl-year.b {
+        right: -2px;
+      }
+
+      /* Carrusel: nace bajo el texto con un fade amplio, igual que en el promo */
+      .carousel {
+        position: absolute;
+        left: 120px;
+        top: 200px;
+        width: 1800px;
+        height: 700px;
+        overflow: hidden;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 220px, rgba(0, 0, 0, 0.12) 520px, rgba(0, 0, 0, 0.45) 720px, #000 920px, #000 100%);
+        mask-image: linear-gradient(90deg, transparent 0, transparent 220px, rgba(0, 0, 0, 0.12) 520px, rgba(0, 0, 0, 0.45) 720px, #000 920px, #000 100%);
+      }
+      #layer-copy {
+        z-index: 2;
+      }
+      .strip {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1800px;
+        height: 700px;
+      }
+      .card {
+        position: absolute;
+        width: 560px;
+        height: 420px;
+      }
+      .card .mask {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        border-radius: var(--radius);
+        box-shadow: 0 24px 60px rgba(0, 10, 25, 0.55), 0 4px 14px rgba(0, 10, 25, 0.35);
+        background: #0b2238;
+      }
+      .card img {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .card .cap {
+        position: absolute;
+        left: 2px;
+        top: 438px;
+        width: 556px;
+        color: var(--text);
+        font: 500 19px/1.35 var(--font-body);
+      }
+      .card .cap small {
+        display: block;
+        margin-top: 4px;
+        color: var(--text-2);
+        font: 400 16px/1.35 var(--font-body);
+      }
+      /* Tarjeta del edificio: la foto de archivo se transforma en la actual (transformación digital) */
+      #card-building .old {
+        object-position: 50% 40%;
+        filter: sepia(0.35) contrast(1.05);
+      }
+      #card-building .new {
+        object-position: 50% 35%;
+      }
+      #scan {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 560px;
+        height: 5px;
+        background: var(--teal);
+        box-shadow: 0 0 22px 6px rgba(53, 185, 184, 0.75), 0 0 70px 18px rgba(53, 185, 184, 0.35);
+        opacity: 0;
+      }
+      #grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(53, 185, 184, 0.22) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(53, 185, 184, 0.22) 1px, transparent 1px);
+        background-size: 22px 22px;
+        opacity: 0;
+      }
+      .cap .swap {
+        position: relative;
+        display: block;
+        height: 26px;
+      }
+      .cap .swap span {
+        position: absolute;
+        left: 0;
+        top: 0;
+        white-space: nowrap;
+      }
+
+      /* Viñeteado + grano muy sutil */
+      #vignette {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(0, 10, 25, 0.5) 100%);
+      }
+      #grain {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        opacity: 0.07;
+        mix-blend-mode: overlay;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="15" data-track-index="0">
+        <div id="layer-bg" class="layer">
+          <div class="bgl"><img src="assets/fondo-ondas.webp" alt="" /></div>
+          <div class="shade"></div>
+        </div>
+
+        <!-- Carrusel (capa rápida del parallax) -->
+        <div id="layer-photos" class="layer">
+          <div class="carousel">
+            <div class="strip">
+              <div class="card" id="card-front" style="left: 0px; top: 130px">
+                <div class="mask"><img src="assets/portada-1926.webp" alt="" /></div>
+                <div class="cap">El Telégrafo · Edición de la mañana<small>Portada del 12 de octubre de 1926</small></div>
+              </div>
+              <div class="card" id="card-building" style="left: 620px; top: 30px">
+                <div class="mask">
+                  <img class="old" src="assets/edificio-antiguo.webp" alt="" />
+                  <img class="new" src="assets/edificio-actual.webp" alt="" />
+                  <div id="grid"></div>
+                  <div id="scan"></div>
+                </div>
+                <div class="cap">
+                  <span class="swap"><span id="cap-a">Edificio de El Telégrafo</span><span id="cap-b">Edificio de El Telégrafo hoy</span></span>
+                  <small>Guayaquil</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Texto (siempre por encima del carrusel) -->
+        <div id="layer-copy" class="layer">
+          <div class="kicker"><span class="num">01 · Historia</span><span class="rule"></span></div>
+          <div class="left">
+            <div class="labels">
+              <div class="label" id="label-a">Nació en</div>
+              <div class="label" id="label-b">Su transformación digital fue en</div>
+            </div>
+            <div class="year-wrap"><span id="year">1884</span></div>
+            <div id="timeline">
+              <div id="tl-track"></div>
+              <div id="tl-fill"></div>
+              <div class="tl-dot a"></div>
+              <div class="tl-dot b"></div>
+              <div class="tl-year a">1884</div>
+              <div class="tl-year b">2020</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="vignette"></div>
+        <svg id="grain" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+          <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="1920" height="1080" filter="url(#noise)" />
+        </svg>
+      </div>
+    </div>
+
+    <script>
+      /* ───────────── Contenido (editable) ───────────── */
+      const FROM_YEAR = 1884;
+      const TO_YEAR = 2020;
+
+      /* ───────────── Timing ───────────── */
+      const DUR = 15;
+      const CHANGE = 2.2; // momento en que la historia pasa de 1884 a 2020
+      const EASE = "expo.out";
+      // Toda la animación principal ocurre en los primeros 5 s; después solo queda
+      // un movimiento lento (parallax) para que el presentador hable encima.
+
+      const tl = gsap.timeline({ paused: true });
+      const lineIn = (t, at) => tl.fromTo(t, { yPercent: 110, rotation: 4, opacity: 0 }, { yPercent: 0, rotation: 0, opacity: 1, duration: 1.1, ease: EASE }, at);
+      const riseIn = (t, at) => tl.fromTo(t, { opacity: 0, y: 26, x: -10 }, { opacity: 1, y: 0, x: 0, duration: 0.9, ease: EASE }, at);
+
+      /* Entrada lateral (como en el promo): cada capa llega desde la izquierda a su ritmo,
+         luego deriva lentamente en curvas suaves durante el resto del video. */
+      tl.fromTo("#layer-bg", { x: 220 }, { x: 0, duration: 1.4, ease: "power4.out" }, 0);
+      tl.fromTo("#layer-copy", { x: -260, y: 30, rotation: -1.2 }, { x: 0, y: 0, rotation: 0, duration: 1.6, ease: EASE }, 0.05);
+      tl.fromTo("#layer-photos", { x: -520, y: -40, rotation: 1.6 }, { x: 0, y: 0, rotation: 0, duration: 1.9, ease: "back.out(1.1)" }, 0.15);
+      tl.fromTo(".bgl img", { scale: 1.1, x: 60, y: 0 }, { scale: 1, x: -80, y: -60, duration: DUR, ease: "sine.inOut" }, 0);
+      tl.fromTo(".left", { x: 0, y: 0 }, { x: -20, y: -8, duration: DUR, ease: "sine.inOut" }, 0);
+
+      /* Carrusel: la tira avanza de izquierda a derecha muy despacio durante todo el video */
+      tl.fromTo(".strip", { x: 500 }, { x: 600, duration: DUR, ease: "sine.inOut" }, 0);
+      [["#card-building", 0.4, 1], ["#card-front", 0.75, -1]].forEach(([sel, at, s]) => {
+        tl.fromTo(`${sel} .mask`, { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: "expo.inOut" }, at);
+        tl.fromTo(`${sel} .cap`, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, at + 0.6);
+        tl.fromTo(sel, { y: 0, rotation: s * -1 }, { y: s * 20, rotation: s * 0.6, duration: DUR, ease: "sine.inOut" }, 0);
+      });
+      tl.fromTo("#card-front img", { scale: 1.14, x: -14 }, { scale: 1.07, x: 14, duration: DUR, ease: "sine.inOut" }, 0);
+      tl.fromTo("#card-building .old", { scale: 1.16 }, { scale: 1.05, duration: CHANGE + 0.5, ease: "sine.out" }, 0);
+
+      /* Texto · 1884 */
+      tl.fromTo(".kicker .rule", { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "expo.inOut" }, 0.2);
+      tl.fromTo(".kicker .num", { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: 0.8, ease: EASE }, 0.25);
+      riseIn("#label-a", 0.35);
+      lineIn("#year", 0.5);
+      riseIn("#timeline", 0.95);
+
+      /* Cambio de etiqueta */
+      tl.to("#label-a", { opacity: 0, y: -24, duration: 0.4, ease: "power2.in" }, CHANGE - 0.2);
+      riseIn("#label-b", CHANGE + 0.2);
+      tl.to("#cap-a", { opacity: 0, duration: 0.4 }, CHANGE + 1.2);
+      tl.fromTo("#cap-b", { opacity: 0 }, { opacity: 1, duration: 0.6 }, CHANGE + 1.5);
+
+      /* Conteo 1884 → 2020 (determinista: el texto depende solo del tiempo del timeline) */
+      const counter = { v: FROM_YEAR };
+      const yearEl = document.getElementById("year");
+      tl.fromTo(counter, { v: FROM_YEAR }, { v: TO_YEAR, duration: 2.0, ease: "power2.inOut", onUpdate: () => (yearEl.textContent = Math.round(counter.v)) }, CHANGE + 0.1);
+      tl.fromTo("#tl-fill", { scaleX: 0 }, { scaleX: 1, duration: 2.0, ease: "power2.inOut" }, CHANGE + 0.1);
+
+      /* Transformación digital del edificio: retícula + barrido de abajo hacia arriba */
+      tl.fromTo("#grid", { opacity: 0 }, { opacity: 1, duration: 0.4 }, CHANGE);
+      tl.fromTo("#card-building .new", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 2.0, ease: "power2.inOut" }, CHANGE + 0.1);
+      tl.fromTo("#scan", { y: 420, opacity: 1 }, { y: -5, opacity: 1, duration: 2.0, ease: "power2.inOut" }, CHANGE + 0.1);
+      tl.to("#scan", { opacity: 0, duration: 0.3 }, CHANGE + 2.1);
+      tl.to("#grid", { opacity: 0, duration: 0.6 }, CHANGE + 2.0);
+      tl.fromTo("#card-building .new", { scale: 1.12 }, { scale: 1.02, duration: DUR - CHANGE, ease: "sine.out" }, CHANGE);
+
+      tl.set({}, {}, DUR);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
