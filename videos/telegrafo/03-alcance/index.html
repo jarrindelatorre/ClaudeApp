@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Sistema de diseño · serie El Telégrafo ───────────── */
+      :root {
+        --navy: #002c4f;
+        --blue: #3a8fc4;
+        --blue-dark: #2c6f9c;
+        --teal: #5fbcb5;
+        --yellow: #f4ba1a;
+        --text: #f4f1ec;
+        --text-2: #a9b8c8;
+        --grid: rgba(244, 241, 236, 0.1);
+        --font-display: "Archivo", "Inter", system-ui, sans-serif;
+        --display-stretch: 118%;
+        --display-weight: 600;
+        --font-body: "Inter", system-ui, sans-serif;
+        --margin: 120px;
+      }
+      @font-face {
+        font-family: "Archivo";
+        src: url("assets/fonts/archivo-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--navy);
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--navy);
+        color: var(--text);
+        font-family: var(--font-body);
+      }
+      #stage,
+      .layer {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+
+      /* Fondo de ondas (capa más lenta), oscurecido para que los gráficos se lean bien */
+      .bgl {
+        position: absolute;
+        left: -100px;
+        top: -40px;
+        width: 2160px;
+        height: 1440px;
+      }
+      .bgl img {
+        display: block;
+        width: 2160px;
+        height: 1440px;
+        object-fit: cover;
+      }
+      .shade {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: linear-gradient(180deg, rgba(0, 24, 44, 0.82) 0%, rgba(0, 24, 44, 0.74) 100%);
+      }
+
+      /* Encabezado */
+      .kicker {
+        position: absolute;
+        left: var(--margin);
+        top: 84px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: var(--yellow);
+        font: 500 18px/1 var(--font-body);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .kicker .rule {
+        display: block;
+        width: 120px;
+        height: 1px;
+        background: var(--yellow);
+        transform-origin: left center;
+      }
+
+      /* Frase: Nació en Guayaquil, se tomó el Ecuador y se proyecta al mundo */
+      .headline {
+        position: absolute;
+        left: var(--margin);
+        top: 128px;
+        width: 1680px;
+      }
+      .line-wrap {
+        overflow: hidden;
+        padding-bottom: 4px;
+      }
+      .hl {
+        display: block;
+        color: var(--text);
+        font: var(--display-weight) 54px / 1.12 var(--font-display);
+        font-stretch: 108%;
+        letter-spacing: 0.01em;
+        text-transform: uppercase;
+      }
+      .hl b {
+        color: var(--yellow);
+        font-weight: inherit;
+      }
+
+      /* Tarjetas de gráficos */
+      .panel {
+        position: absolute;
+        top: 318px;
+        width: 820px;
+        height: 690px;
+        border-radius: 10px;
+        background: rgba(0, 20, 38, 0.62);
+        border: 1px solid rgba(244, 241, 236, 0.1);
+        box-shadow: 0 30px 70px rgba(0, 8, 20, 0.45);
+        overflow: hidden;
+      }
+      #panel-a {
+        left: var(--margin);
+      }
+      #panel-b {
+        left: 980px;
+      }
+      .panel svg {
+        position: absolute;
+        inset: 0;
+        width: 820px;
+        height: 690px;
+        overflow: visible;
+      }
+      .c-title {
+        fill: var(--text);
+        font: 700 27px var(--font-body);
+      }
+      .c-sub {
+        fill: var(--text-2);
+        font: 400 17px var(--font-body);
+      }
+      .c-legend {
+        fill: var(--text);
+        font: 500 16px var(--font-body);
+      }
+      .c-axis {
+        fill: var(--text-2);
+        font: 500 15px var(--font-body);
+      }
+      .c-year {
+        fill: var(--text);
+        font: 700 19px var(--font-body);
+      }
+      .c-note {
+        fill: var(--text-2);
+        font: 400 14px var(--font-body);
+      }
+      .c-total {
+        fill: var(--text);
+        font: 700 21px var(--font-body);
+        font-variant-numeric: tabular-nums;
+      }
+      .c-inc {
+        fill: var(--text);
+        font: 600 14px var(--font-body);
+      }
+      .c-pt {
+        font: 600 14px var(--font-body);
+        font-variant-numeric: tabular-nums;
+      }
+      .c-end {
+        font: 700 30px var(--font-body);
+        font-variant-numeric: tabular-nums;
+      }
+      .c-end-name {
+        fill: var(--text-2);
+        font: 500 16px var(--font-body);
+      }
+
+      #vignette {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 60%, rgba(0, 10, 25, 0.45) 100%);
+      }
+      #grain {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        opacity: 0.06;
+        mix-blend-mode: overlay;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="25" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="25" data-track-index="0">
+        <div id="layer-bg" class="layer">
+          <div class="bgl"><img src="assets/fondo-ondas-2.png" alt="" /></div>
+          <div class="shade"></div>
+        </div>
+
+        <div id="layer-copy" class="layer">
+          <div class="kicker"><span class="num">03 · Alcance</span><span class="rule"></span></div>
+          <div class="headline">
+            <div class="line-wrap"><span class="hl" id="h1">Nació en <b>Guayaquil</b>, se tomó el <b>Ecuador</b></span></div>
+            <div class="line-wrap"><span class="hl" id="h2">y se proyecta <b>al mundo</b></span></div>
+          </div>
+        </div>
+
+        <div id="layer-charts" class="layer">
+          <div class="panel" id="panel-a"><svg id="chart-a" viewBox="0 0 820 690"></svg></div>
+          <div class="panel" id="panel-b"><svg id="chart-b" viewBox="0 0 820 690"></svg></div>
+        </div>
+
+        <div id="vignette"></div>
+        <svg id="grain" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+          <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="1920" height="1080" filter="url(#noise)" />
+        </svg>
+      </div>
+    </div>
+
+    <script>
+      /* ───────────── Datos (editables) ───────────── */
+      const VIEWS = [
+        // Visualizaciones acumuladas (millones) y nuevas del año
+        { year: "2021", total: 32.23, inc: 32.23 },
+        { year: "2022", total: 65.05, inc: 32.82 },
+        { year: "2023", total: 98.8, inc: 33.75 },
+        { year: "2024", total: 115.38, inc: 16.58 },
+        { year: "2025", total: 123.69, inc: 8.31 },
+        { year: "2026", total: 129.85, inc: 6.16, partial: "hasta 30 sept" },
+      ];
+      const YEARS_B = ["2022", "2023", "2024", "2025", "2026"];
+      const FOLLOWERS = [
+        { name: "Facebook", color: "#3a8fc4", values: [187985, 193866, 203782, 252740, 294498] },
+        { name: "Instagram", color: "#f4ba1a", values: [95925, 96736, 101201, 115302, 138847] },
+        { name: "TikTok", color: "#5fbcb5", values: [24, 5831, 17550, 25073, 35705] },
+      ];
+
+      /* ───────────── Utilidades ───────────── */
+      const NS = "http://www.w3.org/2000/svg";
+      const svgEl = (parent, tag, attrs = {}, text) => {
+        const n = document.createElementNS(NS, tag);
+        for (const k in attrs) n.setAttribute(k, attrs[k]);
+        if (text != null) n.textContent = text;
+        parent.appendChild(n);
+        return n;
+      };
+      const fmtM = (v) => `${v.toFixed(2).replace(".", ",")} M`;
+      const fmtK = (v) => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+      /* ───────────── Gráfico A · barras acumuladas ───────────── */
+      const A = document.getElementById("chart-a");
+      svgEl(A, "text", { x: 40, y: 62, class: "c-title" }, "Visualizaciones acumuladas desde 2021");
+      svgEl(A, "text", { x: 40, y: 92, class: "c-sub" }, "Cada barra suma las visualizaciones de los años anteriores y del año indicado");
+      svgEl(A, "rect", { x: 482, y: 118, width: 14, height: 14, rx: 3, fill: "#3a8fc4" });
+      svgEl(A, "text", { x: 504, y: 131, class: "c-legend" }, "Año completo");
+      svgEl(A, "rect", { x: 636, y: 118, width: 14, height: 14, rx: 3, fill: "#f4ba1a" });
+      svgEl(A, "text", { x: 658, y: 131, class: "c-legend" }, "2026 parcial");
+      const AX0 = 96, AX1 = 790, AY0 = 590, AY1 = 220, AMAX = 150;
+      const ay = (v) => AY0 - (v / AMAX) * (AY0 - AY1);
+      for (let v = 0; v <= AMAX; v += 25) {
+        svgEl(A, "line", { x1: AX0, x2: AX1, y1: ay(v), y2: ay(v), stroke: "rgba(244,241,236,0.1)", "stroke-width": 1 });
+        svgEl(A, "text", { x: AX0 - 14, y: ay(v) + 5, class: "c-axis", "text-anchor": "end" }, `${v} M`);
+      }
+      const slot = (AX1 - AX0) / VIEWS.length, bw = 74;
+      VIEWS.forEach((d, i) => {
+        const cx = AX0 + slot * (i + 0.5);
+        const g = svgEl(A, "g", { id: `bar-${i}` });
+        const color = d.partial ? "#f4ba1a" : "#3a8fc4";
+        const dark = d.partial ? "#d19d12" : "#2c6f9c";
+        // Barra completa (acumulado) + zona sombreada del acumulado anterior
+        svgEl(g, "rect", { class: "bar", x: cx - bw / 2, y: ay(d.total), width: bw, height: AY0 - ay(d.total), rx: 10, fill: color });
+        if (d.total - d.inc > 0.01)
+          svgEl(g, "rect", { class: "bar-prev", x: cx - bw / 2, y: ay(d.total - d.inc), width: bw, height: AY0 - ay(d.total - d.inc), fill: dark });
+        const pill = svgEl(g, "g", { class: "pill" });
+        svgEl(pill, "rect", { x: cx - 50, y: ay(d.total) + 10, width: 100, height: 26, rx: 13, fill: "rgba(255,255,255,0.22)" });
+        svgEl(pill, "text", { x: cx, y: ay(d.total) + 28, class: "c-inc", "text-anchor": "middle" }, `+${fmtM(d.inc)}`);
+        svgEl(g, "text", { id: `tot-${i}`, class: "c-total", x: cx, y: ay(d.total) - 14, "text-anchor": "middle" }, fmtM(0));
+        svgEl(A, "text", { x: cx, y: AY0 + 34, class: "c-year", "text-anchor": "middle" }, d.year);
+        if (d.partial) svgEl(A, "text", { x: cx, y: AY0 + 56, class: "c-note", "text-anchor": "middle" }, d.partial);
+      });
+      svgEl(A, "line", { x1: AX0, x2: AX1, y1: AY0, y2: AY0, stroke: "rgba(244,241,236,0.35)", "stroke-width": 1.5 });
+      svgEl(A, "text", { x: 40, y: 664, class: "c-note" }, "Zona sombreada: acumulado hasta el año anterior · Etiqueta interior: visualizaciones nuevas del año");
+
+      /* ───────────── Gráfico B · evolución de seguidores ───────────── */
+      const B = document.getElementById("chart-b");
+      svgEl(B, "text", { x: 40, y: 62, class: "c-title" }, "Evolución de seguidores");
+      svgEl(B, "text", { x: 40, y: 92, class: "c-sub" }, "Número total de seguidores por año");
+      [["Facebook", "#3a8fc4", 482], ["Instagram", "#f4ba1a", 590], ["TikTok", "#5fbcb5", 704]].forEach(([n, c, x]) => {
+        svgEl(B, "circle", { cx: x, cy: 125, r: 7, fill: c });
+        svgEl(B, "text", { x: x + 14, y: 131, class: "c-legend" }, n);
+      });
+      const BX0 = 96, BX1 = 620, BY0 = 590, BY1 = 220, BMAX = 300000;
+      const bx = (i) => BX0 + (i / (YEARS_B.length - 1)) * (BX1 - BX0);
+      const by = (v) => BY0 - (v / BMAX) * (BY0 - BY1);
+      for (let v = 0; v <= BMAX; v += 50000) {
+        svgEl(B, "line", { x1: BX0, x2: BX1, y1: by(v), y2: by(v), stroke: "rgba(244,241,236,0.1)", "stroke-width": 1 });
+        svgEl(B, "text", { x: BX0 - 14, y: by(v) + 5, class: "c-axis", "text-anchor": "end" }, v ? `${v / 1000}K` : "0");
+      }
+      YEARS_B.forEach((y, i) => svgEl(B, "text", { x: bx(i), y: BY0 + 34, class: "c-year", "text-anchor": "middle" }, y));
+      const defs = svgEl(B, "defs");
+      const reveal = svgEl(svgEl(defs, "clipPath", { id: "reveal-b" }), "rect", { id: "reveal-rect", x: BX0 - 20, y: 0, width: 0, height: 690 });
+      FOLLOWERS.forEach((s, k) => {
+        const grad = svgEl(defs, "linearGradient", { id: `g-${k}`, x1: 0, y1: 0, x2: 0, y2: 1 });
+        svgEl(grad, "stop", { offset: 0, "stop-color": s.color, "stop-opacity": 0.32 });
+        svgEl(grad, "stop", { offset: 1, "stop-color": s.color, "stop-opacity": 0.02 });
+      });
+      const plot = svgEl(B, "g", { "clip-path": "url(#reveal-b)" });
+      FOLLOWERS.forEach((s, k) => {
+        const pts = s.values.map((v, i) => `${bx(i)},${by(v)}`);
+        svgEl(plot, "path", { d: `M${bx(0)},${BY0} L${pts.join(" L")} L${bx(4)},${BY0} Z`, fill: `url(#g-${k})` });
+        svgEl(plot, "polyline", { points: pts.join(" "), fill: "none", stroke: s.color, "stroke-width": 5, "stroke-linejoin": "round", "stroke-linecap": "round" });
+        s.values.forEach((v, i) => {
+          const dot = svgEl(B, "g", { class: `dot dot-${i}` });
+          svgEl(dot, "circle", { cx: bx(i), cy: by(v), r: i === 4 ? 10 : 8, fill: i === 4 ? s.color : "#0b2238", stroke: i === 4 ? "#0b2238" : s.color, "stroke-width": i === 4 ? 3 : 4 });
+          if (i < 4) svgEl(dot, "text", { x: bx(i) + (i === 0 ? 20 : 0), y: by(v) - 16, class: "c-pt", fill: s.color, "text-anchor": i === 0 ? "start" : "middle" }, fmtK(v));
+        });
+        const end = svgEl(B, "g", { class: "end" });
+        svgEl(end, "text", { id: `end-${k}`, x: BX1 + 24, y: by(s.values[4]) + 8, class: "c-end", fill: s.color }, "0");
+        svgEl(end, "text", { x: BX1 + 24, y: by(s.values[4]) + 32, class: "c-end-name" }, s.name);
+      });
+
+      /* ───────────── Animación ───────────── */
+      const DUR = 25; // duración total
+      const ANIM = 10; // la animación principal ocurre en los primeros 10 s
+      const EASE = "expo.out";
+      const tl = gsap.timeline({ paused: true });
+      const lineIn = (t, at) => tl.fromTo(t, { yPercent: 110, rotation: 3, opacity: 0 }, { yPercent: 0, rotation: 0, opacity: 1, duration: 1.4, ease: EASE }, at);
+
+      // Parallax: fondo lento, texto y gráficos a su ritmo
+      tl.fromTo(".bgl img", { scale: 1.1, x: 60, y: 0 }, { scale: 1, x: -80, y: -60, duration: DUR, ease: "sine.inOut" }, 0);
+      tl.fromTo("#layer-copy", { x: -160 }, { x: 0, duration: 2.0, ease: EASE }, 0);
+      tl.fromTo("#layer-copy", { y: 0 }, { y: -6, duration: DUR, ease: "sine.inOut" }, 0);
+
+      // Texto
+      tl.fromTo(".kicker .rule", { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "expo.inOut" }, 0.3);
+      tl.fromTo(".kicker .num", { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: 1.0, ease: EASE }, 0.4);
+      lineIn("#h1", 0.6);
+      lineIn("#h2", 1.1);
+
+      // Tarjetas: entran desde abajo, una tras otra
+      tl.fromTo("#panel-a", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 1.4, ease: EASE }, 1.8);
+      tl.fromTo("#panel-b", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 1.4, ease: EASE }, 2.2);
+
+      // Gráfico A: las barras crecen en orden y sus totales cuentan
+      VIEWS.forEach((d, i) => {
+        const at = 2.8 + i * 0.55;
+        tl.fromTo(`#bar-${i} .bar, #bar-${i} .bar-prev`, { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 1, duration: 1.1, ease: "power3.out" }, at);
+        tl.fromTo(`#bar-${i} .pill`, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.6, ease: EASE }, at + 0.8);
+        const c = { v: 0 };
+        const el = document.getElementById(`tot-${i}`);
+        tl.fromTo(`#tot-${i}`, { opacity: 0 }, { opacity: 1, duration: 0.3 }, at + 0.1);
+        tl.fromTo(c, { v: 0 }, { v: d.total, duration: 1.1, ease: "power3.out", onUpdate: () => (el.textContent = fmtM(c.v)) }, at);
+      });
+
+      // Gráfico B: las líneas y áreas se revelan de izquierda a derecha; los puntos aparecen al paso
+      const B_START = 4.6, B_DUR = 4.2;
+      tl.fromTo("#reveal-rect", { attr: { width: 0 } }, { attr: { width: BX1 - BX0 + 40 }, duration: B_DUR, ease: "power1.inOut" }, B_START);
+      YEARS_B.forEach((_, i) => {
+        const at = B_START + (i / (YEARS_B.length - 1)) * B_DUR * 0.92;
+        tl.fromTo(`#chart-b .dot-${i}`, { opacity: 0, scale: 0.4, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2)" }, at);
+      });
+      FOLLOWERS.forEach((s, k) => {
+        const c = { v: 0 };
+        const el = document.getElementById(`end-${k}`);
+        tl.fromTo(c, { v: 0 }, { v: s.values[4], duration: B_DUR, ease: "power1.inOut", onUpdate: () => (el.textContent = fmtK(c.v)) }, B_START);
+      });
+      tl.fromTo("#chart-b .end", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.8, ease: EASE, stagger: 0.12 }, B_START + 0.4);
+
+      // De 10 a 25 s: deriva lenta de las tarjetas para hablar encima
+      tl.to("#panel-a", { y: -10, x: -8, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
+      tl.to("#panel-b", { y: 8, x: 8, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
+
+      tl.set({}, {}, DUR);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
