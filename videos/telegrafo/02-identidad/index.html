@@ -209,29 +209,27 @@
           <img class="tower" id="tower-full" src="assets/torre-reloj-completa.png" alt="" />
           <img class="tower" id="tower-detail" src="assets/torre-reloj-detalle.png" alt="" />
 
-          <!-- Logo de la Torre redibujado en vectores (original: assets/logo-torre.png, 1500×1385) -->
+          <!-- Logo de la Torre en vectores (original: assets/logo-torre.png, 1500×1385).
+               Como en el original, la torre, la aguja y las manecillas son un RECORTE (transparente)
+               en el círculo azul: a través de ellas se ve la foto de la torre. -->
           <svg id="logo" viewBox="0 0 1500 1385">
             <defs>
+              <mask id="logo-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1500" height="1385">
+                <rect x="0" y="0" width="1500" height="1385" fill="#fff" />
+                <path id="m-tower" d="M343 1400 L343 692 L278 587 L421 571 C430 360 570 214 725 200 L765 200 C920 214 1060 360 1069 571 L1213 587 L1147 692 L1147 1400 Z" fill="#000" />
+                <line id="m-spire" x1="745" y1="200" x2="745" y2="120" stroke="#000" stroke-width="40" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" />
+                <path id="m-window" d="M689 575 L805 575 C808 480 790 420 747 392 C704 420 686 480 689 575 Z" fill="#fff" />
+                <circle id="m-clock" cx="745" cy="1035" r="228" fill="#fff" />
+                <polyline id="m-hands" points="751,903 751,1040 678,1113" fill="none" stroke="#000" stroke-width="38" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" />
+              </mask>
               <clipPath id="logo-clip"><rect x="0" y="0" width="1500" height="1385" /></clipPath>
             </defs>
             <g clip-path="url(#logo-clip)">
-              <circle id="lg-circle-fill" cx="748" cy="748" r="740" fill="#1b91bc" />
+              <!-- Relleno azul con el recorte de la torre -->
+              <circle id="lg-circle-fill" cx="748" cy="748" r="740" fill="#1b91bc" mask="url(#logo-mask)" />
+              <!-- Trazos guía que dibujan el logo y luego desaparecen -->
               <circle id="lg-circle-line" cx="748" cy="748" r="740" fill="none" stroke="#1b91bc" stroke-width="16" pathLength="1" stroke-dasharray="1 1" />
-              <path
-                id="lg-tower"
-                d="M343 1400 L343 692 L278 587 L421 571 C430 360 570 214 725 200 L765 200 C920 214 1060 360 1069 571 L1213 587 L1147 692 L1147 1400 Z"
-                fill="#ffffff"
-                fill-opacity="0"
-                stroke="#ffffff"
-                stroke-width="14"
-                stroke-linejoin="round"
-                pathLength="1"
-                stroke-dasharray="1 1"
-              />
-              <line id="lg-spire" x1="745" y1="200" x2="745" y2="120" stroke="#ffffff" stroke-width="40" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" />
-              <path id="lg-window" d="M689 575 L805 575 C808 480 790 420 747 392 C704 420 686 480 689 575 Z" fill="#1b91bc" />
-              <circle id="lg-clock" cx="745" cy="1035" r="228" fill="#1b91bc" />
-              <polyline id="lg-hands" points="751,903 751,1040 678,1113" fill="none" stroke="#ffffff" stroke-width="38" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" />
+              <path id="lg-tower" d="M343 1400 L343 692 L278 587 L421 571 C430 360 570 214 725 200 L765 200 C920 214 1060 360 1069 571 L1213 587 L1147 692 L1147 1400 Z" fill="none" stroke="#ffffff" stroke-width="12" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" />
             </g>
           </svg>
         </div>
@@ -293,16 +291,19 @@
 
       /* 3 · Se dibuja el logo sobre la torre */
       draw("#lg-circle-line", DRAW, 1.4);
-      tl.fromTo("#lg-circle-fill", { opacity: 0 }, { opacity: 0.92, duration: 1.0, ease: "power1.inOut" }, DRAW + 1.0);
       draw("#lg-tower", DRAW + 0.6, 1.6);
-      tl.fromTo("#lg-tower", { fillOpacity: 0 }, { fillOpacity: 1, duration: 0.9, ease: "power1.inOut" }, DRAW + 1.9);
-      draw("#lg-spire", DRAW + 1.9, 0.5);
-      tl.fromTo("#lg-window", { scale: 0, transformOrigin: "50% 100%" }, { scale: 1, duration: 0.7, ease: "back.out(2)" }, DRAW + 2.4);
-      tl.fromTo("#lg-clock", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.8, ease: "back.out(1.8)" }, DRAW + 2.5);
-      draw("#lg-hands", DRAW + 3.0, 0.8);
-      tl.fromTo("#lg-hands", { rotation: -90, svgOrigin: "751 1040" }, { rotation: 0, svgOrigin: "751 1040", duration: 1.2, ease: "back.out(1.6)" }, DRAW + 3.0);
-      // La foto de la torre se atenúa para que el logo sea protagonista.
-      tl.to("#tower-detail", { opacity: 0.32, duration: 1.4, ease: "power1.inOut" }, DRAW + 2.4);
+      // El círculo se rellena de azul y la torre queda recortada: se ve la foto a través.
+      tl.fromTo("#lg-circle-fill", { opacity: 0 }, { opacity: 1, duration: 1.0, ease: "power1.inOut" }, DRAW + 1.7);
+      draw("#m-spire", DRAW + 2.1, 0.5);
+      tl.fromTo("#m-window", { scale: 0, transformOrigin: "50% 100%" }, { scale: 1, duration: 0.7, ease: "back.out(2)" }, DRAW + 2.4);
+      tl.fromTo("#m-clock", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.8, ease: "back.out(1.8)" }, DRAW + 2.5);
+      draw("#m-hands", DRAW + 3.0, 0.8);
+      tl.fromTo("#m-hands", { rotation: -90, svgOrigin: "751 1040" }, { rotation: 0, svgOrigin: "751 1040", duration: 1.2, ease: "back.out(1.6)" }, DRAW + 3.0);
+      // Los trazos guía blancos desaparecen: el logo final no tiene relleno ni contorno blanco.
+      tl.to("#lg-tower", { opacity: 0, duration: 0.8, ease: "power1.inOut" }, DRAW + 2.8);
+      tl.to("#lg-circle-line", { opacity: 0, duration: 0.6 }, DRAW + 2.8);
+      // La foto de la torre se atenúa un poco para que el logo sea protagonista (sigue viéndose por el recorte).
+      tl.to("#tower-detail", { opacity: 0.7, duration: 1.4, ease: "power1.inOut" }, DRAW + 2.4);
       tl.fromTo("#logo", { scale: 0.96 }, { scale: 1, duration: 1.2, ease: "back.out(1.6)" }, DRAW + 3.4);
 
       /* 4 · De 10 a 25 s: flotación lenta para hablar encima */
