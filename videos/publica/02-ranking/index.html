@@ -133,9 +133,9 @@
       /* Tarjetas de gráficos */
       .panel {
         position: absolute;
-        top: 318px;
+        top: 288px;
         width: 820px;
-        height: 690px;
+        height: 750px;
         border-radius: 10px;
         background: rgba(14, 30, 52, 0.86);
         border: 1px solid rgba(244, 241, 236, 0.1);
@@ -144,12 +144,15 @@
       }
       #panel-a {
         left: var(--margin);
-        width: 1680px;
+        width: 740px;
+      }
+      #panel-b {
+        left: 900px;
+        width: 900px;
       }
       .panel svg {
         position: absolute;
         inset: 0;
-        width: 1680px;
         height: 690px;
         overflow: visible;
       }
@@ -201,6 +204,26 @@
         fill: var(--text);
         font: 700 18px var(--font-body);
       }
+      .c-head {
+        fill: var(--text-2);
+        font: 600 14px var(--font-body);
+        letter-spacing: 0.12em;
+      }
+      .c-region {
+        font: 700 15px var(--font-body);
+        letter-spacing: 0.16em;
+      }
+      .c-city {
+        fill: var(--text);
+        font: 600 19px var(--font-body);
+      }
+      .c-mult {
+        fill: #f4ba1a;
+        font: 700 14px var(--font-body);
+      }
+      .c-medal {
+        font: 800 17px var(--font-body);
+      }
       .c-end-name {
         fill: var(--text-2);
         font: 500 16px var(--font-body);
@@ -240,7 +263,8 @@
         </div>
 
         <div id="layer-charts" class="layer">
-          <div class="panel" id="panel-a"><svg id="chart-a" viewBox="0 0 1680 690"></svg></div>
+          <div class="panel" id="panel-a"><svg id="chart-a" viewBox="0 0 740 750" style="width: 740px; height: 750px"></svg></div>
+          <div class="panel" id="panel-b"><svg id="chart-b" viewBox="0 0 900 750" style="width: 900px; height: 750px"></svg></div>
         </div>
 
         <div id="vignette"></div>
@@ -274,22 +298,22 @@
 
       /* ───────────── Gráfico · evolución del ranking (eje invertido) ───────────── */
       const A = document.getElementById("chart-a");
-      svgEl(A, "text", { x: 48, y: 64, class: "c-title" }, "Evolución del ranking 2024 – 2026");
-      svgEl(A, "text", { x: 48, y: 96, class: "c-sub" }, "Eje invertido: cuanto más arriba, mejor posición");
+      svgEl(A, "text", { x: 40, y: 64, class: "c-title" }, "Evolución del ranking 2024 – 2026");
+      svgEl(A, "text", { x: 40, y: 96, class: "c-sub" }, "Eje invertido: cuanto más arriba, mejor posición");
       SERIES.forEach((s, k) => {
-        const x = 1380 + k * 150;
-        svgEl(A, "circle", { cx: x, cy: 70, r: 8, fill: s.color });
-        svgEl(A, "text", { x: x + 16, y: 76, class: "c-legend" }, s.name);
+        const x = 470 + k * 140;
+        svgEl(A, "circle", { cx: x, cy: 132, r: 8, fill: s.color });
+        svgEl(A, "text", { x: x + 16, y: 138, class: "c-legend" }, s.name);
       });
-      const X0 = 150, X1 = 1250, Y0 = 600, Y1 = 170, RMIN = 15, RMAX = 35;
+      const X0 = 120, X1 = 470, Y0 = 640, Y1 = 200, RMIN = 15, RMAX = 35;
       const px = (i) => X0 + (i / (YEARS.length - 1)) * (X1 - X0);
       const py = (r) => Y1 + ((r - RMIN) / (RMAX - RMIN)) * (Y0 - Y1);
-      svgEl(A, "text", { x: 48, y: 150, class: "c-legend", fill: "#5fbcb5" }, "▲ Mejor");
+      svgEl(A, "text", { x: 40, y: 172, class: "c-legend", style: "fill:#5fbcb5" }, "▲ Mejor");
       // Columna destacada del año actual
-      const hl = svgEl(A, "rect", { id: "hl-col", x: px(2) - 60, y: Y1 - 20, width: 120, height: Y0 - Y1 + 40, rx: 14, fill: "rgba(244,186,26,0.1)" });
+      const hl = svgEl(A, "rect", { id: "hl-col", x: px(2) - 50, y: Y1 - 20, width: 100, height: Y0 - Y1 + 40, rx: 14, fill: "rgba(244,186,26,0.1)" });
       for (let r = RMIN; r <= RMAX; r += 5) {
-        svgEl(A, "line", { x1: X0 - 40, x2: X1 + 40, y1: py(r), y2: py(r), stroke: "rgba(244,241,236,0.1)", "stroke-width": 1 });
-        svgEl(A, "text", { x: 92, y: py(r) + 5, class: "c-axis", "text-anchor": "end" }, `#${r}`);
+        svgEl(A, "line", { x1: X0 - 30, x2: X1 + 40, y1: py(r), y2: py(r), stroke: "rgba(244,241,236,0.1)", "stroke-width": 1 });
+        svgEl(A, "text", { x: 74, y: py(r) + 5, class: "c-axis", "text-anchor": "end" }, `#${r}`);
       }
       YEARS.forEach((y, i) =>
         svgEl(A, "text", { x: px(i), y: Y0 + 50, class: "c-year", "text-anchor": "middle", fill: i === 2 ? "#f4ba1a" : null, style: i === 2 ? "fill:#f4ba1a" : "" }, y)
@@ -310,11 +334,70 @@
         // Etiqueta final con mejora vs 2024
         const end = svgEl(A, "g", { class: "end", id: `end-${k}` });
         const yy = py(s.ranks[2]);
-        svgEl(end, "text", { x: X1 + 90, y: yy + 9, class: "c-name", style: `fill:${s.color}` }, s.name);
+        svgEl(end, "text", { x: X1 + 74, y: yy - 6, class: "c-name", style: `fill:${s.color}` }, s.name);
         const gain = s.ranks[0] - s.ranks[2];
-        const bx = X1 + 90 + (s.name.length > 6 ? 170 : 110);
-        svgEl(end, "rect", { x: bx, y: yy - 22, width: 160, height: 44, rx: 22, fill: "rgba(244,186,26,0.18)", stroke: "rgba(244,186,26,0.5)" });
-        svgEl(end, "text", { x: bx + 80, y: yy + 7, class: "c-badge", "text-anchor": "middle" }, `▲ ${gain} vs 2024`);
+        const bx = X1 + 74;
+        svgEl(end, "rect", { x: bx, y: yy + 8, width: 150, height: 38, rx: 19, fill: "rgba(244,186,26,0.18)", stroke: "rgba(244,186,26,0.5)" });
+        svgEl(end, "text", { x: bx + 75, y: yy + 33, class: "c-badge", "text-anchor": "middle" }, `▲ ${gain} vs 2024`);
+      });
+
+      /* ───────────── Gráfico · mapa de podios por ciudad ───────────── */
+      const PODIOS = [
+        { region: "Litoral y Santo Domingo", color: "#5fbcb5", rows: [
+          ["Santo Domingo", 1, [[1], [2], [], []]],
+          ["Portoviejo – Manta", 2, [[1], [], [1], []]],
+          ["Babahoyo – Quevedo", 1, [[2], [3], [1], [2]]],
+          ["Guayaquil", 1, [[], [3], [], [1, 3]]],
+          ["Machala", 0, [[], [2, 3], [2], []]],
+        ] },
+        { region: "Sierra", color: "#3a8fc4", rows: [
+          ["Ibarra", 2, [[1], [1], [], []]],
+          ["Quito", 1, [[1], [3], [], [2]]],
+          ["Ambato", 1, [[1], [3], [], []]],
+          ["Cuenca", 2, [[1], [1], [], [3]]],
+        ] },
+      ];
+      const MEDAL = { 1: ["#e2b33c", "#1a1a1a"], 2: ["#aeb6c4", "#ffffff"], 3: ["#bf8a5f", "#ffffff"] };
+      const Bc = document.getElementById("chart-b");
+      svgEl(Bc, "text", { x: 40, y: 64, class: "c-title" }, "Mapa de podios por ciudad");
+      svgEl(Bc, "text", { x: 40, y: 96, class: "c-sub" }, "Cada medalla es un programa en el top 3 de su franja horaria");
+      [[1, "1.er lugar", 560], [2, "2.º", 690], [3, "3.º", 770]].forEach(([m, t, x]) => {
+        svgEl(Bc, "circle", { cx: x, cy: 132, r: 10, fill: MEDAL[m][0] });
+        svgEl(Bc, "text", { x: x + 18, y: 138, class: "c-legend" }, t);
+      });
+      const COLS = [420, 545, 675, 810];
+      svgEl(Bc, "rect", { x: 30, y: 158, width: 840, height: 48, rx: 10, fill: "rgba(244,241,236,0.07)" });
+      svgEl(Bc, "text", { x: 48, y: 188, class: "c-head" }, "CIUDAD");
+      [["DEPORTES"], ["NOTICIAS"], ["MÚSICA", "ROMÁNTICA"], ["MÚSICA", "TROPICAL"]].forEach((h, c) =>
+        h.forEach((t, j) => svgEl(Bc, "text", { x: COLS[c], y: h.length === 1 ? 188 : 178 + j * 18, class: "c-head", "text-anchor": "middle" }, t))
+      );
+      let yy = 238, rowN = 0;
+      PODIOS.forEach((g) => {
+        const sec = svgEl(Bc, "g", { class: "trow" });
+        svgEl(sec, "rect", { x: 46, y: yy - 14, width: 4, height: 18, rx: 2, fill: g.color });
+        svgEl(sec, "text", { x: 60, y: yy + 1, class: "c-region", style: `fill:${g.color}` }, g.region.toUpperCase());
+        yy += 36;
+        g.rows.forEach(([city, x, cells]) => {
+          const r = svgEl(Bc, "g", { class: "trow", id: `trow-${rowN++}` });
+          svgEl(r, "line", { x1: 30, x2: 870, y1: yy + 23, y2: yy + 23, stroke: "rgba(244,241,236,0.08)" });
+          const name = svgEl(r, "text", { x: 48, y: yy + 7, class: "c-city" }, city);
+          if (x) {
+            const bx = 48 + city.length * 10.6 + 14;
+            svgEl(r, "rect", { x: bx, y: yy - 13, width: 44, height: 26, rx: 13, fill: "rgba(244,186,26,0.18)" });
+            svgEl(r, "text", { x: bx + 22, y: yy + 6, class: "c-mult", "text-anchor": "middle" }, `×${x}`);
+          }
+          cells.forEach((ms, c) => {
+            if (!ms.length) return svgEl(r, "circle", { cx: COLS[c], cy: yy, r: 3, fill: "rgba(244,241,236,0.25)" });
+            ms.forEach((m, k) => {
+              const cx = COLS[c] + (k - (ms.length - 1) / 2) * 40;
+              const md = svgEl(r, "g", { class: "medal" });
+              svgEl(md, "circle", { cx, cy: yy, r: 18, fill: MEDAL[m][0], stroke: "rgba(255,255,255,0.35)", "stroke-width": 2 });
+              svgEl(md, "text", { x: cx, y: yy + 7, class: "c-medal", "text-anchor": "middle", style: `fill:${MEDAL[m][1]}` }, m);
+            });
+          });
+          yy += 44;
+        });
+        yy += 8;
       });
 
       /* ───────────── Animación ───────────── */
@@ -343,7 +426,13 @@
       tl.fromTo("#chart-a .end", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.9, ease: EASE, stagger: 0.25 }, L0 + LD);
       tl.fromTo("#chart-a .end rect", { scale: 0.6, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.7, ease: "back.out(2)", stagger: 0.25 }, L0 + LD + 0.3);
 
+      // Tabla de podios: filas en cascada y medallas que aparecen con rebote
+      tl.fromTo("#panel-b", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 1.4, ease: EASE }, 2.2);
+      tl.fromTo("#chart-b .trow", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.6, ease: EASE, stagger: 0.28 }, 3.4);
+      tl.fromTo("#chart-b .medal", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.5, ease: "back.out(2.4)", stagger: 0.12 }, 3.7);
+
       tl.to("#panel-a", { y: -10, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
+      tl.to("#panel-b", { y: 8, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
 
       tl.set({}, {}, DUR);
       window.__timelines["main"] = tl;
