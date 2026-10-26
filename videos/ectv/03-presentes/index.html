@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Sistema de diseño · serie ECTV ───────────── */
+      :root {
+        --navy: #172d4c;
+        --yellow: #f4ba1a;
+        --text: #f4f1ec;
+        --text-2: #a9b8c8;
+        --font-big: "Oswald", "Archivo", sans-serif;
+        --font-display: "Archivo", "Inter", system-ui, sans-serif;
+        --font-body: "Inter", system-ui, sans-serif;
+        --margin: 120px;
+      }
+      @font-face {
+        font-family: "Oswald";
+        src: url("assets/fonts/oswald-700.woff2") format("woff2");
+        font-weight: 700;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Archivo";
+        src: url("assets/fonts/archivo-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--navy);
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--navy);
+        color: var(--text);
+        font-family: var(--font-body);
+      }
+      #stage,
+      .layer {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      .bgl {
+        position: absolute;
+        left: -100px;
+        top: -40px;
+        width: 2160px;
+        height: 1440px;
+      }
+      .bgl img {
+        display: block;
+        width: 2160px;
+        height: 1440px;
+        object-fit: cover;
+      }
+      .shade {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: linear-gradient(90deg, rgba(14, 30, 52, 0.9) 0%, rgba(14, 30, 52, 0.62) 50%, rgba(14, 30, 52, 0.4) 100%);
+      }
+      .kicker {
+        position: absolute;
+        left: var(--margin);
+        top: 104px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: var(--yellow);
+        font: 500 18px/1 var(--font-body);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .kicker .rule {
+        display: block;
+        width: 120px;
+        height: 1px;
+        background: var(--yellow);
+        transform-origin: left center;
+      }
+      #layer-copy {
+        z-index: 2;
+      }
+
+      /* Texto: JUNTOS (Oswald, amarillo, grande) + con Pública FM (blanco, más pequeño) */
+      .left {
+        position: absolute;
+        left: var(--margin);
+        top: 0;
+        height: 1080px;
+        width: 760px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .line-wrap {
+        overflow: hidden;
+      }
+      .line-wrap > * {
+        display: block;
+      }
+      #juntos {
+        color: #5fc4c0; /* celeste ECTV */
+        font: 700 156px/0.95 var(--font-big);
+        letter-spacing: 0.01em;
+        text-transform: uppercase;
+        transform-origin: left bottom;
+      }
+      #con {
+        margin-top: 10px;
+        color: var(--text);
+        font: 600 64px/1.1 var(--font-display);
+        font-stretch: 110%;
+      }
+      .rule-under {
+        margin-top: 34px;
+        width: 220px;
+        height: 3px;
+        background: var(--yellow);
+        transform-origin: left center;
+      }
+
+      /* Collage de fotos que se apilan */
+      .card {
+        position: absolute;
+      }
+      .card .mask {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        border-radius: 4px;
+        border: 6px solid #f4f1ec;
+        box-shadow: 0 34px 80px rgba(0, 10, 25, 0.6), 0 6px 18px rgba(0, 10, 25, 0.4);
+        background: #0e1e34;
+      }
+      .card img {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #card-wall {
+        left: 930px;
+        top: 170px;
+        width: 680px;
+        height: 383px;
+        z-index: 1;
+      }
+      #card-book {
+        left: 1020px;
+        top: 470px;
+        width: 330px;
+        height: 520px;
+        z-index: 2;
+      }
+      #card-book img {
+        object-position: 50% 30%;
+      }
+      #card-roll {
+        left: 1440px;
+        top: 120px;
+        width: 360px;
+        height: 836px;
+        z-index: 3;
+      }
+
+      #vignette {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(0, 10, 25, 0.5) 100%);
+      }
+      #grain {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        opacity: 0.06;
+        mix-blend-mode: overlay;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="25" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="25" data-track-index="0">
+        <div id="layer-bg" class="layer">
+          <div class="bgl"><img src="assets/fondo-ectv.png" alt="" /></div>
+          <div class="shade"></div>
+        </div>
+
+        <div id="layer-photos" class="layer">
+          <div class="card" id="card-wall"><div class="mask"><img src="assets/pared-escalera.webp" alt="" /></div></div>
+          <div class="card" id="card-book"><div class="mask"><img src="assets/agenda-presentes.webp" alt="" /></div></div>
+          <div class="card" id="card-roll"><div class="mask"><img src="assets/roll-up-ectv.webp" alt="" /></div></div>
+        </div>
+
+        <div id="layer-copy" class="layer">
+          <div class="kicker"><span class="num">03 · Cobertura</span><span class="rule"></span></div>
+          <div class="left">
+            <div class="line-wrap"><span id="juntos">Presentes</span></div>
+            <div class="line-wrap"><span id="con">con Ecuador TV</span></div>
+            <div class="rule-under" id="rule-under"></div>
+          </div>
+        </div>
+
+        <div id="vignette"></div>
+        <svg id="grain" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+          <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="1920" height="1080" filter="url(#noise)" />
+        </svg>
+      </div>
+    </div>
+
+    <script>
+      const DUR = 25; // duración total
+      const ANIM = 10; // la animación principal ocurre en los primeros 10 s
+      const EASE = "expo.out";
+      const tl = gsap.timeline({ paused: true });
+
+      /* Parallax */
+      tl.fromTo(".bgl img", { scale: 1.1, x: 60, y: 0 }, { scale: 1, x: -80, y: -60, duration: DUR, ease: "sine.inOut" }, 0);
+      tl.fromTo("#layer-copy", { x: -160, y: 20, rotation: -0.8 }, { x: 0, y: 0, rotation: 0, duration: 2.0, ease: EASE }, 0);
+      tl.fromTo("#layer-photos", { x: -200 }, { x: 0, duration: 2.6, ease: "power4.out" }, 0.2);
+      tl.fromTo(".left", { x: 0, y: 0 }, { x: -24, y: -10, duration: DUR, ease: "sine.inOut" }, 0);
+
+      /* Texto */
+      tl.fromTo(".kicker .rule", { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "expo.inOut" }, 0.3);
+      tl.fromTo(".kicker .num", { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: 1.0, ease: EASE }, 0.4);
+      tl.fromTo("#juntos", { yPercent: 110, rotation: 4, opacity: 0 }, { yPercent: 0, rotation: 0, opacity: 1, duration: 1.6, ease: EASE }, 0.6);
+      tl.fromTo("#con", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.4, ease: EASE }, 1.5);
+      tl.fromTo("#rule-under", { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "expo.inOut" }, 2.2);
+      tl.fromTo("#juntos", { scale: 1 }, { scale: 1.04, duration: 0.4, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 8.2);
+
+      /* Collage: las fotos llegan una sobre otra a lo largo de los primeros 10 s */
+      tl.fromTo("#card-wall", { x: -120, y: 50, rotation: -9, scale: 0.88, opacity: 0 }, { x: 0, y: 0, rotation: -3, scale: 1, opacity: 1, duration: 1.8, ease: EASE }, 1.0);
+      tl.fromTo("#card-wall img", { scale: 1.16 }, { scale: 1.03, duration: DUR, ease: "sine.out" }, 1.0);
+      tl.fromTo("#card-book", { x: -120, y: 220, rotation: -14, opacity: 0 }, { x: 0, y: 0, rotation: -6, opacity: 1, duration: 1.8, ease: "back.out(1.3)" }, 3.0);
+      tl.fromTo("#card-book img", { scale: 1.14 }, { scale: 1.03, duration: DUR, ease: "sine.out" }, 3.0);
+      tl.fromTo("#card-roll", { x: 220, y: 80, rotation: 10, opacity: 0 }, { x: 0, y: 0, rotation: 3, opacity: 1, duration: 1.8, ease: EASE }, 5.0);
+      tl.fromTo("#card-roll img", { scale: 1.12 }, { scale: 1.02, duration: DUR, ease: "sine.out" }, 5.0);
+      // Juego de capas: las anteriores se apartan cuando llega la última
+      tl.to("#card-wall", { x: -40, y: -24, rotation: -5, duration: 2.0, ease: "power2.out" }, 5.4);
+      tl.to("#card-book", { x: -50, y: 20, rotation: -8, duration: 2.0, ease: "power2.out" }, 5.6);
+
+      /* Flotación lenta desde los 10 s */
+      tl.to("#card-wall", { x: -60, y: -40, rotation: -4, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
+      tl.to("#card-book", { x: -70, y: 36, rotation: -7, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
+      tl.to("#card-roll", { x: 14, y: -20, rotation: 2, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
+
+      tl.set({}, {}, DUR);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
