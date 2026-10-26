@@ -155,22 +155,20 @@
         display: block;
         filter: drop-shadow(0 30px 50px rgba(0, 10, 25, 0.55));
       }
-      #tower-detail {
-        left: 1150px;
-        top: 70px;
-        width: 615px;
-        height: 989px;
-        transform-origin: 61% 55%;
-      }
-
-      /* Logo que se dibuja sobre la torre */
-      #logo {
+      /* Animación foto → icono (croma verde quitado, secuencia de 97 cuadros) */
+      #morph {
         position: absolute;
-        left: 1390px;
-        top: 290px;
-        width: 470px;
-        height: 434px;
-        overflow: visible;
+        left: 1060px;
+        top: 150px;
+        width: 760px;
+        height: 760px;
+      }
+      #morph img {
+        position: absolute;
+        inset: 0;
+        width: 760px;
+        height: 760px;
+        opacity: 0;
       }
 
       #vignette {
@@ -199,37 +197,7 @@
         </div>
 
         <div id="layer-tower" class="layer">
-          <img class="tower" id="tower-detail" src="assets/torre-reloj-detalle.png" alt="" />
-
-          <!-- Logo de la Torre en vectores (original: assets/logo-torre.png, 1500×1385).
-               Como en el original, la torre, la aguja y las manecillas son un RECORTE (transparente)
-               en el círculo azul: a través de ellas se ve la foto de la torre. -->
-          <svg id="logo" viewBox="0 0 1500 1385">
-            <defs>
-              <mask id="logo-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1500" height="1385">
-                <rect x="0" y="0" width="1500" height="1385" fill="#fff" />
-                <path id="m-tower" d="M343 1400 L343 692 L278 587 L421 571 C430 360 570 214 725 200 L765 200 C920 214 1060 360 1069 571 L1213 587 L1147 692 L1147 1400 Z" fill="#000" />
-                <line id="m-spire" x1="745" y1="200" x2="745" y2="120" stroke="#000" stroke-width="40" stroke-linecap="round" />
-                <path id="m-window" d="M689 575 L805 575 C808 480 790 420 747 392 C704 420 686 480 689 575 Z" fill="#fff" />
-                <circle id="m-clock" cx="745" cy="1035" r="228" fill="#fff" />
-                <polyline id="m-hands" points="751,903 751,1040 678,1113" fill="none" stroke="#000" stroke-width="38" stroke-linecap="round" stroke-linejoin="round" />
-              </mask>
-              <clipPath id="logo-clip"><rect x="0" y="0" width="1500" height="1385" /></clipPath>
-            </defs>
-            <g clip-path="url(#logo-clip)">
-              <!-- Relleno azul con el recorte de la torre -->
-              <circle id="lg-circle-fill" cx="748" cy="748" r="740" fill="#1b91bc" mask="url(#logo-mask)" />
-              <!-- Línea blanca que dibuja todo el logo poco a poco y luego desaparece -->
-              <g id="lg-lines" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
-                <circle id="ln-circle" cx="748" cy="748" r="740" transform="rotate(-90 748 748)" pathLength="1" stroke-dasharray="1 1" />
-                <path id="ln-tower" d="M343 1400 L343 692 L278 587 L421 571 C430 360 570 214 725 200 L765 200 C920 214 1060 360 1069 571 L1213 587 L1147 692 L1147 1400" pathLength="1" stroke-dasharray="1 1" />
-                <line id="ln-spire" x1="745" y1="200" x2="745" y2="120" pathLength="1" stroke-dasharray="1 1" />
-                <path id="ln-window" d="M689 575 L805 575 C808 480 790 420 747 392 C704 420 686 480 689 575 Z" pathLength="1" stroke-dasharray="1 1" />
-                <circle id="ln-clock" cx="745" cy="1035" r="228" transform="rotate(-90 745 1035)" pathLength="1" stroke-dasharray="1 1" />
-                <polyline id="ln-hands" points="751,903 751,1040 678,1113" pathLength="1" stroke-dasharray="1 1" />
-              </g>
-            </g>
-          </svg>
+          <div id="morph"></div>
         </div>
 
         <div id="layer-copy" class="layer">
@@ -258,8 +226,6 @@
       /* ───────────── Timing ───────────── */
       const DUR = 25; // duración total
       const ANIM = 11; // la animación principal ocurre en los primeros ~11 s
-      const MOVE = 3.4; // la foto de la torre se desplaza a la izquierda
-      const DRAW = 4.6; // empieza a dibujarse el logo a su derecha
       const EASE = "expo.out";
 
       const tl = gsap.timeline({ paused: true });
@@ -282,31 +248,35 @@
       lineIn("#hero", 2.4);
       tl.fromTo("#rule-under", { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "expo.inOut" }, 3.0);
 
-      /* 1 · La foto cercana de la torre sube desde abajo */
-      tl.fromTo("#tower-detail", { y: 320, opacity: 0, scale: 0.94 }, { y: 0, opacity: 1, scale: 1, duration: 2.2, ease: EASE }, 0.4);
-      /* 2 · La torre se desplaza a la izquierda para dejar sitio al logo */
-      tl.to("#tower-detail", { x: -300, scale: 0.9, duration: 1.8, ease: "power3.inOut" }, MOVE);
+      /* 1 · Foto de la torre → silueta → icono (secuencia sin fondo verde).
+         Cada cuadro es una imagen; el timeline muestra solo el que corresponde (render determinista). */
+      const N = 97, SEQ_START = 1.6, SEQ_DUR = 6.4; // la animación original (4 s) se reproduce más lenta
+      const morph = document.getElementById("morph");
+      const frames = [];
+      for (let i = 0; i < N; i++) {
+        const im = document.createElement("img");
+        im.src = `assets/torre-croma/f${String(i).padStart(3, "0")}.png`;
+        im.alt = "";
+        morph.appendChild(im);
+        frames.push(im);
+      }
+      const seq = { f: 0 };
+      let shown = -1;
+      const showFrame = () => {
+        const k = Math.max(0, Math.min(N - 1, Math.round(seq.f)));
+        if (k === shown) return;
+        if (shown >= 0) frames[shown].style.opacity = 0;
+        frames[k].style.opacity = 1;
+        shown = k;
+      };
+      showFrame();
+      tl.fromTo(seq, { f: 0 }, { f: N - 1, duration: SEQ_DUR, ease: "none", onUpdate: showFrame }, SEQ_START);
+      // Entrada: la torre sube desde abajo; al final el icono respira con un leve pulso
+      tl.fromTo("#morph", { y: 260, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 1.6, ease: EASE }, 0.3);
+      tl.fromTo("#morph", { scale: 1 }, { scale: 1.04, duration: 0.5, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, SEQ_START + SEQ_DUR);
 
-      /* 3 · Se dibuja el logo junto a la torre: todo con línea blanca, poco a poco */
-      draw("#ln-circle", DRAW, 1.6);
-      draw("#ln-tower", DRAW + 0.9, 1.8);
-      draw("#ln-spire", DRAW + 2.4, 0.4);
-      draw("#ln-window", DRAW + 2.5, 0.8);
-      draw("#ln-clock", DRAW + 2.8, 1.0);
-      draw("#ln-hands", DRAW + 3.4, 0.6);
-      // Luego entra el azul (con la torre recortada) y la línea blanca se desvanece: el logo final no tiene blanco.
-      tl.fromTo("#lg-circle-fill", { opacity: 0 }, { opacity: 1, duration: 1.0, ease: "power1.inOut" }, DRAW + 4.0);
-      tl.to("#lg-lines", { opacity: 0, duration: 0.9, ease: "power1.inOut" }, DRAW + 4.3);
-      tl.fromTo("#logo", { scale: 0.96 }, { scale: 1, duration: 1.2, ease: "back.out(1.6)" }, DRAW + 4.2);
-
-      /* 4 · Al final la torre y el logo se separan más */
-      const SPLIT = DRAW + 4.6;
-      tl.to("#tower-detail", { x: -380, duration: 1.6, ease: "power3.inOut" }, SPLIT);
-      tl.fromTo("#logo", { x: 0 }, { x: 50, duration: 1.6, ease: "power3.inOut" }, SPLIT);
-
-      /* 5 · Flotación lenta hasta el final para hablar encima */
-      tl.to("#tower-detail", { y: -24, scale: 0.93, duration: DUR - SPLIT - 1.6, ease: "sine.inOut" }, SPLIT + 1.6);
-      tl.to("#logo", { y: -14, rotation: -1, duration: DUR - SPLIT - 1.6, ease: "sine.inOut" }, SPLIT + 1.6);
+      /* 2 · De 10 a 25 s: flotación lenta para hablar encima */
+      tl.to("#morph", { y: -20, rotation: -1, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
 
       tl.set({}, {}, DUR);
       window.__timelines["main"] = tl;
