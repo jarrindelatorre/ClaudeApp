@@ -427,9 +427,9 @@
       tl.fromTo("#chart-a .end rect", { scale: 0.6, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.7, ease: "back.out(2)", stagger: 0.25 }, L0 + LD + 0.3);
 
       // Tabla de podios: filas en cascada y medallas que aparecen con rebote
-      tl.fromTo("#panel-b", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 1.4, ease: EASE }, 2.2);
-      tl.fromTo("#chart-b .trow", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.6, ease: EASE, stagger: 0.28 }, 3.4);
-      tl.fromTo("#chart-b .medal", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.5, ease: "back.out(2.4)", stagger: 0.12 }, 3.7);
+      tl.fromTo("#panel-b", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: EASE }, 6.6);
+      tl.fromTo("#chart-b .trow", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5, ease: EASE, stagger: 0.2 }, 7.3);
+      tl.fromTo("#chart-b .medal", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.45, ease: "back.out(2.4)", stagger: 0.08 }, 7.6);
 
       tl.to("#panel-a", { y: -10, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
       tl.to("#panel-b", { y: 8, duration: DUR - ANIM, ease: "sine.inOut" }, ANIM);
