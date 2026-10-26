@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Spot · DAM "Desde el silencio" ───────────── */
+      :root {
+        --black: #070605;
+        --bronze: #b8955e;
+        --bone: #e9e0cf;
+        --smoke: #8d8170;
+        --font-title: "Cinzel", Georgia, serif;
+        --font-body: "Inter", system-ui, sans-serif;
+      }
+      @font-face {
+        font-family: "Cinzel";
+        src: url("assets/fonts/cinzel-var.woff2") format("woff2");
+        font-weight: 400 900;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--black);
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--black);
+        color: var(--bone);
+        font-family: var(--font-body);
+      }
+      #stage,
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      .scene {
+        opacity: 0;
+        overflow: hidden;
+      }
+
+      /* Haz de luz y partículas (siempre presentes, muy sutiles) */
+      #beam {
+        position: absolute;
+        left: 760px;
+        top: -200px;
+        width: 400px;
+        height: 1400px;
+        background: radial-gradient(ellipse at 50% 0%, rgba(233, 214, 180, 0.32) 0%, rgba(233, 214, 180, 0.08) 38%, rgba(0, 0, 0, 0) 70%);
+        filter: blur(18px);
+        transform-origin: 50% 0%;
+      }
+      #dust {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      .mote {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(240, 222, 190, 0.85);
+        filter: blur(0.6px);
+      }
+
+      /* 1 · Frase de apertura */
+      .whisper {
+        position: absolute;
+        left: 0;
+        top: 470px;
+        width: 1920px;
+        text-align: center;
+        color: var(--bone);
+        font: 500 46px/1.2 var(--font-title);
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+      }
+
+      /* 2 · Portada */
+      #cover-wrap {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      #cover-bg {
+        position: absolute;
+        inset: -60px;
+        background: url("assets/portada.jpg") center / cover;
+        filter: blur(40px) brightness(0.35);
+      }
+      #cover {
+        position: absolute;
+        left: 420px;
+        top: -540px;
+        width: 1080px;
+        height: 1080px;
+        background: url("assets/portada.jpg") center / cover;
+        transform-origin: 50% 66%;
+      }
+
+      /* 3 · Modelo promocionando el CD (imagen generada con IA + portada real compuesta) */
+      #model {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: url("assets/modelo.png") center / cover;
+        transform-origin: 66% 58%;
+      }
+      #model-cd {
+        /* posición de la caja de CD en la foto del modelo (ajustable) */
+        position: absolute;
+        left: 1196px;
+        top: 545px;
+        width: 236px;
+        height: 192px;
+        background: url("assets/portada.jpg") center / cover;
+        box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.08), 0 8px 30px rgba(0, 0, 0, 0.5);
+        filter: brightness(0.92) contrast(1.05);
+      }
+      .model-caption {
+        position: absolute;
+        left: 160px;
+        top: 430px;
+        width: 760px;
+      }
+      .model-caption .k {
+        color: var(--bronze);
+        font: 600 20px/1 var(--font-body);
+        letter-spacing: 0.36em;
+        text-transform: uppercase;
+      }
+      .model-caption .t {
+        margin-top: 22px;
+        color: var(--bone);
+        font: 700 76px/1.02 var(--font-title);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      /* 4 · Título */
+      .title-block {
+        position: absolute;
+        left: 0;
+        top: 300px;
+        width: 1920px;
+        text-align: center;
+      }
+      #t-dam {
+        display: block;
+        color: var(--bone);
+        font: 800 260px/0.9 var(--font-title);
+        letter-spacing: 0.08em;
+        text-shadow: 0 0 60px rgba(233, 214, 180, 0.35);
+      }
+      #t-sub {
+        display: block;
+        margin-top: 40px;
+        color: var(--bronze);
+        font: 700 82px/1 var(--font-title);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      /* 5 · Producto: caja de CD + disco */
+      #case {
+        position: absolute;
+        left: 160px;
+        top: 220px;
+        width: 640px;
+        height: 640px;
+        border-radius: 6px;
+        background: url("assets/portada.jpg") center / cover;
+        box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.1), 0 50px 90px rgba(0, 0, 0, 0.8), 0 0 120px rgba(233, 214, 180, 0.08);
+        z-index: 2;
+      }
+      #case::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 6px;
+        background: linear-gradient(115deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, 0.06) 100%);
+      }
+      #disc {
+        position: absolute;
+        left: 200px;
+        top: 240px;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle, var(--black) 0 7%, #cfc6b6 7.5% 15%, rgba(0, 0, 0, 0) 15.5%),
+          url("assets/portada.jpg") center / cover;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+        z-index: 1;
+      }
+      #disc::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: conic-gradient(from 20deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 18%, rgba(255, 255, 255, 0.12) 40%, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0.18) 82%, rgba(255, 255, 255, 0));
+        mix-blend-mode: screen;
+      }
+      .cta {
+        position: absolute;
+        left: 1210px;
+        top: 300px;
+        width: 620px;
+      }
+      .cta .band {
+        color: var(--bone);
+        font: 800 140px/0.9 var(--font-title);
+        letter-spacing: 0.08em;
+      }
+      .cta .album {
+        margin-top: 18px;
+        color: var(--bronze);
+        font: 700 46px/1.1 var(--font-title);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .cta .rule {
+        margin-top: 40px;
+        width: 160px;
+        height: 2px;
+        background: var(--bronze);
+        transform-origin: left center;
+      }
+      .cta .line {
+        margin-top: 34px;
+        color: var(--bone);
+        font: 600 30px/1.3 var(--font-body);
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+      }
+
+      /* Destello en los golpes */
+      #flash {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: #f3e6cc;
+        opacity: 0;
+        mix-blend-mode: screen;
+      }
+      #vignette {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.75) 100%);
+      }
+      #grain {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        opacity: 0.12;
+        mix-blend-mode: overlay;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="25" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="25" data-track-index="0">
+        <div class="scene" id="s-intro">
+          <div class="whisper" id="whisper">Desde el silencio…</div>
+        </div>
+
+        <div class="scene" id="s-cover">
+          <div id="cover-wrap">
+            <div id="cover-bg"></div>
+            <div id="cover"></div>
+          </div>
+        </div>
+
+        <div class="scene" id="s-model">
+          <div id="model"><div id="model-cd"></div></div>
+          <div class="model-caption">
+            <div class="k" id="m-k">El nuevo álbum de</div>
+            <div class="t" id="m-t">DAM</div>
+          </div>
+        </div>
+
+        <div class="scene" id="s-title">
+          <div class="title-block">
+            <span id="t-dam">DAM</span>
+            <span id="t-sub">Desde el silencio</span>
+          </div>
+        </div>
+
+        <div class="scene" id="s-product">
+          <div id="disc"></div>
+          <div id="case"></div>
+          <div class="cta">
+            <div class="band" id="c-band">DAM</div>
+            <div class="album" id="c-album">Desde el silencio</div>
+            <div class="rule" id="c-rule"></div>
+            <div class="line" id="c-line">Nuevo álbum<br />Disponible en CD</div>
+          </div>
+        </div>
+
+        <div id="beam"></div>
+        <div id="dust"></div>
+        <div id="flash"></div>
+        <div id="vignette"></div>
+        <svg id="grain" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+          <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="1920" height="1080" filter="url(#noise)" />
+        </svg>
+      </div>
+      <audio id="music" src="assets/musica.mp3" data-start="0" data-duration="25" data-track-index="1" data-volume="1"></audio>
+    </div>
+
+    <script>
+      /* Golpes de la música (s): coinciden con tools/musica.py */
+      const HITS = [7, 11, 13, 15, 23];
+      const DUR = 25;
+      const tl = gsap.timeline({ paused: true });
+
+      // Partículas de polvo con semilla fija (render determinista)
+      let seed = 17;
+      const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      const dust = document.getElementById("dust");
+      for (let i = 0; i < 70; i++) {
+        const m = document.createElement("div");
+        m.className = "mote";
+        const s = 1.5 + rand() * 3.5;
+        m.style.width = m.style.height = `${s}px`;
+        m.style.left = `${560 + rand() * 800}px`;
+        m.style.top = `${rand() * 1080}px`;
+        m.style.opacity = (0.25 + rand() * 0.6).toFixed(2);
+        dust.appendChild(m);
+        tl.fromTo(m, { y: 0, x: 0 }, { y: -(120 + rand() * 260), x: -40 + rand() * 80, duration: DUR, ease: "none" }, 0);
+      }
+      tl.fromTo("#beam", { opacity: 0, scaleX: 0.6 }, { opacity: 1, scaleX: 1, duration: 3, ease: "power2.out" }, 0.2);
+      tl.fromTo("#dust", { opacity: 0 }, { opacity: 1, duration: 2.5 }, 0.5);
+
+      const show = (sel, a, b) => {
+        tl.set(sel, { opacity: 1 }, a);
+        tl.set(sel, { opacity: 0 }, b);
+      };
+      const flash = (at, peak = 0.85) =>
+        tl.fromTo("#flash", { opacity: peak }, { opacity: 0, duration: 0.6, ease: "power2.out", immediateRender: false }, at);
+
+      /* 1 · Desde el silencio (0–3,2 s) */
+      show("#s-intro", 0, 3.2);
+      tl.fromTo("#whisper", { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 1.8, ease: "power2.out" }, 0.8);
+      tl.to("#whisper", { opacity: 0, duration: 0.5 }, 2.65);
+
+      /* 2 · Portada con acercamiento a la calavera (3–7 s) */
+      show("#s-cover", 3.0, 7.0);
+      tl.fromTo("#s-cover", { filter: "brightness(0)" }, { filter: "brightness(1)", duration: 1.6, ease: "power2.out" }, 3.0);
+      tl.fromTo("#cover", { scale: 1, y: 540 }, { scale: 1.55, y: 540, duration: 4.0, ease: "power1.in" }, 3.0);
+      // parpadeo de luz
+      tl.to("#s-cover", { filter: "brightness(0.45)", duration: 0.06, yoyo: true, repeat: 3 }, 5.6);
+
+      /* 3 · Modelo promocionando el CD (7–12 s) */
+      show("#s-model", 7.0, 12.0);
+      flash(7.0);
+      tl.fromTo("#model", { scale: 1.12, x: 40 }, { scale: 1.0, x: 0, duration: 5.0, ease: "power2.out" }, 7.0);
+      tl.fromTo("#m-k", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }, 7.6);
+      tl.fromTo("#m-t", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 8.0);
+      flash(11.0, 0.55);
+      tl.fromTo("#model", { filter: "brightness(1.35)" }, { filter: "brightness(1)", duration: 0.8, immediateRender: false }, 11.0);
+
+      /* 4 · Título con golpes (12–16 s) */
+      show("#s-title", 12.0, 16.0);
+      tl.set("#t-sub", { opacity: 0 }, 12.0);
+      tl.fromTo("#t-dam", { scale: 1.6, opacity: 0, filter: "blur(12px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "power4.out" }, 13.0);
+      flash(13.0, 0.7);
+      tl.fromTo("#t-sub", { y: 40, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "power4.out" }, 15.0);
+      flash(15.0, 0.6);
+      tl.fromTo(".title-block", { scale: 1 }, { scale: 1.06, duration: 4, ease: "none" }, 12.0);
+      tl.fromTo("#t-dam", { x: 0 }, { x: 8, duration: 0.05, yoyo: true, repeat: 5, immediateRender: false }, 13.0);
+
+      /* 5 · Producto: caja de CD y disco girando (16–25 s) */
+      show("#s-product", 16.0, DUR + 0.1);
+      tl.fromTo("#case", { x: -500, rotationY: 35, opacity: 0 }, { x: 0, rotationY: 0, opacity: 1, duration: 1.4, ease: "power3.out" }, 16.0);
+      tl.fromTo("#disc", { x: 0 }, { x: 300, duration: 1.6, ease: "power3.inOut" }, 17.0);
+      tl.fromTo("#disc", { rotation: 0 }, { rotation: 900, duration: DUR - 16, ease: "none" }, 16.0);
+      tl.fromTo("#c-band", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" }, 17.6);
+      tl.fromTo("#c-album", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" }, 18.0);
+      tl.fromTo("#c-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "expo.inOut" }, 18.6);
+      tl.fromTo("#c-line", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 19.0);
+      tl.fromTo("#s-product", { x: 0 }, { x: -20, duration: DUR - 16, ease: "sine.inOut" }, 16.0);
+      flash(23.0, 0.5);
+
+      tl.set({}, {}, DUR);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
