@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Premios Comunica 2026 · loop 20 s ───────────── */
+      :root {
+        --ink: #1f2124;
+        --yellow: #edbb47;
+        --blue: #4fa2cf;
+        --teal: #63bdc1;
+        --blue-txt: #2a8ccb;
+        --teal-txt: #2cbfc3;
+        --font-display: "Archivo", "Inter", system-ui, sans-serif;
+        --font-body: "Inter", system-ui, sans-serif;
+      }
+      @font-face {
+        font-family: "Archivo";
+        src: url("assets/fonts/archivo-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #fff;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #fff;
+        color: var(--ink);
+        font-family: var(--font-body);
+      }
+      #stage,
+      .layer {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+
+      /* Círculos + podio + figuras (todo en un grupo que luego se desplaza a la derecha) */
+      #visual {
+        transform-origin: 960px 540px;
+      }
+      #circles {
+        position: absolute;
+        inset: 0;
+      }
+      #podium {
+        position: absolute;
+        left: 550px;
+        top: 780px;
+        width: 980px;
+        height: 110px;
+      }
+      #podium .body {
+        position: absolute;
+        left: 0;
+        top: 34px;
+        width: 980px;
+        height: 76px;
+        border-radius: 0 0 490px 490px / 0 0 40px 40px;
+        background: linear-gradient(180deg, #f1f1f1 0%, #e2e2e2 100%);
+        box-shadow: 0 30px 50px rgba(0, 0, 0, 0.12);
+      }
+      #podium .top {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 980px;
+        height: 70px;
+        border-radius: 50%;
+        background: radial-gradient(ellipse at 50% 40%, #ffffff 0%, #f6f6f6 70%, #ececec 100%);
+        border: 1px solid #e6e6e6;
+      }
+      .fig {
+        position: absolute;
+        filter: drop-shadow(0 14px 16px rgba(80, 50, 0, 0.25));
+        transform-origin: 50% 100%;
+      }
+      .fig img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .spark {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        margin: -7px 0 0 -7px;
+        background: #f3c84b;
+        clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+        opacity: 0;
+      }
+
+      /* Texto */
+      #layer-copy {
+        z-index: 3;
+      }
+      .left {
+        position: absolute;
+        left: 110px;
+        top: 0;
+        height: 1080px;
+        width: 860px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .wrap {
+        overflow: hidden;
+      }
+      .wrap > * {
+        display: block;
+      }
+      #t-premios {
+        font: 600 40px/1.2 var(--font-display);
+        letter-spacing: 0.42em;
+        color: var(--ink);
+      }
+      #t-comunica {
+        font: 900 128px/0.95 var(--font-display);
+        font-stretch: 112%;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+      }
+      #t-year {
+        font: 900 128px/0.95 var(--font-display);
+        font-stretch: 112%;
+        color: var(--blue-txt);
+      }
+      #t-nom {
+        margin-top: 22px;
+        font: 700 52px/1.2 var(--font-display);
+        letter-spacing: 0.24em;
+        color: var(--teal-txt);
+      }
+      #t-tag {
+        margin-top: 30px;
+        font: 500 38px/1.3 var(--font-body);
+        color: #2a2c30;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="20" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="20" data-track-index="0">
+        <div id="visual" class="layer">
+          <svg id="circles" viewBox="0 0 1920 1080" width="1920" height="1080">
+            <defs>
+              <clipPath id="clip0"><circle id="cc0" /></clipPath>
+              <clipPath id="clip1"><circle id="cc1" /></clipPath>
+              <clipPath id="clip2"><circle id="cc2" /></clipPath>
+            </defs>
+            <circle id="k0" fill="#edbb47" />
+            <circle id="k1" fill="#4fa2cf" />
+            <circle id="k2" fill="#63bdc1" />
+            <!-- intersecciones: el color nuevo nace donde los círculos se cruzan -->
+            <circle id="l02" fill="#a9c97a" clip-path="url(#clip0)" />
+            <circle id="l01" fill="#f2dc4c" clip-path="url(#clip0)" />
+            <circle id="l12" fill="#1bb3e3" clip-path="url(#clip1)" />
+          </svg>
+          <div id="podium"><div class="body"></div><div class="top"></div></div>
+          <div class="fig" id="fig1"><img src="assets/fig-1.png" alt="" /></div>
+          <div class="fig" id="fig2"><img src="assets/fig-2.png" alt="" /></div>
+          <div class="fig" id="fig3"><img src="assets/fig-3.png" alt="" /></div>
+          <div id="sparks"></div>
+        </div>
+
+        <div id="layer-copy" class="layer">
+          <div class="left">
+            <div class="wrap"><span id="t-premios">PREMIOS</span></div>
+            <div class="wrap"><span id="t-comunica">COMUNICA</span></div>
+            <div class="wrap"><span id="t-year">2026</span></div>
+            <div class="wrap"><span id="t-nom">NOMINACIONES</span></div>
+            <div class="wrap"><span id="t-tag">Mucho talento. Poco presupuesto.<br />Por fin, un premio.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const DUR = 20;
+      const EASE = "expo.out";
+      const tl = gsap.timeline({ paused: true });
+
+      /* ───── Círculos: entran girando en órbita y se abren en fila ───── */
+      const C = { x: 960, y: 420 };
+      const R = [220, 236, 220];
+      const ROW = [-330, 0, 330]; // separación en fila final
+      const st = { orb: 1500, ang: -1.2, s: 0, sc: 0.55 };
+      const $ = (id) => document.getElementById(id);
+      const pos = [];
+      const render = () => {
+        for (let i = 0; i < 3; i++) {
+          const a = st.ang + (i * 2 * Math.PI) / 3;
+          const ox = C.x + st.orb * Math.cos(a), oy = C.y + st.orb * Math.sin(a);
+          const lx = C.x + ROW[i], ly = C.y;
+          pos[i] = { x: ox + (lx - ox) * st.s, y: oy + (ly - oy) * st.s, r: Math.max(0, R[i] * st.sc) };
+        }
+        const set = (el, p) => { el.setAttribute("cx", p.x); el.setAttribute("cy", p.y); el.setAttribute("r", p.r); };
+        for (let i = 0; i < 3; i++) { set($("k" + i), pos[i]); set($("cc" + i), pos[i]); }
+        set($("l01"), pos[1]);
+        set($("l02"), pos[2]);
+        set($("l12"), pos[2]);
+      };
+      render();
+      tl.to(st, { orb: 200, ang: Math.PI * 2.2, sc: 1, duration: 2.6, ease: "power3.out", onUpdate: render }, 0.2);
+      tl.to(st, { s: 1, ang: Math.PI * 3.1, duration: 1.8, ease: "power2.inOut", onUpdate: render }, 2.5);
+      // respiración lenta durante el resto
+      tl.to(st, { sc: 1.03, duration: 6, ease: "sine.inOut", yoyo: true, repeat: 1, onUpdate: render }, 4.4);
+
+      /* ───── Podio + figuras de oro que caen del cielo ───── */
+      const FIGS = [
+        { id: "fig1", w: 330, h: 726, cx: C.x + ROW[0] + 60 },
+        { id: "fig2", w: 365, h: 770, cx: C.x + ROW[1] + 50 },
+        { id: "fig3", w: 369, h: 734, cx: C.x + ROW[2] + 60 },
+      ];
+      const K = 0.74, FLOOR = 815;
+      FIGS.forEach((f) => {
+        const el = $(f.id), w = f.w * K, h = f.h * K;
+        Object.assign(el.style, { width: w + "px", height: h + "px", left: f.cx - w / 2 + "px", top: FLOOR - h + "px" });
+      });
+      tl.fromTo("#podium", { y: 260, opacity: 0, scaleX: 0.7 }, { y: 0, opacity: 1, scaleX: 1, duration: 1.2, ease: EASE }, 4.2);
+
+      const sparks = $("sparks");
+      const DROP = [5.0, 6.4, 7.8];
+      FIGS.forEach((f, i) => {
+        const t = DROP[i];
+        tl.fromTo("#" + f.id, { y: -1300, rotation: i === 1 ? 0 : i === 0 ? -8 : 8 }, { y: 0, rotation: 0, duration: 0.75, ease: "power3.in" }, t);
+        tl.fromTo("#" + f.id, { scaleY: 1, scaleX: 1 }, { scaleY: 0.9, scaleX: 1.06, duration: 0.12, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, t + 0.75);
+        // destellos dorados al aterrizar
+        for (let k = 0; k < 10; k++) {
+          const s = document.createElement("div");
+          s.className = "spark";
+          s.style.left = f.cx + "px";
+          s.style.top = FLOOR - 10 + "px";
+          sparks.appendChild(s);
+          const a = Math.PI + (k / 9) * Math.PI; // abanico hacia arriba
+          const d = 140 + (k % 3) * 50;
+          tl.fromTo(s, { x: 0, y: 0, scale: 0.4, opacity: 0, rotation: 0 }, { x: Math.cos(a) * d, y: Math.sin(a) * d * 0.7, scale: 1.2, rotation: 180, opacity: 1, duration: 0.6, ease: "power3.out" }, t + 0.75);
+          tl.to(s, { opacity: 0, scale: 0.2, duration: 0.35, ease: "power1.in" }, t + 1.1);
+        }
+      });
+
+      /* ───── Se revela el nombre: todo el grupo se desplaza a la derecha ───── */
+      tl.to("#visual", { x: 520, y: 0, scale: 0.76, duration: 1.6, ease: "power3.inOut" }, 9.2);
+      const lineIn = (sel, at) => tl.fromTo(sel, { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.1, ease: EASE }, at);
+      lineIn("#t-premios", 10.0);
+      lineIn("#t-comunica", 10.2);
+      lineIn("#t-year", 10.45);
+      lineIn("#t-nom", 10.8);
+      lineIn("#t-tag", 11.2);
+      tl.fromTo("#t-year", { scale: 1 }, { scale: 1.05, transformOrigin: "left center", duration: 0.35, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 12.3);
+      // flotación suave mientras se sostiene
+      tl.to("#visual", { y: 14, duration: 5, ease: "sine.inOut" }, 11.4);
+      tl.to(".left", { y: -10, duration: 5, ease: "sine.inOut" }, 11.4);
+
+      /* ───── Salida: todo se va y vuelve al blanco para el loop ───── */
+      const OUT = 17.2;
+      tl.to(["#t-tag", "#t-nom", "#t-year", "#t-comunica", "#t-premios"], { yPercent: -110, opacity: 0, duration: 0.7, ease: "power3.in", stagger: 0.08 }, OUT);
+      tl.to(["#fig3", "#fig2", "#fig1"], { y: -1400, duration: 0.9, ease: "power3.in", stagger: 0.15 }, OUT + 0.2);
+      tl.to("#podium", { y: 300, opacity: 0, duration: 0.8, ease: "power3.in" }, OUT + 0.7);
+      tl.to(st, { s: 0, orb: 0, ang: Math.PI * 4.6, sc: 0, duration: 1.4, ease: "power3.in", onUpdate: render }, OUT + 0.9);
+      tl.set("#visual", { x: 0, y: 0, scale: 1 }, 19.6);
+
+      tl.set({}, {}, DUR);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
