@@ -64,20 +64,23 @@
           <svg id="deco" viewBox="0 0 2000 1117">
             <defs>
               <mask id="m-blue" maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="1117">
-                <path id="p-b" pathLength="1" d="M780 1140 L700 1030 L560 960 L380 890 L230 790 L140 650 L130 520 L200 380 L340 270 L470 175 L560 120 L620 80" fill="none" stroke="#fff" stroke-width="170" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" />
+                <path id="p-b" class="mp" pathLength="1" fill="none" stroke="#fff" stroke-width="170" stroke-dasharray="1 1" />
               </mask>
               <mask id="m-yellow" maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="1117">
-                <path id="p-yb" pathLength="1" d="M2040 830 L1920 950 L1820 1040 L1740 1140" fill="none" stroke="#fff" stroke-width="160" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" />
-                <path id="p-ya" pathLength="1" d="M2040 470 L1950 380 L1820 290 L1680 225 L1600 190 L1520 160 L1460 150" fill="none" stroke="#fff" stroke-width="260" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" />
+                <path id="p-yb" class="mp" pathLength="1" fill="none" stroke="#fff" stroke-width="160" stroke-dasharray="1 1" />
+                <path id="p-ya" class="mp" pathLength="1" fill="none" stroke="#fff" stroke-width="130" stroke-dasharray="1 1" />
               </mask>
               <mask id="m-teal" maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="1117">
-                <path id="p-tb" pathLength="1" d="M1580 1140 L1700 1030 L1800 985 L1900 1010 L2040 1080" fill="none" stroke="#fff" stroke-width="130" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" />
-                <path id="p-t7" pathLength="1" d="M1440 1140 L1400 1000 L1430 850 L1500 720 L1580 600 L1610 570 L1590 540 L1490 545 L1470 575" fill="none" stroke="#fff" stroke-width="130" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" />
+                <path id="p-tb" class="mp" pathLength="1" fill="none" stroke="#fff" stroke-width="130" stroke-dasharray="1 1" />
+                <path id="p-t7" class="mp" pathLength="1" fill="none" stroke="#fff" stroke-width="130" stroke-dasharray="1 1" />
               </mask>
             </defs>
             <image href="assets/d-blue.png" width="2000" height="1117" mask="url(#m-blue)" />
             <image href="assets/d-teal.png" width="2000" height="1117" mask="url(#m-teal)" />
             <image href="assets/d-yellow.png" width="2000" height="1117" mask="url(#m-yellow)" />
+            <!-- Cabezas: avanzan en la punta del trazo, girando con la curva -->
+            <g id="hb"><image href="assets/h-blue.png" width="2000" height="1117" /></g>
+            <g id="hy"><image href="assets/h-yellow.png" width="2000" height="1117" /></g>
           </svg>
 
           <!-- Círculos con ojos: se cruzan y nacen los colores de intersección -->
@@ -147,12 +150,57 @@
       blink(4.2);
 
       /* ───── Decoraciones: crecen desde los bordes ───── */
-      const draw = (sel, at, d) => tl.fromTo(sel, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
-      draw("#p-b", 0.7, 3.4);
-      draw("#p-t7", 1.1, 3.0);
-      draw("#p-tb", 2.4, 1.6);
-      draw("#p-yb", 1.4, 1.0);
-      draw("#p-ya", 2.2, 2.4);
+      // Trazos suaves (Catmull-Rom) que siguen el cuerpo de cada gusano
+      const PATHS = {
+        "p-b": [[900, 1300], [780, 1140], [700, 1030], [560, 960], [380, 890], [230, 790], [140, 650], [130, 520], [200, 380], [340, 270], [455, 186]],
+        "p-ya": [[2200, 640], [2040, 470], [1950, 380], [1820, 290], [1700, 235], [1650, 212]],
+        "p-yb": [[2040, 830], [1920, 950], [1820, 1040], [1740, 1140]],
+        "p-t7": [[1440, 1140], [1400, 1000], [1430, 850], [1500, 720], [1580, 600], [1610, 570], [1590, 540], [1490, 545], [1470, 575]],
+        "p-tb": [[1580, 1140], [1700, 1030], [1800, 985], [1900, 1010], [2040, 1080]],
+      };
+      const smooth = (P) => {
+        let d = `M${P[0][0]} ${P[0][1]}`;
+        for (let i = 0; i < P.length - 1; i++) {
+          const p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(P.length - 1, i + 2)];
+          d += ` C${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]} ${p2[1]}`;
+        }
+        return d;
+      };
+      const NS = "http://www.w3.org/2000/svg";
+      const measure = {};
+      Object.entries(PATHS).forEach(([id, P]) => {
+        const d = smooth(P);
+        $(id).setAttribute("d", d);
+        const m = document.createElementNS(NS, "path");
+        m.setAttribute("d", d);
+        $("deco").appendChild(m);
+        m.style.display = "none";
+        measure[id] = m;
+      });
+      // Cabeza en la punta: translate(punto) rotate(Δángulo) translate(-ancla)
+      const placeHead = (headId, pathId, prog) => {
+        const m = measure[pathId], L = m.getTotalLength(), l = Math.max(3, prog * L);
+        const p = m.getPointAtLength(l), q = m.getPointAtLength(l - 3);
+        const e = m.getPointAtLength(L), f = m.getPointAtLength(L - 3);
+        const ang = (Math.atan2(p.y - q.y, p.x - q.x) - Math.atan2(e.y - f.y, e.x - f.x)) * 180 / Math.PI;
+        $(headId).setAttribute("transform", `translate(${p.x} ${p.y}) rotate(${ang}) translate(${-e.x} ${-e.y})`);
+      };
+      const worm = (pathId, headId, at, d) => {
+        const st = { p: 0 };
+        const upd = () => {
+          $(pathId).style.strokeDashoffset = 1 - st.p;
+          if (headId) placeHead(headId, pathId, st.p);
+        };
+        upd();
+        tl.to(st, { p: 1, duration: d, ease: "sine.inOut", onUpdate: upd }, at);
+        // al llegar, la punta redondeada cierra la unión con la cabeza
+        tl.set("#" + pathId, { attr: { "stroke-linecap": "round" } }, at + d);
+      };
+      worm("p-b", "hb", 0.6, 3.6);
+      worm("p-t7", null, 1.1, 3.0);
+      worm("p-yb", null, 1.3, 1.1);
+      worm("p-ya", "hy", 2.0, 2.6);
+      worm("p-tb", null, 2.4, 1.6);
 
       /* ───── Textos ───── */
       tl.fromTo("#t-top", { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: "expo.out" }, 4.3);
