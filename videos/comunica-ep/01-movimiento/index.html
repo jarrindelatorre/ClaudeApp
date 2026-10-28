@@ -181,12 +181,12 @@
       }
       /* Fotos flotantes en la franja inferior derecha */
       /* Fotos flotantes a la derecha, en abanico */
-      .card { width: 300px; height: 390px; }
-      #card-1 { left: 900px; top: 340px; z-index: 1; }
-      #card-2 { left: 1010px; top: 120px; width: 420px; height: 327px; z-index: 2; }
-      #card-3 { left: 1150px; top: 470px; width: 280px; height: 382px; z-index: 3; }
-      #card-4 { left: 1440px; top: 560px; width: 260px; height: 346px; z-index: 4; }
-      #card-5 { left: 1560px; top: 140px; width: 240px; height: 447px; z-index: 5; }
+      /* Cada tarjeta con la proporción real de su foto: se ve completa, sin recorte */
+      #card-1 { left: 850px; top: 250px; width: 292px; height: 520px; z-index: 1; }  /* tótem 898×1598 */
+      #card-2 { left: 1140px; top: 105px; width: 400px; height: 311px; z-index: 2; }  /* pared 718×558 */
+      #card-3 { left: 1225px; top: 470px; width: 264px; height: 400px; z-index: 3; }  /* agenda 804×1220 */
+      #card-4 { left: 1500px; top: 590px; width: 270px; height: 360px; z-index: 4; }  /* soporte 1200×1600 */
+      #card-5 { left: 1590px; top: 115px; width: 253px; height: 470px; z-index: 5; }  /* roll-up 670×1246 */
 
       #vignette {
         position: absolute;
@@ -271,7 +271,6 @@
       ];
       CARDS.forEach(([sel, rot, at, drift], i) => {
         tl.fromTo(sel, { x: 160, y: 260, rotation: rot + 12, scale: 0.85, opacity: 0 }, { x: 0, y: 0, rotation: rot, scale: 1, opacity: 1, duration: 2.2, ease: "back.out(1.2)" }, at);
-        tl.fromTo(`${sel} img`, { scale: 1.14 }, { scale: 1.02, duration: DUR, ease: "sine.out" }, at);
         tl.to(sel, { y: drift, rotation: rot + (i % 2 ? -1.5 : 1.5), duration: DUR - at - 2.2, ease: "sine.inOut" }, at + 2.2);
       });
 
