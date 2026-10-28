@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Jornada de Integración · Comunica 2026 · logo animado ───────────── */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #fff;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #fff;
+      }
+      #stage {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      /* Lienzo en las coordenadas del arte original (2000×1117), escalado a 1920 */
+      #art {
+        position: absolute;
+        left: 0;
+        top: 4px;
+        width: 2000px;
+        height: 1117px;
+        transform: scale(0.96);
+        transform-origin: 0 0;
+      }
+      #art > svg,
+      #art > .lyr {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2000px;
+        height: 1117px;
+      }
+      .lyr img {
+        display: block;
+        width: 2000px;
+        height: 1117px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="12" data-track-index="0">
+        <div id="art">
+          <!-- Decoraciones: se dibujan desde el borde siguiendo su trazo -->
+          <svg id="deco" viewBox="0 0 2000 1117">
+            <defs>
+              <mask id="m-blue" maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="1117">
+                <path id="p-b" pathLength="1" d="M780 1140 L700 1030 L560 960 L380 890 L230 790 L140 650 L130 520 L200 380 L340 270 L470 175 L560 120 L620 80" fill="none" stroke="#fff" stroke-width="170" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" />
+              </mask>
+              <mask id="m-yellow" maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="1117">
+                <path id="p-yb" pathLength="1" d="M2040 830 L1920 950 L1820 1040 L1740 1140" fill="none" stroke="#fff" stroke-width="160" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" />
+                <path id="p-ya" pathLength="1" d="M2040 470 L1950 380 L1820 290 L1680 225 L1600 190 L1520 160 L1460 150" fill="none" stroke="#fff" stroke-width="260" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" />
+              </mask>
+              <mask id="m-teal" maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="1117">
+                <path id="p-tb" pathLength="1" d="M1580 1140 L1700 1030 L1800 985 L1900 1010 L2040 1080" fill="none" stroke="#fff" stroke-width="130" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" />
+                <path id="p-t7" pathLength="1" d="M1440 1140 L1400 1000 L1430 850 L1500 720 L1580 600 L1610 570 L1590 540 L1490 545 L1470 575" fill="none" stroke="#fff" stroke-width="130" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" />
+              </mask>
+            </defs>
+            <image href="assets/d-blue.png" width="2000" height="1117" mask="url(#m-blue)" />
+            <image href="assets/d-teal.png" width="2000" height="1117" mask="url(#m-teal)" />
+            <image href="assets/d-yellow.png" width="2000" height="1117" mask="url(#m-yellow)" />
+          </svg>
+
+          <!-- Círculos con ojos: se cruzan y nacen los colores de intersección -->
+          <svg id="circles" viewBox="0 0 2000 1117">
+            <defs>
+              <clipPath id="clip1"><circle id="cc1" /></clipPath>
+            </defs>
+            <g id="g0"><circle id="k0" fill="#f7bb17" /></g>
+            <g id="g2"><circle id="k2" fill="#36c0c4" /></g>
+            <g id="g1"><circle id="k1" fill="#1aa6d4" /></g>
+            <circle id="l01" fill="#5d8341" clip-path="url(#clip1)" />
+            <circle id="l12" fill="#009dae" clip-path="url(#clip1)" />
+            <g id="eyes">
+              <g class="eye-pair" id="e0"><ellipse cx="-23" cy="0" rx="12" ry="22" fill="#fff" /><ellipse cx="23" cy="0" rx="12" ry="22" fill="#fff" /></g>
+              <g class="eye-pair" id="e1"><ellipse cx="-24" cy="0" rx="12" ry="22" fill="#fff" /><ellipse cx="24" cy="0" rx="12" ry="22" fill="#fff" /></g>
+              <g class="eye-pair" id="e2"><ellipse cx="-23" cy="0" rx="12" ry="22" fill="#fff" /><ellipse cx="23" cy="0" rx="12" ry="22" fill="#fff" /></g>
+            </g>
+          </svg>
+
+          <!-- Textos del logo -->
+          <div class="lyr" id="t-top"><img src="assets/t-top.png" alt="" /></div>
+          <div class="lyr" id="t-comunica"><img src="assets/t-comunica.png" alt="" /></div>
+          <div class="lyr" id="t-2026"><img src="assets/t-2026.png" alt="" /></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const DUR = 12;
+      const tl = gsap.timeline({ paused: true });
+      const $ = (id) => document.getElementById(id);
+
+      /* ───── Círculos: estado animable (centro x, y, radio) ───── */
+      const FINAL = [
+        { x: 782, y: 502, r: 151, ex: 782.5, ey: 478 },
+        { x: 991, y: 502, r: 159, ex: 1004, ey: 462 },
+        { x: 1223, y: 503, r: 151, ex: 1228.5, ey: 479 },
+      ];
+      // Inicio: separados a lo ancho (como el primer cuadro de referencia)
+      const C = [
+        { x: 230, y: 470, s: 0 },
+        { x: 991, y: 470, s: 0 },
+        { x: 1760, y: 470, s: 0 },
+      ];
+      const set = (el, x, y, r) => { el.setAttribute("cx", x); el.setAttribute("cy", y); el.setAttribute("r", Math.max(0, r)); };
+      const render = () => {
+        C.forEach((c, i) => {
+          const f = FINAL[i];
+          const r = f.r * c.s;
+          set($("k" + i), c.x, c.y, r);
+          $("e" + i).setAttribute("transform", `translate(${c.x + (f.ex - f.x) * c.s} ${c.y + (f.ey - f.y) * c.s}) scale(${c.s})`);
+        });
+        set($("cc1"), C[1].x, C[1].y, FINAL[1].r * C[1].s);
+        set($("l01"), C[0].x, C[0].y, FINAL[0].r * C[0].s);
+        set($("l12"), C[2].x, C[2].y, FINAL[2].r * C[2].s);
+      };
+      render();
+
+      // 1 · Aparecen uno a uno con rebote
+      [0, 1, 2].forEach((i) => tl.to(C[i], { s: 1, duration: 0.9, ease: "back.out(2)", onUpdate: render }, 0.2 + i * 0.25));
+      // parpadeo (escala vertical de los ojos)
+      const blink = (at) => tl.fromTo(".eye-pair ellipse", { scaleY: 1 }, { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.09, ease: "power1.in", yoyo: true, repeat: 1, immediateRender: false }, at);
+      blink(1.6);
+      // 2 · Se acercan y se entrecruzan (nacen los colores de intersección)
+      [0, 1, 2].forEach((i) => tl.to(C[i], { x: FINAL[i].x, y: FINAL[i].y, duration: 1.5, ease: "power3.inOut", onUpdate: render }, 2.1));
+      tl.fromTo("#circles", { scale: 1 }, { scale: 1.03, transformOrigin: "991px 502px", duration: 0.25, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 3.55);
+      blink(4.2);
+
+      /* ───── Decoraciones: crecen desde los bordes ───── */
+      const draw = (sel, at, d) => tl.fromTo(sel, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, at);
+      draw("#p-b", 0.7, 3.4);
+      draw("#p-t7", 1.1, 3.0);
+      draw("#p-tb", 2.4, 1.6);
+      draw("#p-yb", 1.4, 1.0);
+      draw("#p-ya", 2.2, 2.4);
+
+      /* ───── Textos ───── */
+      tl.fromTo("#t-top", { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: "expo.out" }, 4.3);
+      tl.fromTo("#t-comunica", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 1.0, ease: "power3.inOut" }, 4.7);
+      tl.fromTo("#t-2026", { y: 60, opacity: 0, scale: 0.85 }, { y: 0, opacity: 1, scale: 1, transformOrigin: "1000px 870px", duration: 0.9, ease: "back.out(1.8)" }, 5.4);
+
+      /* ───── Se sostiene: respiración suave y parpadeos ───── */
+      tl.fromTo("#art", { scale: 0.96 }, { scale: 0.975, x: -12, y: -6, duration: DUR - 6.3, ease: "sine.inOut" }, 6.3);
+      blink(7.6);
+      blink(10.2);
+
+      tl.set({}, {}, DUR);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
