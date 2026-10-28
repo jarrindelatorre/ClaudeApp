@@ -62,11 +62,9 @@
         <div id="art">
           <!-- Decoraciones: se dibujan desde el borde siguiendo su trazo -->
           <!-- Gusanos: entran deslizándose desde los bordes y se acomodan -->
-          <div class="lyr" id="w-teal-bot"><img src="assets/w-teal-bot.png" alt="" /></div>
-          <div class="lyr" id="w-yellow-bot"><img src="assets/w-yellow-bot.png" alt="" /></div>
           <div class="lyr" id="w-blue"><img src="assets/w-blue.png" alt="" /></div>
           <div class="lyr" id="w-teal7"><img src="assets/w-teal7.png" alt="" /></div>
-          <div class="lyr" id="w-yellow-top"><img src="assets/w-yellow-top.png" alt="" /></div>
+          <div class="lyr" id="w-yellow"><img src="assets/w-yellow.png" alt="" /></div>
 
           <!-- Círculos con ojos: se cruzan y nacen los colores de intersección -->
           <svg id="circles" viewBox="0 0 2000 1117">
@@ -100,9 +98,9 @@
 
       /* ───── Círculos: estado animable (centro x, y, radio) ───── */
       const FINAL = [
-        { x: 782, y: 502, r: 151, ex: 782.5, ey: 478 },
-        { x: 991, y: 502, r: 159, ex: 1004, ey: 462 },
-        { x: 1223, y: 503, r: 151, ex: 1228.5, ey: 479 },
+        { x: 778, y: 501, r: 151, ex: 777.5, ey: 478 },
+        { x: 988, y: 501, r: 159, ex: 1000, ey: 462 },
+        { x: 1220, y: 501, r: 151, ex: 1225, ey: 478 },
       ];
       // Inicio: separados a lo ancho (como el primer cuadro de referencia)
       const C = [
@@ -142,9 +140,7 @@
       };
       worm("#w-blue", { x: -420, y: 520, rotation: -28 }, "0px 1117px", 0.6, 2.2);
       worm("#w-teal7", { x: 120, y: 760, rotation: 14 }, "1420px 1117px", 1.1, 2.0);
-      worm("#w-yellow-bot", { x: 320, y: 300, rotation: 10 }, "2000px 1117px", 1.4, 1.4);
-      worm("#w-yellow-top", { x: 620, y: -160, rotation: 22 }, "2000px 460px", 2.0, 2.2);
-      worm("#w-teal-bot", { x: 360, y: 200, rotation: -8 }, "2000px 1080px", 2.4, 1.5);
+      worm("#w-yellow", { x: 640, y: 120, rotation: 18 }, "2000px 1117px", 1.8, 2.3);
 
       /* ───── Textos ───── */
       tl.fromTo("#t-top", { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: "expo.out" }, 4.3);
