@@ -187,6 +187,7 @@
       #card-3 { left: 1225px; top: 470px; width: 264px; height: 400px; z-index: 3; }  /* agenda 804×1220 */
       #card-4 { left: 1500px; top: 590px; width: 270px; height: 360px; z-index: 4; }  /* soporte 1200×1600 */
       #card-5 { left: 1590px; top: 115px; width: 253px; height: 470px; z-index: 5; }  /* roll-up 670×1246 */
+      #card-6 { left: 930px; top: 735px; width: 300px; height: 304px; z-index: 6; }  /* placa 1184×1200 */
 
       #vignette {
         position: absolute;
@@ -219,6 +220,7 @@
           <div class="card" id="card-3"><div class="mask"><img src="assets/agenda.webp" alt="" /></div></div>
           <div class="card" id="card-4"><div class="mask"><img src="assets/soporte.webp" alt="" /></div></div>
           <div class="card" id="card-5"><div class="mask"><img src="assets/roll-up-comunica.webp" alt="" /></div></div>
+          <div class="card" id="card-6"><div class="mask"><img src="assets/placa.webp" alt="" /></div></div>
         </div>
 
         <div id="layer-copy" class="layer">
@@ -263,11 +265,12 @@
 
       /* Afiches: llegan uno a uno en abanico y luego flotan a ritmos distintos */
       const CARDS = [
-        ["#card-1", -6, 4.5, 18],
-        ["#card-2", -2, 6.5, -16],
-        ["#card-3", 4, 8.5, 20],
-        ["#card-4", 7, 10.5, -16],
-        ["#card-5", 3, 12.5, 14],
+        ["#card-1", -6, 4.0, 18],
+        ["#card-2", -2, 5.8, -16],
+        ["#card-3", 4, 7.6, 20],
+        ["#card-4", 7, 9.4, -16],
+        ["#card-5", 3, 11.2, 14],
+        ["#card-6", -4, 13.0, -14],
       ];
       CARDS.forEach(([sel, rot, at, drift], i) => {
         tl.fromTo(sel, { x: 160, y: 260, rotation: rot + 12, scale: 0.85, opacity: 0 }, { x: 0, y: 0, rotation: rot, scale: 1, opacity: 1, duration: 2.2, ease: "back.out(1.2)" }, at);
