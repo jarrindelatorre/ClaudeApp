@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Jornada de Integración · Comunica 2026 · logo animado ───────────── */
+      @font-face {
+        font-family: "Archivo";
+        src: url("assets/fonts/archivo-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: block;
+      }
+      .txt {
+        position: absolute;
+        left: 0;
+        width: 2000px;
+        text-align: center;
+        font-family: "Archivo", sans-serif;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      #t-top {
+        top: 190px;
+        color: #939597;
+        font-weight: 800;
+        font-size: 128px;
+        line-height: 1;
+        letter-spacing: 0.02em;
+      }
+      #t-date {
+        top: 700px;
+        color: #1aa6d4;
+        font-weight: 900;
+        font-size: 225px;
+        line-height: 1;
+        letter-spacing: 0.01em;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #fff;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #fff;
+      }
+      #stage {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      /* Lienzo en las coordenadas del arte original (2000×1117), escalado a 1920 */
+      #art {
+        position: absolute;
+        left: 0;
+        top: 4px;
+        width: 2000px;
+        height: 1117px;
+        transform: scale(0.96);
+        transform-origin: 0 0;
+      }
+      #art > svg,
+      #art > .lyr {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2000px;
+        height: 1117px;
+      }
+      .lyr img {
+        display: block;
+        width: 2000px;
+        height: 1117px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="12" data-track-index="0">
+        <div id="art">
+          <!-- Decoraciones: se dibujan desde el borde siguiendo su trazo -->
+          <!-- Gusanos: entran deslizándose desde los bordes y se acomodan -->
+          <div class="lyr" id="w-blue"><img src="assets/w-blue.png" alt="" /></div>
+          <div class="lyr" id="w-teal7"><img src="assets/w-teal7.png" alt="" /></div>
+          <div class="lyr" id="w-yellow"><img src="assets/w-yellow.png" alt="" /></div>
+
+          <!-- Círculos con ojos: se cruzan y nacen los colores de intersección -->
+          <svg id="circles" viewBox="0 0 2000 1117">
+            <defs>
+              <clipPath id="clip1"><circle id="cc1" /></clipPath>
+            </defs>
+            <g id="g0"><circle id="k0" fill="#f7bb17" /></g>
+            <g id="g2"><circle id="k2" fill="#36c0c4" /></g>
+            <g id="g1"><circle id="k1" fill="#1aa6d4" /></g>
+            <circle id="l01" fill="#5d8341" clip-path="url(#clip1)" />
+            <circle id="l12" fill="#009dae" clip-path="url(#clip1)" />
+            <g id="eyes">
+              <g class="eye-pair" id="e0"><ellipse cx="-23" cy="0" rx="12" ry="22" fill="#fff" /><ellipse cx="23" cy="0" rx="12" ry="22" fill="#fff" /></g>
+              <g class="eye-pair" id="e1"><ellipse cx="-24" cy="0" rx="12" ry="22" fill="#fff" /><ellipse cx="24" cy="0" rx="12" ry="22" fill="#fff" /></g>
+              <g class="eye-pair" id="e2"><ellipse cx="-23" cy="0" rx="12" ry="22" fill="#fff" /><ellipse cx="23" cy="0" rx="12" ry="22" fill="#fff" /></g>
+            </g>
+          </svg>
+
+          <!-- Textos del logo -->
+          <div class="txt" id="t-top">Save the</div>
+          <div class="txt" id="t-date">Date</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const DUR = 12;
+      const tl = gsap.timeline({ paused: true });
+      const $ = (id) => document.getElementById(id);
+
+      /* ───── Círculos: estado animable (centro x, y, radio) ───── */
+      const FINAL = [
+        { x: 778, y: 501, r: 151, ex: 777.5, ey: 478 },
+        { x: 988, y: 501, r: 159, ex: 1000, ey: 462 },
+        { x: 1220, y: 501, r: 151, ex: 1225, ey: 478 },
+      ];
+      // Inicio: separados a lo ancho (como el primer cuadro de referencia)
+      const C = [
+        { x: 230, y: 470, s: 0 },
+        { x: 991, y: 470, s: 0 },
+        { x: 1760, y: 470, s: 0 },
+      ];
+      const set = (el, x, y, r) => { el.setAttribute("cx", x); el.setAttribute("cy", y); el.setAttribute("r", Math.max(0, r)); };
+      const render = () => {
+        C.forEach((c, i) => {
+          const f = FINAL[i];
+          const r = f.r * c.s;
+          set($("k" + i), c.x, c.y, r);
+          $("e" + i).setAttribute("transform", `translate(${c.x + (f.ex - f.x) * c.s} ${c.y + (f.ey - f.y) * c.s}) scale(${c.s})`);
+        });
+        set($("cc1"), C[1].x, C[1].y, FINAL[1].r * C[1].s);
+        set($("l01"), C[0].x, C[0].y, FINAL[0].r * C[0].s);
+        set($("l12"), C[2].x, C[2].y, FINAL[2].r * C[2].s);
+      };
+      render();
+
+      // 1 · Aparecen uno a uno con rebote
+      [0, 1, 2].forEach((i) => tl.to(C[i], { s: 1, duration: 0.9, ease: "back.out(2)", onUpdate: render }, 0.2 + i * 0.25));
+      // parpadeo (escala vertical de los ojos)
+      const blink = (at) => tl.fromTo(".eye-pair ellipse", { scaleY: 1 }, { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.09, ease: "power1.in", yoyo: true, repeat: 1, immediateRender: false }, at);
+      blink(1.6);
+      // 2 · Se acercan y se entrecruzan (nacen los colores de intersección)
+      [0, 1, 2].forEach((i) => tl.to(C[i], { x: FINAL[i].x, y: FINAL[i].y, duration: 1.5, ease: "power3.inOut", onUpdate: render }, 2.1));
+      tl.fromTo("#circles", { scale: 1 }, { scale: 1.03, transformOrigin: "991px 502px", duration: 0.25, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 3.55);
+      blink(4.2);
+
+      /* ───── Decoraciones: crecen desde los bordes ───── */
+      // Cada gusano entra girando desde su base fuera de cuadro, se pasa un poco y se asienta con un leve vaivén
+      const worm = (sel, from, origin, at, d) => {
+        tl.fromTo(sel, { ...from, transformOrigin: origin }, { x: 0, y: 0, rotation: 0, duration: d, ease: "back.out(1.2)" }, at);
+        tl.to(sel, { rotation: from.rotation > 0 ? -1.5 : 1.5, duration: 0.35, ease: "sine.inOut", yoyo: true, repeat: 1 }, at + d);
+      };
+      worm("#w-blue", { x: -420, y: 520, rotation: -28 }, "0px 1117px", 0.6, 2.2);
+      worm("#w-teal7", { x: 120, y: 760, rotation: 14 }, "1420px 1117px", 1.1, 2.0);
+      worm("#w-yellow", { x: 640, y: 120, rotation: 18 }, "2000px 1117px", 1.8, 2.3);
+
+      /* ───── Textos ───── */
+      tl.fromTo("#t-top", { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: "expo.out" }, 4.3);
+      tl.fromTo("#t-date", { y: 80, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, transformOrigin: "1000px 830px", duration: 1.0, ease: "back.out(1.8)" }, 4.9);
+      tl.fromTo("#t-date", { scale: 1 }, { scale: 1.05, transformOrigin: "1000px 830px", duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 6.3);
+
+      /* ───── Se sostiene: respiración suave y parpadeos ───── */
+      tl.fromTo("#art", { scale: 0.96 }, { scale: 0.975, x: -12, y: -6, duration: DUR - 6.3, ease: "sine.inOut" }, 6.3);
+      blink(7.6);
+      blink(10.2);
+
+      tl.set({}, {}, DUR);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
