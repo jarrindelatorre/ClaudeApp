@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Equipos · El Telégrafo, Pública FM, Ecuador TV, Comunica ───────────── */
+      :root {
+        --navy: #0f2546;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--navy);
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--navy);
+      }
+      #stage,
+      .layer {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      .bgl {
+        position: absolute;
+        left: -100px;
+        top: -40px;
+        width: 2160px;
+        height: 1440px;
+      }
+      .bgl img {
+        display: block;
+        width: 2160px;
+        height: 1440px;
+        object-fit: cover;
+      }
+      .shade {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: radial-gradient(ellipse at 50% 50%, rgba(14, 34, 66, 0.55) 0%, rgba(10, 24, 48, 0.85) 75%);
+      }
+      /* Fila de banners: uno debajo del otro */
+      .card {
+        position: absolute;
+        left: 620px;
+        width: 680px;
+        height: 253px;
+      }
+      .card .mask {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        border-radius: 10px;
+        border: 4px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 26px 60px rgba(0, 8, 24, 0.6), 0 6px 16px rgba(0, 8, 24, 0.4);
+        background: #0b1d38;
+      }
+      .card img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #c1 { top: 13px; }
+      #c2 { top: 280px; }
+      #c3 { top: 547px; }
+      #c4 { top: 814px; }
+      #vignette {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(0, 10, 25, 0.5) 100%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="15" data-track-index="0">
+        <div class="layer">
+          <div class="bgl"><img src="assets/fondo-comunica.webp" alt="" /></div>
+          <div class="shade"></div>
+        </div>
+        <div class="layer" id="cards">
+          <div class="card" id="c1"><div class="mask"><img src="assets/eq-telegrafo.webp" alt="" /></div></div>
+          <div class="card" id="c2"><div class="mask"><img src="assets/eq-publica.webp" alt="" /></div></div>
+          <div class="card" id="c3"><div class="mask"><img src="assets/eq-ectv.webp" alt="" /></div></div>
+          <div class="card" id="c4"><div class="mask"><img src="assets/eq-comunica.webp" alt="" /></div></div>
+        </div>
+        <div id="vignette"></div>
+      </div>
+    </div>
+
+    <script>
+      const DUR = 15;
+      const tl = gsap.timeline({ paused: true });
+
+      /* Fondo con movimiento lento */
+      tl.fromTo(".bgl img", { scale: 1.1, x: 60, y: 0 }, { scale: 1, x: -80, y: -60, duration: DUR, ease: "sine.inOut" }, 0);
+
+      /* Los banners se cargan en fila, uno tras otro, desde lados alternos */
+      const CARDS = ["#c1", "#c2", "#c3", "#c4"];
+      CARDS.forEach((sel, i) => {
+        const at = 0.6 + i * 1.6;
+        const side = i % 2 ? 1 : -1;
+        tl.fromTo(sel, { x: side * 1300, rotation: side * 4, opacity: 0 }, { x: 0, rotation: 0, opacity: 1, duration: 1.3, ease: "expo.out" }, at);
+        tl.fromTo(sel + " img", { scale: 1.15 }, { scale: 1, duration: 2.4, ease: "power2.out" }, at);
+        // flotación suave mientras se sostiene
+        tl.to(sel, { x: side * -14, duration: DUR - at - 1.3, ease: "sine.inOut" }, at + 1.3);
+      });
+      // Comunica, al final, destaca con un leve pulso
+      tl.fromTo("#c4", { scale: 1 }, { scale: 1.04, duration: 0.4, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 7.6);
+
+      tl.set({}, {}, DUR);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
