@@ -163,8 +163,8 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="20" data-width="1920" data-height="1080">
-      <div id="stage" class="clip" data-start="0" data-duration="20" data-track-index="0">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="15" data-track-index="0">
         <div id="visual" class="layer">
           <svg id="circles" viewBox="0 0 1920 1080" width="1920" height="1080">
             <defs>
@@ -200,7 +200,7 @@
     </div>
 
     <script>
-      const DUR = 20;
+      const DUR = 15;
       const EASE = "expo.out";
       const tl = gsap.timeline({ paused: true });
 
@@ -228,17 +228,18 @@
       tl.to(st, { orb: 200, ang: Math.PI * 2.2, sc: 1, duration: 2.6, ease: "power3.out", onUpdate: render }, 0.2);
       tl.to(st, { s: 1, ang: Math.PI * 3.1, duration: 1.8, ease: "power2.inOut", onUpdate: render }, 2.5);
       // respiración lenta durante el resto
-      tl.to(st, { sc: 1.03, duration: 6, ease: "sine.inOut", yoyo: true, repeat: 1, onUpdate: render }, 4.4);
 
       /* ───── Podio + figuras de oro que caen del cielo ───── */
       const FIGS = [
-        { id: "fig1", w: 330, h: 726, cx: C.x + ROW[0] + 60 },
-        { id: "fig2", w: 365, h: 770, cx: C.x + ROW[1] + 50 },
-        { id: "fig3", w: 369, h: 734, cx: C.x + ROW[2] + 60 },
+        // bases centradas en el podio (centro 1040, separación 330); bx = centro de la base dentro de cada imagen
+        { id: "fig1", w: 330, h: 726, base: 1040 - 330, bx: 207 },
+        { id: "fig2", w: 365, h: 770, base: 1040, bx: 205.5 },
+        { id: "fig3", w: 369, h: 734, base: 1040 + 330, bx: 165 },
       ];
       const K = 0.74, FLOOR = 815;
       FIGS.forEach((f) => {
         const el = $(f.id), w = f.w * K, h = f.h * K;
+        f.cx = f.base - (f.bx - f.w / 2) * K;
         Object.assign(el.style, { width: w + "px", height: h + "px", left: f.cx - w / 2 + "px", top: FLOOR - h + "px" });
       });
       tl.fromTo("#podium", { y: 260, opacity: 0, scaleX: 0.7 }, { y: 0, opacity: 1, scaleX: 1, duration: 1.2, ease: EASE }, 4.2);
@@ -253,7 +254,7 @@
         for (let k = 0; k < 10; k++) {
           const s = document.createElement("div");
           s.className = "spark";
-          s.style.left = f.cx + "px";
+          s.style.left = f.base + "px";
           s.style.top = FLOOR - 10 + "px";
           sparks.appendChild(s);
           const a = Math.PI + (k / 9) * Math.PI; // abanico hacia arriba
@@ -264,7 +265,7 @@
       });
 
       /* ───── Se revela el nombre: todo el grupo se desplaza a la derecha ───── */
-      tl.to("#visual", { x: 520, y: 0, scale: 0.76, duration: 1.6, ease: "power3.inOut" }, 9.2);
+      tl.to("#visual", { x: 470, y: 0, scale: 0.76, duration: 1.6, ease: "power3.inOut" }, 9.2);
       const lineIn = (sel, at) => tl.fromTo(sel, { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.1, ease: EASE }, at);
       lineIn("#t-premios", 10.0);
       lineIn("#t-comunica", 10.2);
@@ -273,16 +274,7 @@
       lineIn("#t-tag", 11.2);
       tl.fromTo("#t-year", { scale: 1 }, { scale: 1.05, transformOrigin: "left center", duration: 0.35, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, 12.3);
       // flotación suave mientras se sostiene
-      tl.to("#visual", { y: 14, duration: 5, ease: "sine.inOut" }, 11.4);
-      tl.to(".left", { y: -10, duration: 5, ease: "sine.inOut" }, 11.4);
 
-      /* ───── Salida: todo se va y vuelve al blanco para el loop ───── */
-      const OUT = 17.2;
-      tl.to(["#t-tag", "#t-nom", "#t-year", "#t-comunica", "#t-premios"], { yPercent: -110, opacity: 0, duration: 0.7, ease: "power3.in", stagger: 0.08 }, OUT);
-      tl.to(["#fig3", "#fig2", "#fig1"], { y: -1400, duration: 0.9, ease: "power3.in", stagger: 0.15 }, OUT + 0.2);
-      tl.to("#podium", { y: 300, opacity: 0, duration: 0.8, ease: "power3.in" }, OUT + 0.7);
-      tl.to(st, { s: 0, orb: 0, ang: Math.PI * 4.6, sc: 0, duration: 1.4, ease: "power3.in", onUpdate: render }, OUT + 0.9);
-      tl.set("#visual", { x: 0, y: 0, scale: 1 }, 19.6);
 
       tl.set({}, {}, DUR);
       window.__timelines["main"] = tl;
