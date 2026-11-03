@@ -35,3 +35,24 @@ ffmpeg -framerate 24 -i animacion/frames/%04d.png -c:v libx264 -pix_fmt yuv420p 
 Opciones útiles: `--samples 16 --res-pct 50` para pruebas rápidas,
 `--frames 1-24` para un tramo, `--blend escena.blend` para guardar el archivo
 de Blender y seguir editándolo a mano.
+
+---
+
+# Logo 3D con giro (`logo/`)
+
+Animación de 5 s (1280×720, 24 fps): el logo de `logo/logo.png` se extruye a
+un objeto 3D con volumen, usando el propio logo como textura. Entra girando
+una vuelta y media sobre un fondo claro, frena de frente y queda flotando.
+
+- `logo/logo_3d.py`: script (necesita además `numpy pillow scipy scikit-image`).
+- `logo/logo_3d.mp4`: el video final.
+
+```bash
+python animacion/logo/logo_3d.py --logo animacion/logo/logo.png --out animacion/frames/
+```
+
+```bash
+ffmpeg -framerate 24 -i animacion/frames/%04d.png -c:v libx264 -pix_fmt yuv420p -crf 18 animacion/logo/logo_3d.mp4
+```
+
+Sirve para cualquier otro logo PNG con fondo transparente: basta cambiar `--logo`.
