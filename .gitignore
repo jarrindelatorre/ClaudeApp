@@ -19,3 +19,4 @@ deploy/.env
 
 # Frames intermedios de la animación de Blender
 animacion/frames/
+*.blend1
