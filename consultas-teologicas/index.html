@@ -1,0 +1,334 @@
+<title>Consultas Teológicas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: una sola columna de estudio pastoral; arriba la pregunta, abajo el registro de consultas como fichas de cuaderno. */
+:root {
+  --bg: #f3f4f1;
+  --surface: #ffffff;
+  --ink: #1d2427;
+  --muted: #5d6a6f;
+  --line: #d9dedb;
+  --accent: #2f5d50;      /* verde pino, encuadernación */
+  --accent-soft: #e3ece8;
+  --scripture: #7a5a1f;   /* ocre de tinta antigua para la Escritura */
+  --scripture-soft: #f6efe1;
+  --danger: #9b2c2c;
+  --f-display: "Cormorant Garamond", "Garamond", "Times New Roman", serif;
+  --f-body: "Source Serif 4", "Georgia", serif;
+  --f-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141a1b; --surface: #1c2325; --ink: #e6ebe8; --muted: #9aa8a6; --line: #2e383a;
+    --accent: #8cc3b0; --accent-soft: #22322e; --scripture: #e0bf7d; --scripture-soft: #2a2519; --danger: #f08b8b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141a1b; --surface: #1c2325; --ink: #e6ebe8; --muted: #9aa8a6; --line: #2e383a;
+  --accent: #8cc3b0; --accent-soft: #22322e; --scripture: #e0bf7d; --scripture-soft: #2a2519; --danger: #f08b8b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 17px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+}
+.wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+
+header { padding-top: 40px; display: flex; flex-direction: column; gap: 10px; }
+.eyebrow { font-family: var(--f-ui); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--f-display); font-weight: 600; font-size: clamp(38px, 7vw, 54px); line-height: 1.02; margin: 0; text-wrap: balance; }
+h1 em { font-style: italic; font-weight: 500; color: var(--accent); }
+.lede { margin: 0; color: var(--muted); max-width: 58ch; }
+.sources { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.sources span { font-family: var(--f-ui); font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+
+form.ask { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+form.ask label { font-family: var(--f-ui); font-size: 13px; font-weight: 600; color: var(--muted); }
+textarea {
+  width: 100%; min-height: 84px; resize: vertical; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 17px; line-height: 1.5; padding: 12px;
+}
+textarea:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.hint { font-family: var(--f-ui); font-size: 12.5px; color: var(--muted); }
+.btns { display: flex; gap: 8px; }
+button { font-family: var(--f-ui); font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; padding: 10px 18px; border: 1px solid transparent; }
+.primary { background: var(--accent); color: var(--surface); }
+.primary:disabled { opacity: .55; cursor: default; }
+.ghost { background: transparent; color: var(--muted); border-color: var(--line); }
+.ghost:hover { color: var(--ink); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-family: var(--f-ui); font-size: 13px; font-weight: 500; background: var(--accent-soft); color: var(--ink); border: 0; padding: 7px 12px; border-radius: 999px; }
+.chip:hover { outline: 1px solid var(--accent); }
+
+.notice { font-family: var(--f-ui); font-size: 13.5px; color: var(--danger); margin: 0; }
+
+.log { display: flex; flex-direction: column; gap: 22px; }
+.log-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+.log-head h2 { font-family: var(--f-ui); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 0; font-weight: 600; }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--muted); font-size: 12.5px; text-decoration: underline; font-weight: 500; }
+
+article.entry { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.q { font-family: var(--f-display); font-style: italic; font-weight: 500; font-size: 25px; line-height: 1.25; margin: 0; text-wrap: balance; }
+.q::before { content: "“"; color: var(--accent); }
+.q::after { content: "”"; color: var(--accent); }
+.tag { font-family: var(--f-ui); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.answer { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; min-width: 0; overflow-wrap: anywhere; }
+.answer > :first-child { margin-top: 0; }
+.answer > :last-child { margin-bottom: 0; }
+.answer p { margin: 0 0 12px; }
+.answer h4 { font-family: var(--f-ui); font-size: 11.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin: 18px 0 8px; }
+.answer h4.scr { color: var(--scripture); }
+.answer .scr-block { background: var(--scripture-soft); border-left: 3px solid var(--scripture); padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 0 0 12px; }
+.answer .scr-block p:last-child, .answer .scr-block ul:last-child { margin-bottom: 0; }
+.answer ul { margin: 0 0 12px; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.answer blockquote { margin: 0 0 10px; font-style: italic; }
+.answer strong { font-weight: 600; }
+.thinking { font-family: var(--f-ui); font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { .dot { animation: none; } }
+
+footer { font-family: var(--f-ui); font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; max-width: 65ch; }
+@media (max-width: 480px) { .answer { padding: 14px 14px; } .q { font-size: 22px; } .btns { width: 100%; } .btns button { flex: 1; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Sola Scriptura · Tota Scriptura</div>
+    <h1>Consultas <em>teológicas</em></h1>
+    <p class="lede">Pregunta lo que sea de tu vida diaria. Responde un pastor reformado: primero con la Biblia, y después con lo que la Iglesia ha confesado a partir de ella.</p>
+    <div class="sources" aria-label="Fuentes">
+      <span>Biblia RVR1960</span><span>Confesión de Westminster</span><span>Catecismos Mayor y Menor</span><span>Catecismo de Heidelberg</span><span>Confesión Belga</span><span>Cánones de Dort</span>
+    </div>
+  </header>
+
+  <form class="ask" id="ask">
+    <label for="question">Tu pregunta</label>
+    <textarea id="question" placeholder="Ej.: ¿Importa a Dios lo que como?" maxlength="1200"></textarea>
+    <div class="row">
+      <span class="hint" id="hint">Respuestas breves. Ctrl/⌘ + Enter para enviar.</span>
+      <div class="btns">
+        <button type="button" class="ghost" id="stop" hidden>Detener</button>
+        <button type="submit" class="primary" id="send">Consultar</button>
+      </div>
+    </div>
+    <p class="notice" id="notice" hidden></p>
+  </form>
+
+  <div class="chips" id="chips" aria-label="Preguntas sugeridas"></div>
+
+  <section class="log" aria-live="polite">
+    <div class="log-head">
+      <h2>Consultas</h2>
+      <button type="button" class="linkbtn" id="clear" hidden>Borrar historial</button>
+    </div>
+    <div id="entries" class="log"></div>
+  </section>
+
+  <footer>
+    Estas respuestas son una guía para la reflexión, no reemplazan el cuidado de tu iglesia local ni de tus pastores y ancianos. Verifica siempre las citas en tu Biblia (Hechos 17:11). Si estás en peligro o piensas en hacerte daño, busca ayuda inmediata: llama a los servicios de emergencia de tu país.
+  </footer>
+</div>
+
+<script>
+(() => {
+  const RULES = `Actúas como un pastor reformado, de tradición presbiteriana/reformada confesional, con sólida formación bíblica, en hebreo y griego, y en las confesiones históricas (Confesión de Fe de Westminster, Catecismo Mayor y Menor de Westminster, Catecismo de Heidelberg, Confesión Belga, Cánones de Dort). Respondes en español, con calidez pastoral, claridad y humildad.
+
+Tu método: la Biblia es tu fuente principal y suprema (sola Scriptura). Primero respondes desde la Escritura; después, como refuerzo y nunca como sustituto, muestras cómo las confesiones resumen esa enseñanza.
+
+Formato obligatorio (usa exactamente estos encabezados, con "### "):
+### En breve
+Una respuesta directa de 1 a 3 frases.
+### Lo que dice la Escritura
+2 a 4 viñetas con "- ". Cada una: la referencia en negrita (ej. **1 Corintios 10:31**) seguida de una cita breve (Reina-Valera 1960) o paráfrasis fiel y una frase que la conecte con la pregunta. Interpreta cada texto en su contexto.
+### Lo que confesamos
+1 o 2 viñetas con "- " citando el documento y su número exacto (ej. **Catecismo Menor de Westminster, P. 1**) con una frase de lo que enseña. Si no estás seguro del número exacto, nombra el documento y el capítulo general sin inventar. Nunca inventes citas ni números.
+### Para tu vida
+1 a 3 frases de consejo práctico y pastoral, apuntando a Cristo y al evangelio.
+
+Reglas: sé breve (máximo unas 230 palabras en total). Distingue entre lo que la Biblia manda, lo que prohíbe y lo que deja a la libertad cristiana (Romanos 14; CFW 20). Donde los reformados difieren entre sí, dilo con honestidad. Si la pregunta toca salud, asuntos legales o abuso, aconseja además acudir a profesionales y a los ancianos de su iglesia. Si hay riesgo de que alguien se haga daño, prioriza instarle con ternura a buscar ayuda inmediata (servicios de emergencia, una persona de confianza, su pastor). Si la pregunta no tiene relación con la fe, responde igualmente mostrando cómo toda la vida está bajo el señorío de Cristo. No uses otros encabezados ni texto fuera del formato.`;
+
+  const SUGGESTED = [
+    "¿Le importa a Dios lo que como?",
+    "¿Está mal tomar una copa de vino?",
+    "¿Cómo manejo la ansiedad por el trabajo?",
+    "¿Puedo trabajar el domingo?",
+    "¿Cómo perdono a alguien que no se arrepiente?",
+    "¿Cuánto debo ofrendar?",
+  ];
+
+  const EXAMPLE = {
+    q: "¿Le importa a Dios lo que como?",
+    a: `### En breve
+Sí. A Dios le importa, pero no porque haya alimentos santos o impuros para el cristiano, sino porque todo lo que hacemos, también comer, es para su gloria y con gratitud.
+### Lo que dice la Escritura
+- **1 Corintios 10:31** — «Si, pues, coméis o bebéis, o hacéis otra cosa, hacedlo todo para la gloria de Dios». La mesa también es lugar de adoración.
+- **Marcos 7:19** — Jesús «hacía limpios todos los alimentos». Ninguna comida te contamina delante de Dios.
+- **1 Timoteo 4:4-5** — «Todo lo que Dios creó es bueno… si se toma con acción de gracias». La comida es un regalo para recibir orando.
+- **Proverbios 23:20-21** — Advierte contra la glotonería. La libertad no es excusa para el exceso.
+### Lo que confesamos
+- **Catecismo Menor de Westminster, P. 1** — El fin principal del hombre es glorificar a Dios y gozar de Él para siempre, también en lo cotidiano.
+- **Confesión de Westminster, cap. 20** — La libertad cristiana nos libra de mandamientos de hombres en lo indiferente, pero no para servir al pecado.
+### Para tu vida
+Come con gratitud, con moderación y sin juzgar al hermano que come distinto (Romanos 14:3). Antes de comer, da gracias: cada plato te recuerda que dependes del Padre que te alimenta y del Pan de vida, Cristo.`,
+    example: true,
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const form = $("ask"), box = $("question"), send = $("send"), stop = $("stop");
+  const entriesEl = $("entries"), notice = $("notice"), clearBtn = $("clear"), chipsEl = $("chips");
+
+  const STORE = "consultas-teologicas-v1";
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(STORE) || "[]"); if (!Array.isArray(history)) history = []; } catch { history = []; }
+  const save = () => { try { localStorage.setItem(STORE, JSON.stringify(history.slice(-30))); } catch {} };
+
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const inline = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+
+  function render(md) {
+    const lines = md.replace(/\r/g, "").split("\n");
+    let html = "", list = false, inScr = false;
+    const closeList = () => { if (list) { html += "</ul>"; list = false; } };
+    const closeScr = () => { closeList(); if (inScr) { html += "</div>"; inScr = false; } };
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (!line) { closeList(); continue; }
+      const h = line.match(/^#{1,4}\s+(.*)/);
+      if (h) {
+        closeScr();
+        const title = h[1].replace(/\*\*/g, "");
+        const isScr = /escritura/i.test(title);
+        html += `<h4${isScr ? ' class="scr"' : ""}>${esc(title)}</h4>`;
+        if (isScr) { html += '<div class="scr-block">'; inScr = true; }
+        continue;
+      }
+      const li = line.match(/^[-*•]\s+(.*)/);
+      if (li) { if (!list) { html += "<ul>"; list = true; } html += `<li>${inline(li[1])}</li>`; continue; }
+      closeList();
+      if (line.startsWith(">")) { html += `<blockquote>${inline(line.replace(/^>\s?/, ""))}</blockquote>`; continue; }
+      html += `<p>${inline(line)}</p>`;
+    }
+    closeScr();
+    return html;
+  }
+
+  function entryNode(item) {
+    const art = document.createElement("article");
+    art.className = "entry";
+    if (item.example) {
+      const t = document.createElement("span");
+      t.className = "tag"; t.textContent = "Ejemplo de respuesta";
+      art.append(t);
+    }
+    const q = document.createElement("p");
+    q.className = "q"; q.textContent = item.q;
+    const a = document.createElement("div");
+    a.className = "answer"; a.innerHTML = render(item.a || "");
+    art.append(q, a);
+    return { art, a };
+  }
+
+  function drawAll() {
+    entriesEl.replaceChildren();
+    const list = history.length ? [...history].reverse() : [EXAMPLE];
+    for (const item of list) entriesEl.append(entryNode(item).art);
+    clearBtn.hidden = !history.length;
+  }
+
+  for (const s of SUGGESTED) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.textContent = s;
+    b.addEventListener("click", () => { box.value = s; ask(); });
+    chipsEl.append(b);
+  }
+
+  clearBtn.addEventListener("click", () => {
+    if (clearBtn.dataset.confirm) {
+      history = []; save(); drawAll(); delete clearBtn.dataset.confirm; clearBtn.textContent = "Borrar historial";
+    } else {
+      clearBtn.dataset.confirm = "1"; clearBtn.textContent = "¿Seguro? Toca otra vez para borrar";
+      setTimeout(() => { delete clearBtn.dataset.confirm; clearBtn.textContent = "Borrar historial"; }, 4000);
+    }
+  });
+
+  const ERR = {
+    not_granted: "Para responder, la página necesita permiso para usar Claude. Puedes darlo desde el menú de permisos del artefacto.",
+    sampling_disabled: "Claude no está disponible en esta cuenta.",
+    rate_limited: "Demasiadas consultas seguidas. Espera un momento y vuelve a intentarlo.",
+    session_expired: "Tu sesión expiró. Inicia sesión de nuevo y vuelve a preguntar.",
+    refused: "No se pudo responder esta pregunta. Intenta formularla de otra manera.",
+    empty_completion: "No llegó respuesta. Intenta con una pregunta más concreta.",
+    prompt_too_large: "La pregunta es demasiado larga. Resúmela un poco.",
+  };
+  const errText = (code) => ERR[code] || "Hubo un problema de conexión. Vuelve a intentarlo.";
+
+  let samplePromise = window.claude?.use ? window.claude.use("sample") : Promise.resolve(null);
+  let ctl = null, busy = false;
+
+  function setBusy(v) { busy = v; send.disabled = v; stop.hidden = !v; box.disabled = v; }
+  function showNotice(t) { notice.textContent = t || ""; notice.hidden = !t; }
+
+  async function ask() {
+    const q = box.value.trim();
+    if (!q || busy) return;
+    showNotice("");
+    const sample = await samplePromise;
+    if (!sample) { showNotice("Las respuestas en vivo funcionan al abrir esta página en claude.ai, con tu sesión iniciada."); return; }
+
+    if (!history.length) entriesEl.replaceChildren();
+    const item = { q, a: "" };
+    const { art, a } = entryNode(item);
+    a.innerHTML = '<div class="thinking"><span class="dot"></span>El pastor está meditando tu pregunta…</div>';
+    entriesEl.prepend(art);
+    art.scrollIntoView({ behavior: "smooth", block: "start" });
+    setBusy(true);
+
+    // Contexto: las últimas consultas, para poder repreguntar.
+    const turns = [{ role: "user", content: RULES }];
+    for (const h of history.slice(-3)) { turns.push({ role: "user", content: h.q }, { role: "assistant", content: h.a }); }
+    turns.push({ role: "user", content: q });
+
+    ctl = new AbortController();
+    try {
+      const { text, truncated } = await sample(turns, {
+        cache: false, signal: ctl.signal,
+        onText: ({ text }) => { a.innerHTML = render(text); },
+      });
+      item.a = text + (truncated ? "\n\n*(Respuesta cortada por longitud.)*" : "");
+      a.innerHTML = render(item.a);
+      history.push(item); save();
+      box.value = "";
+      clearBtn.hidden = false;
+    } catch (e) {
+      if (e?.text && e.code !== "refused") {
+        item.a = e.text + "\n\n*(Respuesta interrumpida.)*";
+        a.innerHTML = render(item.a);
+        history.push(item); save(); clearBtn.hidden = false;
+      } else {
+        art.remove();
+        if (!history.length) drawAll();
+      }
+      if (e?.code !== "cancelled") showNotice(errText(e?.code));
+    } finally {
+      setBusy(false); ctl = null;
+    }
+  }
+
+  form.addEventListener("submit", (ev) => { ev.preventDefault(); ask(); });
+  stop.addEventListener("click", () => ctl?.abort());
+  box.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && (ev.metaKey || ev.ctrlKey)) { ev.preventDefault(); ask(); } });
+
+  drawAll();
+})();
+</script>
