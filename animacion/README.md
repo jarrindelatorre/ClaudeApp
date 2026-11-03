@@ -56,3 +56,18 @@ ffmpeg -framerate 24 -i animacion/frames/%04d.png -c:v libx264 -pix_fmt yuv420p 
 ```
 
 Sirve para cualquier otro logo PNG con fondo transparente: basta cambiar `--logo`.
+
+---
+
+# Logo cinematográfico (`logo/logo_cine.py`)
+
+Versión de 6 s con ambiente: cielo de atardecer físico, cordillera, mar de
+nubes en capas, bruma por distancia, glow, desenfoque de lente, motion blur y
+cámara que emerge de las nubes. El logo conserva sus colores, con acabado
+laqueado.
+
+- `logo/logo_cine.py`: script de la escena (`--gpu` para renderizar con GPU).
+- `logo/logo_cine.blend`: la escena lista para abrir en Blender 5.2 (textura incluida).
+- `logo/render_gpu_colab_kaggle.ipynb`: notebook para renderizar **gratis con GPU**
+  en Google Colab o Kaggle (subís `logo.png` y `logo_cine.py`, *Run all*, y descargás el MP4).
+- `logo/logo_cine.mp4`: el video final.
