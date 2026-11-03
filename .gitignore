@@ -16,3 +16,6 @@ deploy/.env
 # Varios
 *.log
 .DS_Store
+
+# Frames intermedios de la animación de Blender
+animacion/frames/
