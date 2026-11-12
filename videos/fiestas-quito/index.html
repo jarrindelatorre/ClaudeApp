@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=1920, height=1080" />
     <script src="assets/gsap.min.js"></script>
     <style>
-      /* ───────────── Fiestas de Quito · COMUNICA EP ───────────── */
+      /* ───────────── Fiestas de Quito · COMUNICA EP · collage de papel cortado ───────────── */
       :root {
         --red: #e8373e;
         --red-dark: #b8202a;
         --blue: #1554c0;
         --blue-dark: #0d3a8c;
-        --cream: #fff8ee;
+        --yellow: #f7b928;
+        --paper: #f4ead8;
         --ink: #1d2340;
-        --gold: #f7b928;
         --round: "Baloo 2", system-ui, sans-serif;
         --script: "Pacifico", cursive;
       }
@@ -21,262 +21,310 @@
       @font-face { font-family: "Baloo 2"; src: url("assets/fonts/baloo-2-latin-800-normal.woff2") format("woff2"); font-weight: 800; font-display: block; }
       @font-face { font-family: "Pacifico"; src: url("assets/fonts/pacifico-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: block; }
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--cream); }
-      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--cream); color: var(--ink); font-family: var(--round); }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--round); }
       #stage, .scene, .layer { position: absolute; inset: 0; width: 1920px; height: 1080px; }
       .scene { visibility: hidden; }
+      #texture { position: absolute; inset: 0; width: 1920px; height: 1080px; mix-blend-mode: multiply; opacity: 0.55; pointer-events: none; }
 
-      /* Fondo: rayas suaves en abanico + manchas de color */
-      #bg {
-        background: repeating-conic-gradient(from 0deg at 50% 120%, rgba(232, 55, 62, 0.06) 0deg 6deg, rgba(21, 84, 192, 0.05) 6deg 12deg), var(--cream);
-      }
-      .blob { position: absolute; border-radius: 50%; filter: blur(2px); }
+      /* Piezas de papel (clip-path rasgado generado en JS) */
+      .torn { position: absolute; }
+      .shadow { filter: drop-shadow(0 10px 14px rgba(40, 25, 10, 0.32)) drop-shadow(0 2px 2px rgba(40, 25, 10, 0.25)); }
+      .tape { position: absolute; width: 150px; height: 46px; background: rgba(250, 238, 200, 0.82); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12); }
 
-      /* Banderines arriba */
-      #bunting { position: absolute; left: -40px; top: -10px; width: 2000px; height: 220px; }
+      /* Marco de foto rasgado + recorte que sale del marco */
+      .frame { position: absolute; transform-origin: 50% 50%; }
+      .frame .paper { position: absolute; background: #fffdf7; }
+      .frame .pic { position: absolute; inset: 0; overflow: hidden; }
+      .frame .pic img, .frame .pop img { position: absolute; display: block; }
+      .frame .pop { position: absolute; inset: 0; pointer-events: none; filter: drop-shadow(0 16px 18px rgba(30, 20, 10, 0.4)); }
 
-      /* Confeti */
-      .cf { position: absolute; width: 14px; height: 22px; border-radius: 3px; }
-
-      /* Cortina de transición diagonal */
-      .wipe { position: absolute; left: -400px; top: -200px; width: 2720px; height: 1480px; transform: skewX(-18deg); }
-
-      /* Tipografía en bloques legibles */
-      .block { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 160px; }
-      .h-xl { font-weight: 800; font-size: 210px; line-height: 0.9; color: var(--red); text-shadow: 0 8px 0 var(--red-dark), 0 18px 30px rgba(0, 0, 0, 0.18); }
-      .h-l { font-weight: 800; font-size: 104px; line-height: 1; color: var(--blue); }
-      .h-m { font-weight: 800; font-size: 72px; line-height: 1.08; }
-      .p { font-weight: 600; font-size: 50px; line-height: 1.25; color: var(--ink); max-width: 1500px; }
-      .script { font-family: var(--script); font-size: 84px; line-height: 1.3; color: var(--red); }
+      /* Notas de papel con texto: entran en un solo bloque */
+      .note { position: absolute; background: #fffdf7; padding: 46px 60px 52px; }
+      .h-xl { font-weight: 800; font-size: 180px; line-height: 0.9; color: var(--red); }
+      .h-l { font-weight: 800; font-size: 96px; line-height: 1; color: var(--blue); }
+      .h-m { font-weight: 800; font-size: 64px; line-height: 1.08; }
+      .p { font-weight: 600; font-size: 44px; line-height: 1.28; color: var(--ink); }
+      .p b { font-weight: 800; }
+      .script { font-family: var(--script); font-size: 64px; line-height: 1.35; color: var(--red); }
       .red { color: var(--red); }
       .blue { color: var(--blue); }
+      /* cinta de color detrás de palabras clave */
+      .hl { display: inline-block; padding: 0 16px; color: #fff; background: var(--red); transform: rotate(-1.5deg); }
+      .hl.b { background: var(--blue); transform: rotate(1.2deg); }
 
-      /* Cinta-título de cada actividad */
-      .ribbon { position: relative; display: inline-block; padding: 14px 70px 22px; color: #fff; font-weight: 800; font-size: 76px; line-height: 1; letter-spacing: 0.02em;
-        background: var(--red); box-shadow: 0 10px 0 var(--red-dark), 0 20px 34px rgba(0, 0, 0, 0.2); border-radius: 14px; }
-      .ribbon.b { background: var(--blue); box-shadow: 0 10px 0 var(--blue-dark), 0 20px 34px rgba(0, 0, 0, 0.2); }
-      .ribbon::before, .ribbon::after { content: ""; position: absolute; top: 24px; width: 60px; height: 100%; background: inherit; filter: brightness(0.8); z-index: -1;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 30% 50%); }
-      .ribbon::before { left: -44px; }
-      .ribbon::after { right: -44px; transform: scaleX(-1); }
-
-      /* Tarjeta de contenido */
-      .card { background: #fff; border-radius: 34px; padding: 44px 56px; box-shadow: 0 24px 60px rgba(29, 35, 64, 0.16); border: 5px solid rgba(21, 84, 192, 0.12); text-align: left; }
-      .li { display: flex; align-items: baseline; gap: 22px; font-weight: 600; font-size: 46px; line-height: 1.32; }
-      .li i { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--red); transform: translateY(-6px); }
+      /* Título de cada actividad: letras de papel recortado */
+      .cut { position: absolute; display: inline-block; padding: 18px 54px 26px; color: #fff; font-weight: 800; font-size: 74px; line-height: 1; white-space: nowrap; }
+      .li { display: flex; align-items: baseline; gap: 20px; font-weight: 600; font-size: 42px; line-height: 1.32; }
+      .li i { flex: none; width: 20px; height: 20px; background: var(--red); transform: translateY(-5px) rotate(45deg); }
       .li b { font-weight: 800; color: var(--blue); }
 
-      /* Fecha tipo calendario */
-      .cal { width: 300px; border-radius: 30px; overflow: hidden; background: #fff; box-shadow: 0 24px 50px rgba(29, 35, 64, 0.2); text-align: center; }
-      .cal .top { background: var(--red); color: #fff; font-weight: 800; font-size: 46px; padding: 10px 0 4px; letter-spacing: 0.06em; }
-      .cal .day { color: var(--blue); font-weight: 800; font-size: 190px; line-height: 1.02; padding-bottom: 10px; }
-
-      .icon { width: 300px; height: 300px; }
-      #logo { position: absolute; left: 50%; top: 50%; width: 760px; margin-left: -380px; margin-top: -322px; }
-      #logo img { display: block; width: 760px; }
+      .cal { position: absolute; width: 290px; background: #fffdf7; text-align: center; }
+      .cal .top { background: var(--red); color: #fff; font-weight: 800; font-size: 44px; padding: 12px 0 6px; letter-spacing: 0.06em; }
+      .cal .day { color: var(--blue); font-weight: 800; font-size: 180px; line-height: 1.02; padding-bottom: 8px; }
+      .sticker { position: absolute; }
+      #logo { position: absolute; left: 600px; top: 190px; width: 720px; }
+      #logo img { display: block; width: 640px; margin: 40px; }
     </style>
   </head>
   <body>
     <div id="root" data-composition-id="main" data-start="0" data-duration="65" data-width="1920" data-height="1080">
       <div id="stage" class="clip" data-start="0" data-duration="65" data-track-index="0">
-        <div class="layer" id="bg"></div>
-        <div class="blob" id="bl1" style="left: -220px; top: 640px; width: 620px; height: 620px; background: rgba(232, 55, 62, 0.12)"></div>
-        <div class="blob" id="bl2" style="left: 1520px; top: -160px; width: 600px; height: 600px; background: rgba(21, 84, 192, 0.1)"></div>
+        <!-- Fondo: papeles de color rasgados -->
+        <div class="layer" id="bgpapers"></div>
         <div class="layer" id="confetti"></div>
 
-        <!-- Intro: logo -->
-        <div class="scene" id="s0"><div id="logo"><img src="assets/logo-fiestas.png" alt="Fiestas de Quito" /></div></div>
+        <!-- Intro: logo sobre papel + fotos que vuelan alrededor -->
+        <div class="scene" id="s0">
+          <div class="layer" id="intro-photos"></div>
+          <div id="logo" class="shadow"><div class="paper-bg torn" id="logo-paper"></div><img src="assets/logo-fiestas.png" alt="Fiestas de Quito" style="position: relative" /></div>
+        </div>
 
         <!-- DP1 -->
         <div class="scene" id="s1">
-          <div class="block" id="b1a">
+          <div class="layer" id="s1-photos"></div>
+          <div class="note shadow" id="n1a" style="left: 360px; top: 250px; width: 1200px; text-align: center">
             <div class="h-m blue">¡Celebramos</div>
             <div class="h-xl"><span id="n492">492</span> años</div>
-            <div class="h-m" style="margin-top: 10px">de historia, <span class="red">tradición</span> y <span class="blue">alegría!</span></div>
+            <div class="h-m" style="margin-top: 14px">de <span class="hl">historia</span>, <span class="hl b">tradición</span> y <span class="hl">alegría!</span></div>
           </div>
-          <div class="block" id="b1b">
-            <div class="p" style="font-size: 62px">En <b class="blue" style="font-weight: 800">COMUNICA EP</b> también</div>
+          <div class="note shadow" id="n1b" style="left: 410px; top: 300px; width: 1100px; text-align: center">
+            <div class="p" style="font-size: 56px">En <b class="blue">COMUNICA EP</b> también</div>
             <div class="h-l">¡estamos de fiesta!</div>
-            <div class="script" style="margin-top: 20px">¡Prepárate para celebrar!</div>
+            <div class="script" style="margin-top: 16px">¡Prepárate para celebrar!</div>
           </div>
         </div>
 
         <!-- DP2 -->
         <div class="scene" id="s2">
-          <div class="block" id="b2" style="flex-direction: row; gap: 90px; padding: 0 150px">
-            <div class="cal"><div class="top">DICIEMBRE</div><div class="day">4</div></div>
-            <div style="text-align: left; max-width: 1150px">
-              <div class="h-m blue">Este 4 de diciembre tendremos</div>
-              <div class="h-m" style="margin-top: 10px"><span class="red">juegos</span>, <span class="blue">creatividad</span>, <span class="red">sabores quiteños</span> y mucha <span class="blue">diversión.</span></div>
-              <div class="script" style="font-size: 64px; margin-top: 26px">¡Súmate, participa y celebra con tu equipo!</div>
-            </div>
+          <div class="layer" id="s2-photos"></div>
+          <div class="cal shadow" id="cal"><div class="top">DICIEMBRE</div><div class="day">4</div></div>
+          <div class="note shadow" id="n2" style="left: 600px; top: 300px; width: 1120px">
+            <div class="h-m blue" style="font-size: 58px">Este 4 de diciembre tendremos</div>
+            <div class="h-m" style="font-size: 60px; margin-top: 12px"><span class="hl">juegos</span>, <span class="hl b">creatividad</span>, <span class="hl">sabores quiteños</span> y mucha <span class="hl b">diversión</span>.</div>
+            <div class="script" style="font-size: 56px; margin-top: 22px">¡Súmate, participa y celebra con tu equipo!</div>
           </div>
         </div>
 
-        <!-- DP3 -->
+        <!-- DP3 · 40 -->
         <div class="scene" id="s3">
-          <div class="block" style="justify-content: flex-start; padding-top: 150px">
-            <div class="ribbon" id="r3">CAMPEONATO DE 40</div>
+          <div class="cut shadow" id="c3" style="left: 120px; top: 90px; background: var(--red)">CAMPEONATO DE 40</div>
+          <div class="note shadow" id="n3" style="left: 110px; top: 250px; width: 820px">
+            <div class="li"><i></i><span><b>Arma tu pareja</b> y participa.</span></div>
+            <div class="li"><i></i><span>Inscripción: <b>$10 por pareja</b>.</span></div>
+            <div class="li"><i></i><span>Fecha límite: <b>2 de diciembre</b>.</span></div>
+            <div class="li"><i></i><span>Inscripciones con: <b>Juan Pablo Martínez</b>.</span></div>
           </div>
-          <div class="layer" id="b3">
-            <svg class="icon" id="ic-cards" style="position: absolute; left: 110px; top: 380px" viewBox="0 0 300 300">
-              <g transform="rotate(-14 150 170)"><rect x="40" y="50" width="150" height="210" rx="18" fill="#fff" stroke="#1554c0" stroke-width="8" /><text x="62" y="108" font-family="Baloo 2" font-weight="800" font-size="56" fill="#1554c0">4</text><path d="M115 150 l-28 30 28 30 28 -30z" fill="#1554c0" /></g>
-              <g transform="rotate(12 150 170)"><rect x="110" y="50" width="150" height="210" rx="18" fill="#fff" stroke="#e8373e" stroke-width="8" /><text x="130" y="108" font-family="Baloo 2" font-weight="800" font-size="56" fill="#e8373e">0</text><path d="M185 215 c-40 -28 -48 -46 -36 -60 c10 -12 28 -8 36 6 c8 -14 26 -18 36 -6 c12 14 4 32 -36 60z" fill="#e8373e" /></g>
-            </svg>
-            <div class="card" style="position: absolute; left: 470px; top: 330px; width: 820px">
-              <div class="li"><i></i><span><b>Arma tu pareja</b> y participa.</span></div>
-              <div class="li"><i></i><span>Inscripción: <b>$10 por pareja</b>.</span></div>
-              <div class="li"><i></i><span>Fecha límite: <b>2 de diciembre</b>.</span></div>
-              <div class="li"><i></i><span>Inscripciones con: <b>Juan Pablo Martínez</b>.</span></div>
-            </div>
-            <div class="card" style="position: absolute; left: 1340px; top: 330px; width: 470px; background: #fff5d6; border-color: rgba(247, 185, 40, 0.5)">
-              <div class="h-m red" style="font-size: 54px">¡Premios para los mejores!</div>
-              <div class="li" style="font-size: 40px; margin-top: 14px"><span><b>1.er lugar:</b> premio sorpresa y trofeo.</span></div>
-              <div class="li" style="font-size: 40px; margin-top: 8px"><span><b>2.º lugar:</b> trofeo.</span></div>
-              <svg viewBox="0 0 120 120" style="width: 130px; height: 130px; display: block; margin: 16px auto 0">
-                <path d="M30 14 h60 v26 c0 22 -14 36 -30 38 c-16 -2 -30 -16 -30 -38z" fill="#f7b928" stroke="#c98a10" stroke-width="5" />
-                <path d="M30 22 h-16 c0 18 8 28 20 30 M90 22 h16 c0 18 -8 28 -20 30" fill="none" stroke="#c98a10" stroke-width="6" />
-                <rect x="52" y="78" width="16" height="16" fill="#c98a10" /><rect x="34" y="94" width="52" height="14" rx="4" fill="#1554c0" />
-              </svg>
-            </div>
+          <div class="note shadow" id="n3b" style="left: 150px; top: 700px; width: 760px; background: #fff3cf">
+            <div class="h-m red" style="font-size: 50px">¡Premios para los mejores!</div>
+            <div class="p" style="font-size: 38px; margin-top: 8px"><b class="blue">1.er lugar:</b> premio sorpresa y trofeo · <b class="blue">2.º lugar:</b> trofeo</div>
           </div>
         </div>
 
-        <!-- DP4 -->
+        <!-- DP4 · Leyendas -->
         <div class="scene" id="s4">
-          <div class="block" style="justify-content: flex-start; padding-top: 150px">
-            <div class="ribbon b" id="r4">CONCURSO DE LEYENDAS QUITEÑAS</div>
-          </div>
-          <div class="layer" id="b4">
-            <svg class="icon" style="position: absolute; left: 160px; top: 400px" viewBox="0 0 300 300">
-              <g transform="rotate(-10 110 150)"><path d="M40 70 q70 -30 140 0 q6 110 -70 150 q-76 -40 -70 -150z" fill="#1554c0" /><path d="M72 120 q14 -14 28 0 M122 120 q14 -14 28 0" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" /><path d="M78 170 q32 34 64 0" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" /></g>
-              <g transform="rotate(12 200 170)"><path d="M130 100 q70 -30 140 0 q6 110 -70 150 q-76 -40 -70 -150z" fill="#e8373e" /><path d="M162 150 q14 14 28 0 M212 150 q14 14 28 0" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" /><path d="M168 212 q32 -30 64 0" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" /></g>
-            </svg>
-            <div class="card" style="position: absolute; left: 560px; top: 340px; width: 1220px">
-              <div class="p" style="font-size: 50px">Preparen una <b class="blue" style="font-weight: 800">pequeña representación</b> de una leyenda quiteña. Pueden incluir <b class="red" style="font-weight: 800">disfraces, música, escenografía</b> y toda su creatividad.</div>
-              <div class="h-m red" style="font-size: 58px; margin-top: 24px">¡La mejor presentación se lleva un premio sorpresa!</div>
-            </div>
+          <div class="cut shadow" id="c4" style="left: 260px; top: 90px; background: var(--blue)">CONCURSO DE LEYENDAS QUITEÑAS</div>
+          <div class="note shadow" id="n4" style="left: 1010px; top: 300px; width: 810px">
+            <div class="p">Preparen una <b class="blue">pequeña representación</b> de una leyenda quiteña. Pueden incluir <b class="red">disfraces, música, escenografía</b> y toda su creatividad.</div>
+            <div class="h-m red" style="font-size: 50px; margin-top: 20px">¡La mejor presentación se lleva un premio sorpresa!</div>
           </div>
         </div>
 
-        <!-- DP5 -->
+        <!-- DP5 · Postres -->
         <div class="scene" id="s5">
-          <div class="block" style="justify-content: flex-start; padding-top: 150px">
-            <div class="ribbon" id="r5">CONCURSO DE POSTRES QUITEÑOS</div>
-          </div>
-          <div class="layer" id="b5">
-            <div class="card" style="position: absolute; left: 140px; top: 340px; width: 1220px">
-              <div class="p" style="font-size: 50px">Formen equipos y preparen un <b class="blue" style="font-weight: 800">postre tradicional quiteño</b>, dulce o salado, para compartir.</div>
-              <div class="p" style="font-size: 50px; margin-top: 14px">El más <b class="red" style="font-weight: 800">delicioso y creativo</b> tendrá un premio sorpresa.</div>
-              <div class="script" style="font-size: 66px; margin-top: 16px">¡Que gane el mejor sabor!</div>
-            </div>
-            <svg class="icon" style="position: absolute; left: 1460px; top: 380px; width: 320px; height: 340px" viewBox="0 0 300 320">
-              <circle cx="150" cy="80" r="52" fill="#e8373e" /><circle cx="105" cy="125" r="52" fill="#fff" stroke="#f0d6b0" stroke-width="6" /><circle cx="195" cy="125" r="52" fill="#1554c0" />
-              <circle cx="150" cy="40" r="14" fill="#b8202a" />
-              <path d="M70 160 h160 l-80 150z" fill="#f2b45a" stroke="#c98a3a" stroke-width="6" stroke-linejoin="round" />
-              <path d="M100 180 l70 40 M130 175 l70 40 M95 210 l50 30" stroke="#c98a3a" stroke-width="5" />
-            </svg>
+          <div class="cut shadow" id="c5" style="left: 120px; top: 90px; background: var(--red)">CONCURSO DE POSTRES QUITEÑOS</div>
+          <div class="note shadow" id="n5" style="left: 110px; top: 280px; width: 860px">
+            <div class="p">Formen equipos y preparen un <b class="blue">postre tradicional quiteño</b>, dulce o salado, para compartir.</div>
+            <div class="p" style="margin-top: 12px">El más <b class="red">delicioso y creativo</b> tendrá un premio sorpresa.</div>
+            <div class="script" style="font-size: 58px; margin-top: 14px">¡Que gane el mejor sabor!</div>
           </div>
         </div>
 
-        <!-- DP6 -->
+        <!-- DP6 · Chiva -->
         <div class="scene" id="s6">
-          <div class="block" id="b6">
-            <div class="h-xl" style="font-size: 170px">¡Qué viva Quito!</div>
-            <div class="h-l" style="font-size: 80px; margin-top: 10px">Y en COMUNICA EP lo celebramos</div>
-            <div class="p" style="margin-top: 22px">Prepara tu equipo, inscríbete y ven a celebrar nuestras tradiciones.</div>
-            <div class="script" style="margin-top: 22px">¡Nos vemos este 4 de diciembre!</div>
+          <div class="note shadow" id="n6" style="left: 80px; top: 120px; width: 900px">
+            <div class="h-xl" style="font-size: 132px">¡Qué viva Quito!</div>
+            <div class="h-l" style="font-size: 60px; margin-top: 12px">Y en COMUNICA EP lo celebramos</div>
+            <div class="p" style="margin-top: 18px; font-size: 40px">Prepara tu equipo, inscríbete y ven a celebrar nuestras tradiciones.</div>
+            <div class="script" style="margin-top: 14px; font-size: 56px">¡Nos vemos este 4 de diciembre!</div>
           </div>
         </div>
 
-        <svg id="bunting" viewBox="0 0 2000 220"></svg>
-        <div class="wipe" id="wipe1" style="background: var(--red)"></div>
-        <div class="wipe" id="wipe2" style="background: var(--blue)"></div>
+        <div class="layer" id="frames"></div>
+        <div class="layer" id="wipes"></div>
+        <svg id="texture" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+          <filter id="ppr"><feTurbulence type="fractalNoise" baseFrequency="0.9 0.6" numOctaves="3" seed="8" /><feColorMatrix type="matrix" values="0 0 0 0 0.95  0 0 0 0 0.9  0 0 0 0 0.82  0 0 0 -0.9 1.15" /></filter>
+          <rect width="1920" height="1080" filter="url(#ppr)" />
+        </svg>
       </div>
     </div>
 
     <script>
       const tl = gsap.timeline({ paused: true });
       const $ = (id) => document.getElementById(id);
+      const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
       const show = (sel, a, b) => { tl.set(sel, { visibility: "visible" }, a); if (b != null) tl.set(sel, { visibility: "hidden" }, b); };
-      // bloque completo, legible desde el primer momento
-      const pop = (sel, at) => tl.fromTo(sel, { opacity: 0, scale: 0.85, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(1.7)" }, at);
-      const out = (sel, at) => tl.to(sel, { opacity: 0, scale: 0.92, duration: 0.35, ease: "power2.in" }, at);
+      let seed = 21;
+      const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+
+      /* Borde rasgado: polígono con dientes irregulares en los 4 lados */
+      const torn = (w, h, amp = 10, step = 16) => {
+        const p = [];
+        for (let x = 0; x <= w; x += step) p.push([x, rnd() * amp]);
+        for (let y = step; y <= h; y += step) p.push([w - rnd() * amp, y]);
+        for (let x = w - step; x >= 0; x -= step) p.push([x, h - rnd() * amp]);
+        for (let y = h - step; y > 0; y -= step) p.push([rnd() * amp, y]);
+        return `polygon(${p.map(([x, y]) => `${x.toFixed(1)}px ${y.toFixed(1)}px`).join(",")})`;
+      };
+      const tearIt = (e, amp, step) => { e.style.clipPath = torn(e.offsetWidth, e.offsetHeight, amp, step); };
 
       /* Escenas: intro 4 · DP1 9 · DP2 9 · DP3 13 · DP4 10 · DP5 10 · DP6 10 */
       const T = [0, 4, 13, 22, 35, 45, 55, 65];
       const DUR = T[7];
 
-      /* Banderines que se mecen */
-      const NS = "http://www.w3.org/2000/svg";
-      const bunt = $("bunting");
-      const rope = document.createElementNS(NS, "path");
-      rope.setAttribute("d", "M0 30 Q1000 150 2000 30");
-      rope.setAttribute("stroke", "#8a6a4a"); rope.setAttribute("stroke-width", "4"); rope.setAttribute("fill", "none");
-      bunt.appendChild(rope);
-      const COLS = ["#e8373e", "#1554c0", "#f7b928", "#ffffff"];
-      for (let i = 0; i < 22; i++) {
-        const x = 30 + i * 90, t = x / 2000, y = (1 - t) * (1 - t) * 30 + 2 * (1 - t) * t * 150 + t * t * 30;
-        const f = document.createElementNS(NS, "path");
-        f.setAttribute("d", `M${x - 34} ${y} L${x + 34} ${y} L${x} ${y + 78}z`);
-        f.setAttribute("fill", COLS[i % 4]); f.setAttribute("stroke", "rgba(0,0,0,0.08)"); f.setAttribute("stroke-width", "2");
-        bunt.appendChild(f);
-        tl.fromTo(f, { rotation: -6 }, { rotation: 6, svgOrigin: `${x} ${y}`, duration: 1.4 + (i % 3) * 0.3, ease: "sine.inOut", yoyo: true, repeat: Math.ceil(DUR / 1.4) }, (i % 5) * 0.15);
-      }
-      tl.fromTo("#bunting", { y: -240 }, { y: 0, duration: 1.0, ease: "bounce.out" }, 0.2);
-
-      /* Confeti cayendo todo el video */
-      let seed = 11;
-      const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-      const CC = ["#e8373e", "#1554c0", "#f7b928", "#e8373e", "#1554c0"];
-      for (let i = 0; i < 60; i++) {
-        const c = document.createElement("div");
-        c.className = "cf";
-        // cada papel empieza a una altura distinta por encima del cuadro y cae en bucle
-        Object.assign(c.style, { left: rnd() * 1920 + "px", top: -60 - rnd() * 1300 + "px", background: CC[i % 5] });
-        $("confetti").appendChild(c);
-        const fall = 7 + rnd() * 5;
-        tl.fromTo(c, { y: 0, x: 0, rotation: rnd() * 360 }, { y: 2500, x: (rnd() - 0.5) * 300, rotation: "+=900", duration: fall * 2, ease: "none", repeat: Math.ceil(DUR / (fall * 2)) }, 0);
-      }
-      tl.to("#bl1", { x: 140, y: -80, duration: DUR, ease: "sine.inOut" }, 0);
-      tl.to("#bl2", { x: -120, y: 90, duration: DUR, ease: "sine.inOut" }, 0);
-
-      /* Cortina diagonal roja + azul entre partes */
-      const wipe = (at) => {
-        tl.fromTo("#wipe1", { x: -3200 }, { x: 3200, duration: 0.9, ease: "power2.inOut" }, at - 0.45);
-        tl.fromTo("#wipe2", { x: -3200 }, { x: 3200, duration: 0.9, ease: "power2.inOut" }, at - 0.32);
-      };
-
-      /* Intro: logo explota con rebote */
-      show("#s0", T[0], T[1]);
-      tl.fromTo("#logo", { scale: 0, rotation: -12 }, { scale: 1, rotation: 0, duration: 1.0, ease: "back.out(2.2)" }, 0.4);
-      tl.fromTo("#logo", { scale: 1 }, { scale: 1.05, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 3, immediateRender: false }, 1.6);
-
-      /* DP1 */
-      wipe(T[1]); show("#s1", T[1], T[2]);
-      pop("#b1a", T[1] + 0.2);
-      const n = { v: 0 };
-      tl.fromTo(n, { v: 0 }, { v: 492, duration: 1.4, ease: "power2.out", onUpdate: () => ($("n492").textContent = Math.round(n.v)) }, T[1] + 0.3);
-      out("#b1a", T[1] + 4.6);
-      pop("#b1b", T[1] + 5.0);
-
-      /* DP2 */
-      wipe(T[2]); show("#s2", T[2], T[3]);
-      pop("#b2", T[2] + 0.2);
-      tl.fromTo("#b2 .cal", { rotation: -10 }, { rotation: 0, duration: 0.9, ease: "elastic.out(1, 0.5)" }, T[2] + 0.4);
-
-      /* DP3 – DP5: cinta-título y contenido en bloque */
-      [["#r3", "#b3", 3], ["#r4", "#b4", 4], ["#r5", "#b5", 5]].forEach(([r, b, k]) => {
-        wipe(T[k]); show("#s" + k, T[k], T[k + 1]);
-        tl.fromTo(r, { scale: 0, rotation: -6 }, { scale: 1, rotation: 0, duration: 0.7, ease: "back.out(2)" }, T[k] + 0.15);
-        pop(b, T[k] + 0.6);
-        tl.fromTo(b + " svg", { rotation: 0 }, { rotation: 4, transformOrigin: "50% 50%", duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 7, immediateRender: false }, T[k] + 1.4);
+      /* Fondo: papeles de color rasgados que respiran */
+      [["#e8373e", -120, -80, 760, 420, -8], ["#1554c0", 1280, 720, 820, 460, 6], ["#f7b928", 1500, -60, 520, 260, 10], ["#1554c0", -160, 820, 560, 300, -5]].forEach(([c, x, y, w, h, r]) => {
+        const p = el("div", "torn");
+        Object.assign(p.style, { left: x + "px", top: y + "px", width: w + "px", height: h + "px", background: c, opacity: 0.9, transform: `rotate(${r}deg)` });
+        $("bgpapers").appendChild(p);
+        p.style.clipPath = torn(w, h, 26, 22);
+        tl.fromTo(p, { y: 0, rotation: r }, { y: 18, rotation: r + 2, duration: 4, ease: "sine.inOut", yoyo: true, repeat: Math.ceil(DUR / 4) }, 0);
       });
 
-      /* DP6: cierre festivo */
+      /* Confeti de papel */
+      const CC = ["#e8373e", "#1554c0", "#f7b928", "#ffffff"];
+      for (let i = 0; i < 46; i++) {
+        const c = el("div");
+        Object.assign(c.style, { position: "absolute", left: rnd() * 1920 + "px", top: -60 - rnd() * 1300 + "px", width: 12 + rnd() * 14 + "px", height: 16 + rnd() * 16 + "px", background: CC[i % 4], boxShadow: "0 2px 3px rgba(0,0,0,0.15)" });
+        $("confetti").appendChild(c);
+        const fall = 8 + rnd() * 6;
+        tl.fromTo(c, { y: 0, x: 0, rotation: rnd() * 360 }, { y: 2500, x: (rnd() - 0.5) * 260, rotation: "+=720", duration: fall * 2, ease: "none", repeat: Math.ceil(DUR / (fall * 2)) }, 0);
+      }
+
+      /* Marco de foto rasgado; `pop` = recorte de la persona que sale del marco */
+      const PW = 1672, PH = 941;
+      const frame = (host, src, { x, y, w, h, k, ox, oy, rot = 0, pop = null, tape = true }) => {
+        const f = el("div", "frame shadow");
+        Object.assign(f.style, { left: x + "px", top: y + "px", width: w + "px", height: h + "px", transform: `rotate(${rot}deg)` });
+        const M = 16;
+        const paper = el("div", "paper");
+        Object.assign(paper.style, { left: -M + "px", top: -M + "px", width: w + 2 * M + "px", height: h + 2 * M + "px" });
+        paper.style.clipPath = torn(w + 2 * M, h + 2 * M, 12, 14);
+        const pic = el("div", "pic", `<img src="assets/fotos/${src}.jpg" alt="" />`);
+        const img = pic.firstChild;
+        Object.assign(img.style, { width: PW * k + "px", height: PH * k + "px", left: -ox + "px", top: -oy + "px" });
+        pic.style.clipPath = torn(w, h, 7, 12);
+        f.append(paper, pic);
+        let p = null;
+        if (pop) {
+          p = el("div", "pop", `<img src="assets/fotos/${pop}-pop.png" alt="" />`);
+          Object.assign(p.firstChild.style, { width: PW * k + "px", height: PH * k + "px", left: -ox + "px", top: -oy + "px" });
+          f.append(p);
+        }
+        if (tape) {
+          const t1 = el("div", "tape"); Object.assign(t1.style, { left: "-40px", top: "-18px", transform: "rotate(-32deg)" });
+          const t2 = el("div", "tape"); Object.assign(t2.style, { right: "-40px", top: "-18px", transform: "rotate(30deg)" });
+          f.append(t1, t2);
+        }
+        host.appendChild(f);
+        return { f, p };
+      };
+      // entrada de foto: cae girando como papel pegado; luego la persona "sale"
+      const landFrame = ({ f, p }, at, rot, from = { x: 0, y: -900 }) => {
+        tl.fromTo(f, { x: from.x, y: from.y, rotation: rot + (from.x ? 12 : -16), scale: 1.15 }, { x: 0, y: 0, rotation: rot, scale: 1, duration: 0.8, ease: "back.out(1.4)" }, at);
+        if (p) tl.fromTo(p, { scale: 0.96, y: 30, opacity: 0 }, { scale: 1.07, y: -24, opacity: 1, transformOrigin: "50% 100%", duration: 0.7, ease: "back.out(2)" }, at + 0.8);
+      };
+
+      /* Notas: se rasgan en JS una vez en el DOM */
+      document.querySelectorAll(".note, .cut, .cal").forEach((n) => tearIt(n, 9, 14));
+      tearIt($("logo-paper"), 14, 18);
+      Object.assign($("logo-paper").style, { position: "absolute", inset: "0", background: "#fffdf7" });
+      $("logo-paper").style.clipPath = torn(720, 640, 16, 18);
+      const noteIn = (sel, at, r = 0) => tl.fromTo(sel, { opacity: 0, scale: 0.8, rotation: r - 6 }, { opacity: 1, scale: 1, rotation: r, duration: 0.6, ease: "back.out(1.8)" }, at);
+      const noteOut = (sel, at) => tl.to(sel, { opacity: 0, scale: 0.9, y: 40, duration: 0.3, ease: "power2.in" }, at);
+
+      /* Transición: dos tiras de papel rasgado (roja y azul) barren la pantalla */
+      ["#e8373e", "#1554c0"].forEach((c, i) => {
+        const wv = el("div", "torn shadow");
+        wv.id = "wp" + i;
+        Object.assign(wv.style, { left: "-200px", top: "-300px", width: "1100px", height: "1700px", background: c, transform: "rotate(14deg)" });
+        wv.style.clipPath = torn(1100, 1700, 40, 26);
+        $("wipes").appendChild(wv);
+      });
+      const wipe = (at) => {
+        tl.fromTo("#wp0", { x: -1500 }, { x: 2600, duration: 0.9, ease: "power2.inOut" }, at - 0.45);
+        tl.fromTo("#wp1", { x: -1700 }, { x: 2600, duration: 0.9, ease: "power2.inOut" }, at - 0.32);
+      };
+
+      /* ───── Intro: logo y las 4 fotos volando como recortes ───── */
+      show("#s0", T[0], T[1]);
+      const IP = [["chiva", 60, 70, -8], ["leyenda", 1380, 80, 7], ["postres", 90, 680, 6], ["cuarenta", 1360, 700, -7]];
+      IP.forEach(([src, x, y, r], i) => {
+        const fr = frame($("intro-photos"), src, { x, y, w: 480, h: 290, k: 0.31, ox: 20, oy: 0, rot: r, tape: false });
+        landFrame(fr, 0.15 + i * 0.18, r, { x: (x < 900 ? -900 : 900), y: 0 });
+      });
+      tl.fromTo("#logo", { scale: 0, rotation: -14 }, { scale: 1, rotation: -2, duration: 0.9, ease: "back.out(2)" }, 0.6);
+      tl.fromTo("#logo", { scale: 1 }, { scale: 1.04, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: 3, immediateRender: false }, 1.6);
+
+      /* ───── DP1 ───── */
+      wipe(T[1]); show("#s1", T[1], T[2]);
+      landFrame(frame($("s1-photos"), "chiva", { x: 60, y: 690, w: 560, h: 330, k: 0.4, ox: 60, oy: 20, rot: -6, tape: true }), T[1] + 0.3, -6, { x: -900, y: 0 });
+      landFrame(frame($("s1-photos"), "postres", { x: 1300, y: 40, w: 540, h: 320, k: 0.4, ox: 40, oy: 30, rot: 5 }), T[1] + 0.5, 5, { x: 900, y: 0 });
+      noteIn("#n1a", T[1] + 0.3, -1);
+      const n = { v: 0 };
+      tl.fromTo(n, { v: 0 }, { v: 492, duration: 1.4, ease: "power2.out", onUpdate: () => ($("n492").textContent = Math.round(n.v)) }, T[1] + 0.5);
+      noteOut("#n1a", T[1] + 4.6);
+      noteIn("#n1b", T[1] + 5.0, 1);
+
+      /* ───── DP2 ───── */
+      wipe(T[2]); show("#s2", T[2], T[3]);
+      landFrame(frame($("s2-photos"), "leyenda", { x: 1330, y: 680, w: 520, h: 330, k: 0.4, ox: 80, oy: 40, rot: 6 }), T[2] + 0.4, 6, { x: 900, y: 0 });
+      landFrame(frame($("s2-photos"), "cuarenta", { x: 70, y: 690, w: 520, h: 320, k: 0.4, ox: 120, oy: 30, rot: -5 }), T[2] + 0.6, -5, { x: -900, y: 0 });
+      Object.assign($("cal").style, { left: "200px", top: "250px" });
+      tl.fromTo("#cal", { scale: 0, rotation: -20 }, { scale: 1, rotation: -6, duration: 0.8, ease: "back.out(2)" }, T[2] + 0.2);
+      noteIn("#n2", T[2] + 0.5, 1);
+
+      /* ───── DP3 · 40 (persona celebrando sale de la foto) ───── */
+      wipe(T[3]); show("#s3", T[3], T[4]);
+      const f3 = frame($("s3"), "cuarenta", { x: 990, y: 330, w: 820, h: 500, k: 0.75, ox: 260, oy: 240, rot: 3, pop: "cuarenta" });
+      tl.fromTo("#c3", { scale: 0, rotation: -8 }, { scale: 1, rotation: -3, duration: 0.6, ease: "back.out(2.2)" }, T[3] + 0.15);
+      landFrame(f3, T[3] + 0.4, 3, { x: 900, y: 0 });
+      noteIn("#n3", T[3] + 0.9, -1);
+      noteIn("#n3b", T[3] + 1.6, 1.5);
+
+      /* ───── DP4 · Leyendas ───── */
+      wipe(T[4]); show("#s4", T[4], T[5]);
+      const f4 = frame($("s4"), "leyenda", { x: 100, y: 380, w: 860, h: 440, k: 0.8, ox: 300, oy: 330, rot: -3, pop: "leyenda" });
+      tl.fromTo("#c4", { scale: 0, rotation: 8 }, { scale: 1, rotation: 2, duration: 0.6, ease: "back.out(2.2)" }, T[4] + 0.15);
+      landFrame(f4, T[4] + 0.4, -3, { x: -900, y: 0 });
+      noteIn("#n4", T[4] + 0.9, 1);
+
+      /* ───── DP5 · Postres ───── */
+      wipe(T[5]); show("#s5", T[5], T[6]);
+      const f5 = frame($("s5"), "postres", { x: 1030, y: 300, w: 820, h: 560, k: 0.62, ox: 120, oy: 0, rot: 4 });
+      tl.fromTo("#c5", { scale: 0, rotation: -8 }, { scale: 1, rotation: -2, duration: 0.6, ease: "back.out(2.2)" }, T[5] + 0.15);
+      landFrame(f5, T[5] + 0.4, 4, { x: 900, y: 0 });
+      noteIn("#n5", T[5] + 0.9, -1);
+      // sticker de helado que salta desde la foto
+      const ice = el("div", "sticker shadow", `<svg viewBox="0 0 300 320" width="230" height="245"><circle cx="150" cy="80" r="52" fill="#e8373e"/><circle cx="105" cy="125" r="52" fill="#fffdf7" stroke="#f0d6b0" stroke-width="6"/><circle cx="195" cy="125" r="52" fill="#1554c0"/><circle cx="150" cy="40" r="14" fill="#b8202a"/><path d="M70 160 h160 l-80 150z" fill="#f2b45a" stroke="#c98a3a" stroke-width="6" stroke-linejoin="round"/><path d="M100 180 l70 40 M130 175 l70 40 M95 210 l50 30" stroke="#c98a3a" stroke-width="5"/></svg>`);
+      Object.assign(ice.style, { left: "1640px", top: "700px" });
+      $("s5").appendChild(ice);
+      tl.fromTo(ice, { x: -260, y: -200, scale: 0.3, rotation: -40, opacity: 0 }, { x: 0, y: 0, scale: 1, rotation: 10, opacity: 1, duration: 0.8, ease: "back.out(2)" }, T[5] + 1.4);
+
+      /* ───── DP6 · Chiva: la gente sale de la foto ───── */
       wipe(T[6]); show("#s6", T[6]);
-      pop("#b6", T[6] + 0.2);
-      tl.fromTo("#b6 .h-xl", { scale: 1 }, { scale: 1.06, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: 5, immediateRender: false }, T[6] + 1.2);
+      const f6 = frame($("s6"), "chiva", { x: 1010, y: 430, w: 850, h: 450, k: 0.62, ox: 100, oy: 150, rot: -3, pop: "chiva" });
+      landFrame(f6, T[6] + 0.3, -3, { x: 0, y: 900 });
+      noteIn("#n6", T[6] + 0.6, -1.5);
+      const lg = el("img"); lg.src = "assets/logo-fiestas.png";
+      Object.assign(lg.style, { position: "absolute", left: "1500px", top: "40px", width: "330px" });
+      lg.className = "shadow";
+      $("s6").appendChild(lg);
+      tl.fromTo(lg, { scale: 0, rotation: 20 }, { scale: 1, rotation: 6, duration: 0.8, ease: "back.out(2)" }, T[6] + 1.4);
+      tl.fromTo("#n6 .h-xl", { scale: 1 }, { scale: 1.05, transformOrigin: "0% 50%", duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: 5, immediateRender: false }, T[6] + 1.6);
+
+      // flotación suave de todos los marcos mientras se lee
+      document.querySelectorAll(".frame").forEach((f, i) => tl.to(f.querySelector(".pic img"), { scale: 1.05, transformOrigin: "50% 40%", duration: 8, ease: "sine.inOut" }, 0));
 
       tl.set({}, {}, DUR);
       window.__timelines["main"] = tl;
