@@ -225,11 +225,59 @@
         width: 100%;
         height: 100%;
       }
+      /* Cierre */
+      #banner {
+        position: absolute;
+        left: 70px;
+        top: 250px;
+        width: 1200px;
+        height: 480px;
+      }
+      #banner img {
+        display: block;
+        width: 1200px;
+        height: 480px;
+        mix-blend-mode: multiply;
+      }
+      #vota {
+        position: absolute;
+        left: 1320px;
+        top: 170px;
+        width: 520px;
+        text-align: center;
+      }
+      .qr-card {
+        width: 520px;
+        height: 520px;
+        padding: 26px;
+        border-radius: 28px;
+        background: #fff;
+        border: 10px solid var(--blue);
+        box-shadow: 0 30px 60px rgba(20, 40, 70, 0.22);
+      }
+      .qr-card img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        image-rendering: pixelated;
+      }
+      .vota-t {
+        margin-top: 34px;
+        color: var(--yellow);
+        font: 900 76px/1 var(--font-display);
+        font-stretch: 105%;
+        white-space: nowrap;
+      }
+      .vota-s {
+        margin-top: 16px;
+        color: var(--ink);
+        font: 600 30px/1.3 var(--font-body);
+      }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="86" data-width="1920" data-height="1080">
-      <div id="stage" class="clip" data-start="0" data-duration="86" data-track-index="0">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="112" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="112" data-track-index="0">
         <div id="blobs">
           <div class="blob" id="b1"></div>
           <div class="blob" id="b2"></div>
@@ -255,15 +303,20 @@
         <!-- DP3–DP13 · Categorías (se generan desde CATS) -->
         <div id="cats"></div>
 
-        <!-- Cierre -->
+        <!-- Cierre: banner + QR para votar (se queda ~30 s) -->
         <div class="scene" id="s-out">
-          <div class="logo" id="logo2"></div>
+          <div id="banner"><img src="assets/banner-premios.webp" alt="" /></div>
+          <div id="vota">
+            <div class="qr-card"><img src="assets/qr-encuesta.png" alt="" /></div>
+            <div class="vota-t">¡VOTA AQUÍ!</div>
+            <div class="vota-s">Escanea el código y elige a tus favoritos</div>
+          </div>
         </div>
       </div>
     </div>
 
     <script>
-      const DUR = 86;
+      const DUR = 112; // cierre con QR ~30 s
       const EASE = "expo.out";
       const tl = gsap.timeline({ paused: true });
       const $ = (id) => document.getElementById(id);
@@ -395,7 +448,13 @@
 
       /* ───── Cierre (80–86 s) ───── */
       tl.set("#s-out", { visibility: "visible" }, T_OUT);
-      buildLogo($("logo2"), T_OUT + 0.2);
+      tl.to("#blobs", { opacity: 0, duration: 0.8, ease: "power1.out" }, T_OUT);
+      tl.fromTo("#banner", { x: -300, opacity: 0 }, { x: 0, opacity: 1, duration: 1.2, ease: EASE }, T_OUT + 0.1);
+      tl.fromTo(".qr-card", { scale: 0.4, rotation: -8, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.9, ease: "back.out(1.7)" }, T_OUT + 0.9);
+      tl.fromTo(".vota-t", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "back.out(1.8)" }, T_OUT + 1.5);
+      tl.fromTo(".vota-s", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: EASE }, T_OUT + 1.8);
+      // el QR queda fijo y legible; solo el título late suave para llamar la atención
+      tl.fromTo(".vota-t", { scale: 1 }, { scale: 1.06, duration: 0.8, ease: "sine.inOut", yoyo: true, repeat: 17, immediateRender: false }, T_OUT + 3);
 
       tl.set({}, {}, DUR);
       window.__timelines["main"] = tl;
