@@ -82,10 +82,10 @@
       .nom .name { margin-top: 26px; font: 700 46px/1.1 var(--serif); letter-spacing: 0.04em; color: var(--cream); white-space: nowrap; text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8); }
 
       /* ── QR siempre presente (abajo al centro) ── */
-      #qrmini { position: absolute; left: 860px; top: 838px; width: 200px; text-align: center; visibility: hidden; }
+      #qrmini { position: absolute; left: 860px; top: 862px; width: 200px; text-align: center; visibility: hidden; }
       .qrbox { width: 200px; height: 200px; padding: 9px; background: linear-gradient(180deg, #fff1bd, #c48a2c 55%, #f6dd98); border-radius: 10px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7); }
       .qrbox img { display: block; width: 100%; height: 100%; border-radius: 4px; image-rendering: pixelated; }
-      #qrmini .vota { margin-top: 8px; font: 700 20px/1 var(--serif); letter-spacing: 0.3em; padding-left: 0.3em; color: var(--gold); }
+      #qrmini .vota { position: absolute; left: -60px; top: -44px; width: 320px; font: 900 30px/1 var(--serif); letter-spacing: 0.18em; padding-left: 0.18em; color: #fff1bd; text-shadow: 0 0 14px rgba(232, 196, 106, 0.8), 0 3px 8px #000; }
       #qrbig { position: absolute; left: 670px; top: 250px; width: 580px; }
       #qrbig .qrbox { width: 580px; height: 580px; padding: 22px; border-radius: 22px; }
     </style>
@@ -228,22 +228,23 @@
       shine("#b4 .gold", T2 + 5.3);
       tl.to("#s2", { opacity: 0, duration: 0.4 }, TC - 0.4);
       // QR siempre presente desde aquí hasta el cierre
-      show("#qrmini", T2 + 0.8, TF);
-      tl.fromTo("#qrmini", { y: 260 }, { y: 0, duration: 0.9, ease: "back.out(1.4)" }, T2 + 0.8);
+      show("#qrmini", TC + 0.4, TF);
+      tl.fromTo("#qrmini", { y: 300 }, { y: 0, duration: 0.9, ease: "back.out(1.4)" }, TC + 0.4);
+      tl.fromTo("#qrmini .vota", { scale: 1 }, { scale: 1.12, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 3, immediateRender: false }, TC + 1.4);
 
       /* ───── DP3–DP13 · Categorías: primero el título, luego los nominados ───── */
       const CATS = [
         ["Google Humano", "el que sabe y encuentra todo", 1, 2, "Alexandra Mazón", "Paola Mantilla"],
         ["Soltero(a) del año", "", 3, 4, "Mildred Mantilla", "Guillermo Barrera"],
         ["MacGyver", "el que siempre resuelve", 5, 6, "Emerson Basantes", "Daniel Galarza"],
-        ["Se me fue el bus", "el que siempre llega tarde", 7, 8, "Juan Pablo Martinez", "Jose Luis Gualotuña"],
+        ["Se me fue el bus", "el que siempre llega tarde", 7, 8, "Juan Pablo Martínez", "José Luis Gualotuña"],
         ["El último en apagar la luz", "el que siempre se queda hasta el último", 9, 10, "Santiago Vivanco", "Daniel Bastidas"],
         ["Apagafuegos oficial", "el que sabe cómo resolver las cosas", 11, 12, "Grace Cordero", "Freddy Rivera"],
-        ["El alma de la empresa", "", 13, 14, "Estefania Garrido", "Gabriela Gonzalez"],
+        ["El alma de la empresa", "", 13, 14, "Estefanía Garrido", "Gabriela González"],
         ["El Panasutra del año", "el que más come pan", 15, 16, "Nelson Sánchez", "Pablo Cando"],
-        ["El Grinch de la oficina", "", 17, 18, "Javier Izquierdo", "Maria Fernanda Calvopiña"],
-        ["El altavoz de la oficina", "el que siempre tiene un tema de conversación", 19, 20, "Rodrigo Martinez", "Sofía Vintimilla"],
-        ["El sobreviviente", "el más accidentado/a", 21, 22, "Byron Espinosa", "Carolina Calderon"],
+        ["El Grinch de la oficina", "", 17, 18, "Javier Izquierdo", "María Fernanda Calvopiña"],
+        ["El altavoz de la oficina", "el que siempre tiene un tema de conversación", 19, 20, "Rodrigo Martínez", "Sofía Vintimilla"],
+        ["El sobreviviente", "el más accidentado/a", 21, 22, "Byron Espinosa", "Carolina Calderón"],
       ];
       const FOTOS = ["alexandra-mazon", "paola-mantilla", "mildred-mantilla", "guillermo-barrera", "emerson-basantes", "daniel-galarza", "juan-pablo-martinez", "jose-luis-gualotuna", "santiago-vivanco", "daniel-bastidas", "grace-cordero", "freddy-rivera", "estefania-garrido", "gabriela-gonzalez", "nelson-sanchez", "pablo-cando", "javier-izquierdo", "maria-fernanda-calvopina", "rodrigo-martinez", "sofia-vintimilla", "byron-espinosa", "carolina-calderon"];
       const foto = (k) => `assets/caras/${String(k).padStart(2, "0")}-${FOTOS[k - 1]}.jpg`;
