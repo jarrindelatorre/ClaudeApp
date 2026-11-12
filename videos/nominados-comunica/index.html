@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Premios Comunica 2026 · Nominados ───────────── */
+      :root {
+        --ink: #1f2124;
+        --gray: #6d7077;
+        --yellow: #f4bb1a;
+        --blue: #1aa6d4;
+        --teal: #36c0c4;
+        --font-display: "Archivo", "Inter", system-ui, sans-serif;
+        --font-body: "Inter", system-ui, sans-serif;
+      }
+      @font-face {
+        font-family: "Archivo";
+        src: url("assets/fonts/archivo-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-var.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #fff;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #fff;
+        color: var(--ink);
+        font-family: var(--font-body);
+      }
+      #stage,
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      .scene {
+        visibility: hidden;
+      }
+      .c {
+        position: absolute;
+        left: 0;
+        width: 1920px;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      /* Fondo: bolitas suaves que flotan detrás de todo */
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.12;
+      }
+      #b1 { left: -180px; top: -160px; width: 620px; height: 620px; background: var(--yellow); }
+      #b2 { left: 1460px; top: -120px; width: 560px; height: 560px; background: var(--blue); }
+      #b3 { left: 1380px; top: 700px; width: 640px; height: 640px; background: var(--teal); }
+      #b4 { left: -120px; top: 780px; width: 460px; height: 460px; background: var(--blue); }
+
+      /* Logo: 3 círculos + figuras de oro */
+      .logo {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      .logo .dot {
+        position: absolute;
+        border-radius: 50%;
+        mix-blend-mode: multiply;
+      }
+      .logo .fig {
+        position: absolute;
+        transform-origin: 50% 100%;
+        filter: drop-shadow(0 12px 14px rgba(80, 50, 0, 0.25));
+      }
+      .logo .fig img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .logo .podium {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(ellipse at 50% 40%, #ffffff 0%, #f3f3f3 70%, #e6e6e6 100%);
+        box-shadow: 0 22px 40px rgba(0, 0, 0, 0.12);
+      }
+      .premios {
+        font: 600 40px/1 var(--font-display);
+        letter-spacing: 0.42em;
+        padding-left: 0.42em;
+      }
+      .comunica {
+        font: 900 128px/0.95 var(--font-display);
+        font-stretch: 112%;
+      }
+      .comunica b {
+        color: var(--blue);
+      }
+
+      /* DP1 */
+      .big {
+        font: 900 108px/1 var(--font-display);
+        font-stretch: 110%;
+        text-transform: uppercase;
+      }
+      #llega {
+        top: 410px;
+        color: var(--yellow);
+        font: 900 260px/1 var(--font-display);
+        font-stretch: 115%;
+      }
+
+      /* DP2 */
+      #encuesta {
+        top: 380px;
+        font: 600 58px/1.35 var(--font-body);
+        white-space: normal;
+        padding: 0 260px;
+      }
+      #encuesta span {
+        display: inline-block;
+      }
+      #encuesta b {
+        color: var(--blue);
+      }
+      #nominados {
+        top: 440px;
+        font: 900 116px/1 var(--font-display);
+        font-stretch: 112%;
+        color: var(--blue);
+      }
+
+      /* Categorías */
+      .cat-label {
+        top: 92px;
+        color: var(--teal);
+        font: 700 30px/1 var(--font-display);
+        letter-spacing: 0.32em;
+        padding-left: 0.32em;
+      }
+      .cat-name {
+        top: 140px;
+        font: 900 92px/1.05 var(--font-display);
+        font-stretch: 108%;
+        text-transform: uppercase;
+      }
+      .cat-desc {
+        top: 258px;
+        color: var(--gray);
+        font: italic 500 40px/1.2 var(--font-body);
+      }
+      .nom {
+        position: absolute;
+        top: 370px;
+        width: 520px;
+        text-align: center;
+      }
+      .nom.l { left: 210px; }
+      .nom.r { left: 1190px; }
+      .ph {
+        position: relative;
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+        border-radius: 50%;
+        padding: 14px;
+        box-shadow: 0 24px 50px rgba(20, 40, 70, 0.22);
+      }
+      .nom.l .ph { background: var(--yellow); }
+      .nom.r .ph { background: var(--teal); }
+      .ph .in {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 8px solid #fff;
+        background: #eee;
+      }
+      .ph img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 22%;
+      }
+      .nom .name {
+        margin-top: 30px;
+        font: 800 46px/1.1 var(--font-display);
+        white-space: nowrap;
+      }
+      .trophy {
+        position: absolute;
+        left: 830px;
+        top: 430px;
+        width: 260px;
+        height: 549px;
+        transform-origin: 50% 100%;
+        filter: drop-shadow(0 16px 18px rgba(80, 50, 0, 0.3));
+      }
+      .trophy img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="86" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="86" data-track-index="0">
+        <div id="blobs">
+          <div class="blob" id="b1"></div>
+          <div class="blob" id="b2"></div>
+          <div class="blob" id="b3"></div>
+          <div class="blob" id="b4"></div>
+        </div>
+
+        <!-- DP1 · Intro -->
+        <div class="scene" id="s-intro">
+          <div class="c big" id="l1" style="top: 300px">Mucho talento.</div>
+          <div class="c big" id="l2" style="top: 440px; color: var(--blue)">Poco presupuesto.</div>
+          <div class="c big" id="l3" style="top: 580px; color: var(--teal)">Por fin, un premio.</div>
+          <div class="c" id="llega">LLEGA</div>
+          <div class="logo" id="logo1"></div>
+        </div>
+
+        <!-- DP2 · Encuesta -->
+        <div class="scene" id="s-enc">
+          <div class="c" id="encuesta"></div>
+          <div class="c" id="nominados">LOS NOMINADOS SON:</div>
+        </div>
+
+        <!-- DP3–DP13 · Categorías (se generan desde CATS) -->
+        <div id="cats"></div>
+
+        <!-- Cierre -->
+        <div class="scene" id="s-out">
+          <div class="logo" id="logo2"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const DUR = 86;
+      const EASE = "expo.out";
+      const tl = gsap.timeline({ paused: true });
+      const $ = (id) => document.getElementById(id);
+      const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+      const show = (sel, a, b) => { tl.set(sel, { visibility: "visible" }, a); tl.set(sel, { visibility: "hidden" }, b); };
+
+      /* Escenas: intro 8 s · encuesta 6 s · 11 categorías × 6 s · cierre 6 s (múltiplos de un compás de 2 s) */
+      const T_ENC = 8, T_CATS = 14, CAT_D = 6, T_OUT = T_CATS + 11 * CAT_D;
+
+      /* Fondo vivo */
+      tl.fromTo("#b1", { x: 0, y: 0 }, { x: 120, y: 80, duration: DUR, ease: "sine.inOut" }, 0);
+      tl.fromTo("#b2", { x: 0, y: 0 }, { x: -90, y: 110, duration: DUR, ease: "sine.inOut" }, 0);
+      tl.fromTo("#b3", { x: 0, y: 0 }, { x: -140, y: -60, duration: DUR, ease: "sine.inOut" }, 0);
+      tl.fromTo("#b4", { x: 0, y: 0 }, { x: 100, y: -90, duration: DUR, ease: "sine.inOut" }, 0);
+
+      /* ───── Logo reutilizable: círculos, podio, figuras que caen y nombre ───── */
+      const buildLogo = (host, at) => {
+        const D = [
+          { c: "#f4bb1a", x: 760, r: 130 },
+          { c: "#1aa6d4", x: 960, r: 138 },
+          { c: "#36c0c4", x: 1160, r: 130 },
+        ];
+        const CY = 330;
+        D.forEach((d, i) => {
+          const e = el("div", "dot");
+          Object.assign(e.style, { left: d.x - d.r + "px", top: CY - d.r + "px", width: 2 * d.r + "px", height: 2 * d.r + "px", background: d.c });
+          host.appendChild(e);
+          tl.fromTo(e, { scale: 0, x: (i - 1) * 260 }, { scale: 1, x: 0, duration: 0.9, ease: "back.out(1.8)" }, at + i * 0.12);
+        });
+        const pod = el("div", "podium");
+        Object.assign(pod.style, { left: "660px", top: "585px", width: "600px", height: "54px" });
+        host.appendChild(pod);
+        tl.fromTo(pod, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.7, ease: EASE }, at + 0.4);
+        // figuras: misma escala, bases separadas 200 px y centradas en el podio
+        const F = [
+          { src: "fig-1.png", w: 330, h: 726, bx: 207, base: 760 },
+          { src: "fig-2.png", w: 365, h: 770, bx: 205.5, base: 960 },
+          { src: "fig-3.png", w: 369, h: 734, bx: 165, base: 1160 },
+        ];
+        const K = 0.44, FLOOR = 612;
+        F.forEach((f, i) => {
+          const e = el("div", "fig", `<img src="assets/${f.src}" alt="" />`);
+          const w = f.w * K, h = f.h * K, cx = f.base - (f.bx - f.w / 2) * K;
+          Object.assign(e.style, { left: cx - w / 2 + "px", top: FLOOR - h + "px", width: w + "px", height: h + "px" });
+          host.appendChild(e);
+          const t = at + 0.7 + i * 0.3;
+          tl.fromTo(e, { y: -900 }, { y: 0, duration: 0.55, ease: "power3.in" }, t);
+          tl.fromTo(e, { scaleY: 1, scaleX: 1 }, { scaleY: 0.9, scaleX: 1.06, duration: 0.1, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, t + 0.55);
+        });
+        const p = el("div", "c premios", "PREMIOS");
+        p.style.top = "680px";
+        const n = el("div", "c comunica", "COMUNICA <b>2026</b>");
+        n.style.top = "735px";
+        host.appendChild(p);
+        host.appendChild(n);
+        tl.fromTo(p, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: EASE }, at + 1.7);
+        tl.fromTo(n, { y: 60, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, transformOrigin: "50% 50%", duration: 1.0, ease: "back.out(1.6)" }, at + 1.9);
+      };
+
+      /* ───── DP1 · Intro (0–8 s) ───── */
+      show("#s-intro", 0, T_ENC);
+      [["#l1", 0.3], ["#l2", 1.2], ["#l3", 2.1]].forEach(([s, t]) => tl.fromTo(s, { y: 70, opacity: 0, scale: 0.92 }, { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.6)" }, t));
+      tl.to(["#l1", "#l2", "#l3"], { y: -80, opacity: 0, duration: 0.4, ease: "power3.in", stagger: 0.06 }, 3.4);
+      tl.fromTo("#llega", { scale: 2.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "power4.out" }, 3.95);
+      tl.to("#llega", { scale: 0.6, opacity: 0, duration: 0.35, ease: "power3.in" }, 4.9);
+      buildLogo($("logo1"), 5.0);
+      tl.to("#s-intro", { opacity: 0, duration: 0.3, ease: "power1.in" }, T_ENC - 0.3);
+
+      /* ───── DP2 · Encuesta (8–14 s) ───── */
+      show("#s-enc", T_ENC, T_CATS);
+      const words = "Se tomaron en cuenta todas las <b>postulaciones</b> que se hicieron mediante <b>encuesta</b>.".split(" ");
+      $("encuesta").innerHTML = words.map((w) => `<span>${w}</span>`).join(" ");
+      tl.fromTo("#encuesta span", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: EASE, stagger: 0.12 }, T_ENC + 0.2);
+      tl.to("#encuesta", { y: -60, opacity: 0, duration: 0.4, ease: "power3.in" }, T_ENC + 3.4);
+      tl.fromTo("#nominados", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(1.8)" }, T_ENC + 3.8);
+      tl.fromTo("#nominados", { x: 0 }, { x: 6, duration: 0.05, ease: "none", yoyo: true, repeat: 11, immediateRender: false }, T_ENC + 4.7);
+      tl.to("#s-enc", { opacity: 0, duration: 0.3 }, T_CATS - 0.3);
+
+      /* ───── DP3–DP13 · Categorías ───── */
+      const CATS = [
+        ["Google Humano", "el que sabe y encuentra todo", 1, 2, "Alexandra Mazón", "Paola Mantilla"],
+        ["Soltero(a) del año", "", 3, 4, "Mildred Mantilla", "Guillermo Barrera"],
+        ["MacGyver", "el que siempre resuelve", 5, 6, "Emerson Basantes", "Daniel Galarza"],
+        ["Se me fue el bus", "el que siempre llega tarde", 7, 8, "Juan Pablo Martinez", "Jose Luis Gualotuña"],
+        ["El último en apagar la luz", "el que siempre se queda hasta el último", 9, 10, "Santiago Vivanco", "Daniel Bastidas"],
+        ["Apagafuegos oficial", "el que sabe cómo resolver las cosas", 11, 12, "Grace Cordero", "Freddy Rivera"],
+        ["El alma de la empresa", "", 13, 14, "Estefania Garrido", "Gabriela Gonzalez"],
+        ["El Panasutra del año", "el que más come pan", 15, 16, "Nelson Sánchez", "Pablo Cando"],
+        ["El Grinch de la oficina", "", 17, 18, "Javier Izquierdo", "Maria Fernanda Calvopiña"],
+        ["El altavoz de la oficina", "el que siempre tiene un tema de conversación", 19, 20, "Rodrigo Martinez", "Sofía Vintimilla"],
+        ["El sobreviviente", "el más accidentado/a", 21, 22, "Byron Espinosa", "Carolina Calderon"],
+      ];
+      const FOTOS = ["alexandra-mazon", "paola-mantilla", "mildred-mantilla", "guillermo-barrera", "emerson-basantes", "daniel-galarza", "juan-pablo-martinez", "jose-luis-gualotuna", "santiago-vivanco", "daniel-bastidas", "grace-cordero", "freddy-rivera", "estefania-garrido", "gabriela-gonzalez", "nelson-sanchez", "pablo-cando", "javier-izquierdo", "maria-fernanda-calvopina", "rodrigo-martinez", "sofia-vintimilla", "byron-espinosa", "carolina-calderon"];
+      const foto = (k) => `assets/fotos/${String(k).padStart(2, "0")}-${FOTOS[k - 1]}.png`;
+      const cats = $("cats");
+      CATS.forEach(([name, desc, a, b, na, nb], i) => {
+        const t0 = T_CATS + i * CAT_D;
+        const s = el("div", "scene");
+        s.id = "cat" + i;
+        const lab = el("div", "c cat-label", `CATEGORÍA ${String(i + 1).padStart(2, "0")}`);
+        const nm = el("div", "c cat-name", name);
+        const ds = el("div", "c cat-desc", desc ? `(${desc})` : "");
+        const L = el("div", "nom l", `<div class="ph"><div class="in"><img src="${foto(a)}" alt="" /></div></div><div class="name">${na}</div>`);
+        const R = el("div", "nom r", `<div class="ph"><div class="in"><img src="${foto(b)}" alt="" /></div></div><div class="name">${nb}</div>`);
+        const tr = el("div", "trophy", `<img src="assets/fig-2.png" alt="" />`);
+        [lab, nm, ds, tr, L, R].forEach((e) => s.appendChild(e));
+        cats.appendChild(s);
+        // nombres largos: ajustar tamaño para que no se salgan de su columna
+        [L, R].forEach((n, j) => { const len = (j ? nb : na).length; if (len > 18) n.querySelector(".name").style.fontSize = Math.round(46 * 18 / len) + "px"; });
+        if (name.length > 22) nm.style.fontSize = "80px";
+
+        show(s, t0, t0 + CAT_D);
+        tl.fromTo(lab, { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: EASE }, t0 + 0.1);
+        tl.fromTo(nm, { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.7)" }, t0 + 0.25);
+        tl.fromTo(ds, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: EASE }, t0 + 0.7);
+        tl.fromTo(L, { x: -700, rotation: -12 }, { x: 0, rotation: 0, duration: 0.9, ease: "back.out(1.3)" }, t0 + 1.0);
+        tl.fromTo(R, { x: 700, rotation: 12 }, { x: 0, rotation: 0, duration: 0.9, ease: "back.out(1.3)" }, t0 + 1.3);
+        tl.fromTo(tr, { y: -1100 }, { y: 0, duration: 0.55, ease: "power3.in" }, t0 + 1.9);
+        tl.fromTo(tr, { scaleY: 1, scaleX: 1 }, { scaleY: 0.9, scaleX: 1.07, duration: 0.1, ease: "power2.out", yoyo: true, repeat: 1, immediateRender: false }, t0 + 2.45);
+        // vaivén suave mientras se habla
+        tl.to(L, { y: -10, rotation: -1.5, duration: 2.6, ease: "sine.inOut" }, t0 + 2.2);
+        tl.to(R, { y: -10, rotation: 1.5, duration: 2.6, ease: "sine.inOut" }, t0 + 2.2);
+        // salida
+        tl.to([lab, nm, ds], { y: -40, opacity: 0, duration: 0.35, ease: "power3.in" }, t0 + CAT_D - 0.5);
+        tl.to(L, { x: -700, duration: 0.45, ease: "power3.in" }, t0 + CAT_D - 0.5);
+        tl.to(R, { x: 700, duration: 0.45, ease: "power3.in" }, t0 + CAT_D - 0.5);
+        tl.to(tr, { y: 700, duration: 0.45, ease: "power3.in" }, t0 + CAT_D - 0.5);
+      });
+
+      /* ───── Cierre (80–86 s) ───── */
+      tl.set("#s-out", { visibility: "visible" }, T_OUT);
+      buildLogo($("logo2"), T_OUT + 0.2);
+
+      tl.set({}, {}, DUR);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
