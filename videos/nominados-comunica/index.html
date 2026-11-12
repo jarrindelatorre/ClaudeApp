@@ -269,7 +269,7 @@
         tl.fromTo(R, { x: 900, opacity: 0 }, { x: 0, opacity: 1, duration: 0.9, ease: "power3.out" }, t0 + 3.3);
         tl.to([L, R], { y: -8, duration: 3, ease: "sine.inOut" }, t0 + 4.3);
         // la estatuilla de turno cae sobre el QR
-        const sv = statue($("statues"), i % 3, 960, 842, 300);
+        const sv = statue($("statues"), i % 3, 960, 814, 290);
         tl.set(sv, { visibility: "hidden" }, 0);
         tl.set(sv, { visibility: "visible" }, t0 + 3.6);
         land(sv, t0 + 3.6);
