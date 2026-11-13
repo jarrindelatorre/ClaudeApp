@@ -34,7 +34,9 @@
       .card .tape { position: absolute; top: -34px; left: 50%; width: 170px; height: 48px; margin-left: -85px; background: rgba(255, 255, 255, 0.75); transform: rotate(-4deg); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); }
       .go { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 10px 8px 0; font-size: 27px; }
       .go b { font-weight: 800; color: var(--red); }
-      .reg { display: inline-block; padding: 4px 16px 8px; background: var(--blue); color: #fff; font-weight: 800; font-size: 25px; line-height: 1.2; transform: rotate(-1.5deg); }
+      /* nota de registro: texto simple con ícono, separada por una línea punteada */
+      .reg { display: block; width: 100%; margin-top: 4px; padding-top: 10px; border-top: 3px dashed rgba(21, 84, 192, 0.35); color: var(--blue); font-weight: 600; font-size: 25px; line-height: 1.25; }
+      .reg::before { content: "✎ "; color: var(--red); font-weight: 800; }
       .flags { position: absolute; left: 0; top: 330px; width: 1920px; height: 90px; z-index: 1; }
       .cards, .head, .sub, .logo, .foot { z-index: 3; }
       #confetti { position: absolute; inset: 0; z-index: 2; }
