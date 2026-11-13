@@ -40,6 +40,8 @@
       .strip { display: inline-block; padding: 6px 34px 14px; text-shadow: none; white-space: nowrap; }
       .strip.r { background: var(--red); }
       .strip.b { background: var(--blue); }
+      .num { width: 120px; height: 120px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; background: #fff; color: var(--red); font-weight: 800; font-size: 96px; line-height: 1; text-shadow: none; padding-top: 10px; }
+      .num.b { color: var(--blue); }
       .tag { display: inline-block; padding: 10px 40px 16px; font-weight: 800; font-size: 50px; line-height: 1; text-shadow: none; background: #fff; color: var(--blue); }
       #logo-in { position: absolute; left: 560px; top: 160px; width: 800px; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.5)); }
       .confetti { position: absolute; width: 14px; height: 22px; }
@@ -47,8 +49,8 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="50" data-width="1920" data-height="1080">
-      <div id="stage" class="clip" data-start="0" data-duration="50" data-track-index="0">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="55" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="55" data-track-index="0">
         <!-- Intro -->
         <div class="scene" id="s0">
           <div class="bg"><img src="assets/fotos/chiva.jpg" alt="" /></div>
@@ -66,8 +68,7 @@
             <div class="m" style="margin-top: 16px">de historia, tradición y alegría</div>
           </div>
           <div class="t" id="t1b" style="left: 140px; top: 330px">
-            <div class="m">En COMUNICA EP</div>
-            <div class="l"><span class="strip r torn">¡estamos de fiesta!</span></div>
+            <div class="l" style="font-size: 130px"><span class="strip r torn">¡Estamos de fiesta!</span></div>
           </div>
         </div>
 
@@ -79,8 +80,18 @@
             <div class="m">Este</div>
             <div class="xl">4 de diciembre</div>
             <div class="m" style="margin-top: 26px">Juegos · Creatividad · Sabores quiteños</div>
-            <div class="script" style="margin-top: 14px">¡Súmate con tu equipo!</div>
+            <div class="l" style="margin-top: 22px; font-size: 64px"><span class="strip b torn">¡Súmate con tu equipo!</span></div>
           </div>
+        </div>
+
+        <!-- Las 3 actividades -->
+        <div class="scene" id="sA" style="background: var(--blue-dark)">
+          <div class="torn" id="aPaper" style="position: absolute; left: -60px; top: 60px; width: 2040px; height: 300px; background: var(--red)"></div>
+          <div class="t" id="aT" style="left: 0; top: 80px; width: 1920px; text-align: center">
+            <div class="xl" style="font-size: 150px">3 actividades</div>
+            <div class="m" style="margin-top: 10px">para festejar a la Carita de Dios</div>
+          </div>
+          <div id="aCards"></div>
         </div>
 
         <!-- DP3 · 40 -->
@@ -88,6 +99,7 @@
           <div class="bg"><img src="assets/fotos/cuarenta.jpg" alt="" /></div>
           <div class="veil" style="background: linear-gradient(90deg, rgba(13, 58, 140, 0.95) 0%, rgba(21, 84, 192, 0.82) 38%, rgba(21, 84, 192, 0.15) 70%, rgba(0, 0, 0, 0) 100%)"></div>
           <div class="t" id="t3" style="left: 120px; top: 150px; width: 820px">
+            <div class="num torn">1</div>
             <div class="l"><span class="strip r torn">Campeonato</span></div>
             <div class="xl" style="margin-top: 6px">de 40</div>
             <div class="m" style="margin-top: 26px">En parejas · $10</div>
@@ -102,6 +114,7 @@
           <div class="bg"><img src="assets/fotos/leyenda.jpg" alt="" /></div>
           <div class="veil" style="background: linear-gradient(90deg, rgba(184, 32, 42, 0.95) 0%, rgba(232, 55, 62, 0.82) 30%, rgba(232, 55, 62, 0.1) 62%, rgba(0, 0, 0, 0) 100%)"></div>
           <div class="t" id="t4" style="left: 110px; top: 180px; width: 720px">
+            <div class="num torn b">2</div>
             <div class="m">Concurso de</div>
             <div class="l" style="font-size: 120px">Leyendas quiteñas</div>
             <div class="s" style="margin-top: 26px">Represéntala con disfraces, música y escenografía</div>
@@ -115,6 +128,7 @@
           <div class="bg"><img src="assets/fotos/postres.jpg" alt="" /></div>
           <div class="veil" style="background: linear-gradient(90deg, rgba(13, 58, 140, 0.95) 0%, rgba(21, 84, 192, 0.85) 38%, rgba(21, 84, 192, 0.15) 72%, rgba(0, 0, 0, 0) 100%)"></div>
           <div class="t" id="t5" style="left: 120px; top: 190px; width: 820px">
+            <div class="num torn">3</div>
             <div class="m">Concurso de</div>
             <div class="l" style="font-size: 120px">Postres quiteños</div>
             <div class="s" style="margin-top: 26px">Prepara en equipo un postre tradicional, dulce o salado</div>
@@ -129,7 +143,7 @@
           <div class="pop" id="p6"><img src="assets/fotos/chiva-pop.png" alt="" /></div>
           <div class="t" id="t6" style="left: 0; top: 650px; width: 1920px; text-align: center">
             <div class="xl" style="font-size: 170px"><span class="strip r torn">¡Qué viva Quito!</span></div>
-            <div class="m" style="margin-top: 22px">Nos vemos el 4 de diciembre · COMUNICA EP</div>
+            <div class="m" style="margin-top: 22px">Nos vemos el 4 de diciembre</div>
           </div>
           <img id="logo-out" src="assets/logo-fiestas.png" alt="" style="position: absolute; left: 70px; top: 50px; width: 300px; filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5))" />
         </div>
@@ -162,7 +176,7 @@
       document.querySelectorAll(".torn").forEach((e) => (e.style.clipPath = torn(e.offsetWidth, e.offsetHeight)));
 
       /* Escenas: intro 4 · DP1 7 · DP2 7 · DP3 9 · DP4 7 · DP5 7 · DP6 9 */
-      const T = [0, 4, 11, 18, 27, 34, 41, 50];
+      const T = [0, 4, 11, 22.5, 31.5, 38.5, 45.5, 55]; // DP2 termina en 18; 18–22.5 = «3 actividades»
       const DUR = T[7];
 
       /* Confeti de papel solo rojo, azul y blanco */
@@ -197,7 +211,6 @@
         const p = sc.querySelector(".pop");
         if (p) {
           tl.fromTo(p, { scale: z0 }, { scale: z1, duration: d, ease: "sine.out" }, T[k]);
-          tl.fromTo(p.firstChild, { scale: 1, y: 0 }, { scale: 1.06, y: -18, transformOrigin: "50% 100%", duration: 0.7, ease: "back.out(2)" }, T[k] + 1.0);
         }
       };
       // texto en bloque, legible de inmediato
@@ -219,6 +232,21 @@
       /* DP2 */
       wipe(T[2]); scene(2);
       textIn("#t2", T[2] + 0.2);
+
+      /* Las 3 actividades: fotos rasgadas numeradas */
+      const TA = 18, TA2 = 22.5;
+      tl.set("#s2", { visibility: "hidden" }, TA);
+      wipe(TA); show("#sA", TA, TA2);
+      $("aPaper").style.clipPath = torn(2040, 300, 22, 20);
+      tl.fromTo("#aT", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.8)" }, TA + 0.15);
+      [["cuarenta", "Campeonato de 40", -4, "#e8373e"], ["leyenda", "Leyendas quiteñas", 3, "#1554c0"], ["postres", "Postres quiteños", -2, "#e8373e"]].forEach(([src, lab, r, c], i) => {
+        const card = el("div");
+        Object.assign(card.style, { position: "absolute", left: 120 + i * 580 + "px", top: "440px", width: "520px", height: "440px", filter: "drop-shadow(0 16px 22px rgba(0,0,0,0.45))" });
+        card.innerHTML = `<div style="position:absolute;inset:0;background:#fffdf7"></div><img src="assets/fotos/${src}.jpg" style="position:absolute;left:16px;top:16px;width:488px;height:300px;object-fit:cover" alt="" /><div style="position:absolute;left:0;top:330px;width:520px;text-align:center;color:#1d2340;font-weight:800;font-size:44px">${lab}</div><div style="position:absolute;left:-30px;top:-34px;width:96px;height:96px;border-radius:50%;background:${c};color:#fff;font-weight:800;font-size:66px;display:flex;align-items:center;justify-content:center;padding-top:8px">${i + 1}</div>`;
+        $("aCards").appendChild(card);
+        card.firstChild.style.clipPath = torn(520, 440, 12, 14);
+        tl.fromTo(card, { y: 700, rotation: r + 14, opacity: 0 }, { y: 0, rotation: r, opacity: 1, duration: 0.7, ease: "back.out(1.5)" }, TA + 0.6 + i * 0.35);
+      });
 
       /* DP3 – DP5 */
       [3, 4, 5].forEach((k) => { wipe(T[k]); scene(k); textIn("#t" + k, T[k] + 0.3); });
