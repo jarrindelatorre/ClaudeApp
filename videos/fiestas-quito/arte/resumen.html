@@ -81,7 +81,6 @@
         <div class="d">Prepara en equipo un postre tradicional, dulce o salado</div><div class="go"><b>¡Premio sorpresa!</b><span class="reg">Regístrate en Talento Humano</span></div>
       </div>
     </div>
-    <svg class="flags" id="flags" viewBox="0 0 1920 90"></svg>
     <div id="confetti"></div>
     <div class="foot">4 de diciembre · ¡Qué viva Quito!</div>
     <script>
@@ -105,17 +104,6 @@
         for (let x = w; x >= 0; x -= 20) pts.push(`${x}px ${h - ((x / 20) % 2 ? 14 : 0)}px`);
         im.style.clipPath = `polygon(${pts.join(",")})`;
       });
-      // banderines rojo/azul/blanco detrás de las tarjetas
-      const fl = document.getElementById("flags"), NS = "http://www.w3.org/2000/svg";
-      const rope = document.createElementNS(NS, "path"); rope.setAttribute("d", "M0 10 Q960 70 1920 10"); rope.setAttribute("stroke", "#fff"); rope.setAttribute("stroke-width", "3"); rope.setAttribute("fill", "none"); fl.appendChild(rope);
-      ["#e8373e", "#ffffff", "#1554c0"].forEach(() => {});
-      for (let i = 0; i < 30; i++) {
-        const x = 20 + i * 66, t = x / 1920, y = (1 - t) * (1 - t) * 10 + 2 * (1 - t) * t * 70 + t * t * 10;
-        const f = document.createElementNS(NS, "path");
-        f.setAttribute("d", `M${x - 24} ${y} L${x + 24} ${y} L${x} ${y + 52}z`);
-        f.setAttribute("fill", ["#e8373e", "#ffffff", "#1554c0"][i % 3]);
-        fl.appendChild(f);
-      }
       // confeti suelto
       const cfh = document.getElementById("confetti");
       for (let i = 0; i < 34; i++) {
