@@ -21,15 +21,29 @@
       .pill { padding: 8px 30px 14px; font-weight: 800; font-size: 46px; line-height: 1; }
       .pill.r { background: var(--red); }
       .pill.w { background: #fff; color: var(--blue); }
-      .cards { position: absolute; left: 70px; right: 70px; top: 380px; display: flex; gap: 40px; }
-      .card { position: relative; flex: 1; background: #fffdf7; color: var(--ink); padding: 18px 18px 26px; filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.45)); }
-      .card img { display: block; width: 100%; height: 270px; object-fit: cover; }
-      .card .n { position: absolute; left: -22px; top: -26px; width: 96px; height: 96px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 800; font-size: 64px; display: flex; align-items: center; justify-content: center; padding-top: 8px; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); }
+      .cards { position: absolute; left: 100px; right: 100px; top: 425px; display: flex; gap: 70px; }
+      .card { position: relative; flex: 1; background: #fffdf7; color: var(--ink); padding: 18px 18px 22px; filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.45)); }
+      .card:nth-child(1) { transform: rotate(-3deg); }
+      .card:nth-child(2) { transform: rotate(2deg) translateY(14px); }
+      .card:nth-child(3) { transform: rotate(-1.5deg); }
+      .card .frame { position: absolute; inset: -16px; z-index: -2; }
+      .card:nth-child(odd) .frame { background: var(--red); }
+      .card:nth-child(2) .frame { background: #fff; }
+      .card .tape { position: absolute; top: -34px; left: 50%; width: 170px; height: 48px; margin-left: -85px; background: rgba(255, 255, 255, 0.75); transform: rotate(-4deg); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); }
+      .go { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 10px 8px 0; font-size: 27px; }
+      .go b { font-weight: 800; color: var(--red); }
+      .reg { display: inline-block; padding: 4px 16px 8px; background: var(--blue); color: #fff; font-weight: 800; font-size: 25px; transform: rotate(-1.5deg); }
+      .flags { position: absolute; left: 0; top: 330px; width: 1920px; height: 90px; z-index: 1; }
+      .cards, .head, .sub, .logo, .foot { z-index: 3; }
+      #confetti { position: absolute; inset: 0; z-index: 2; }
+      .cf { position: absolute; width: 16px; height: 24px; }
+      .card img { display: block; width: 100%; height: 215px; object-fit: cover; }
+      .card .n { position: absolute; z-index: 5; left: -30px; top: -40px; width: 96px; height: 96px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 800; font-size: 64px; display: flex; align-items: center; justify-content: center; padding-top: 8px; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); }
       .card:nth-child(2) .n { background: var(--blue); }
-      .card .t { font-weight: 800; font-size: 46px; line-height: 1.02; margin: 16px 10px 0; color: var(--blue); }
-      .card .d { font-weight: 600; font-size: 29px; line-height: 1.3; margin: 10px 10px 0; }
+      .card .t { font-weight: 800; font-size: 40px; line-height: 1.02; margin: 12px 8px 0; color: var(--blue); }
+      .card .d { font-weight: 600; font-size: 26px; line-height: 1.28; margin: 8px 8px 0; }
       .card .d b { font-weight: 800; color: var(--red); }
-      .foot { position: absolute; left: 0; right: 0; bottom: 34px; text-align: center; font-weight: 800; font-size: 46px; text-shadow: 0 4px 14px rgba(0, 0, 0, 0.4); }
+      .foot { position: absolute; left: 0; right: 0; bottom: 22px; text-align: center; font-weight: 800; font-size: 46px; text-shadow: 0 4px 14px rgba(0, 0, 0, 0.4); }
     </style>
   </head>
   <body>
@@ -46,24 +60,29 @@
     </div>
     <div class="cards">
       <div class="card torn-card">
+        <div class="frame"></div><div class="tape"></div>
         <div class="n">1</div>
         <img src="../assets/fotos/cuarenta.jpg" alt="" />
         <div class="t">Campeonato de 40</div>
-        <div class="d">En parejas · <b>$10</b><br />Inscríbete hasta el <b>2 de diciembre</b> con Juan Pablo Martínez<br />1.º premio sorpresa + trofeo · 2.º trofeo</div>
+        <div class="d">En parejas · <b>$10</b><br />Inscríbete hasta el <b>2 de diciembre</b> con Juan Pablo Martínez<br /><b>1.º</b> premio sorpresa + trofeo · <b>2.º</b> trofeo</div>
       </div>
       <div class="card torn-card">
+        <div class="frame"></div><div class="tape"></div>
         <div class="n">2</div>
         <img src="../assets/fotos/leyenda.jpg" alt="" />
         <div class="t">Concurso de Leyendas Quiteñas</div>
-        <div class="d">Representa una leyenda con disfraces, música y escenografía<br /><b>¡Premio sorpresa!</b></div>
+        <div class="d">Representa una leyenda con disfraces, música y escenografía</div><div class="go"><b>¡Premio sorpresa!</b><span class="reg">Regístrate en Talento Humano</span></div>
       </div>
       <div class="card torn-card">
+        <div class="frame"></div><div class="tape"></div>
         <div class="n">3</div>
         <img src="../assets/fotos/postres.jpg" alt="" />
         <div class="t">Concurso de Postres Quiteños</div>
-        <div class="d">Prepara en equipo un postre tradicional, dulce o salado<br /><b>¡Premio sorpresa!</b></div>
+        <div class="d">Prepara en equipo un postre tradicional, dulce o salado</div><div class="go"><b>¡Premio sorpresa!</b><span class="reg">Regístrate en Talento Humano</span></div>
       </div>
     </div>
+    <svg class="flags" id="flags" viewBox="0 0 1920 90"></svg>
+    <div id="confetti"></div>
     <div class="foot">4 de diciembre · ¡Qué viva Quito!</div>
     <script>
       // bordes de papel rasgado
@@ -78,6 +97,36 @@
         return `polygon(${p.map(([x, y]) => `${x.toFixed(1)}px ${y.toFixed(1)}px`).join(",")})`;
       };
       document.querySelectorAll(".torn").forEach((e) => (e.style.clipPath = torn(e.offsetWidth, e.offsetHeight, 7, 12)));
+      // marco de color rasgado
+      document.querySelectorAll(".card .frame").forEach((f) => (f.style.clipPath = torn(f.offsetWidth, f.offsetHeight, 16, 16)));
+      // foto con borde inferior en zigzag (tipo papel picado)
+      document.querySelectorAll(".card img").forEach((im) => {
+        const w = im.offsetWidth, h = im.offsetHeight, pts = ["0px 0px", `${w}px 0px`];
+        for (let x = w; x >= 0; x -= 20) pts.push(`${x}px ${h - ((x / 20) % 2 ? 14 : 0)}px`);
+        im.style.clipPath = `polygon(${pts.join(",")})`;
+      });
+      // banderines rojo/azul/blanco detrás de las tarjetas
+      const fl = document.getElementById("flags"), NS = "http://www.w3.org/2000/svg";
+      const rope = document.createElementNS(NS, "path"); rope.setAttribute("d", "M0 10 Q960 70 1920 10"); rope.setAttribute("stroke", "#fff"); rope.setAttribute("stroke-width", "3"); rope.setAttribute("fill", "none"); fl.appendChild(rope);
+      ["#e8373e", "#ffffff", "#1554c0"].forEach(() => {});
+      for (let i = 0; i < 30; i++) {
+        const x = 20 + i * 66, t = x / 1920, y = (1 - t) * (1 - t) * 10 + 2 * (1 - t) * t * 70 + t * t * 10;
+        const f = document.createElementNS(NS, "path");
+        f.setAttribute("d", `M${x - 24} ${y} L${x + 24} ${y} L${x} ${y + 52}z`);
+        f.setAttribute("fill", ["#e8373e", "#ffffff", "#1554c0"][i % 3]);
+        fl.appendChild(f);
+      }
+      // confeti suelto
+      const cfh = document.getElementById("confetti");
+      for (let i = 0; i < 34; i++) {
+        const c = document.createElement("div"); c.className = "cf";
+        // solo en los márgenes: no tapa textos
+        const side = i % 4;
+        const cx = side === 0 ? rnd() * 60 : side === 1 ? 1860 + rnd() * 50 : rnd() * 1900;
+        const cy = side < 2 ? 380 + rnd() * 600 : side === 2 ? rnd() * 30 : 1050 + rnd() * 25;
+        Object.assign(c.style, { left: cx + "px", top: cy + "px", background: ["#e8373e", "#ffffff", "#5b8de8"][i % 3], transform: `rotate(${rnd() * 360}deg)` });
+        cfh.appendChild(c);
+      }
       document.querySelectorAll(".torn-card").forEach((e) => {
         const bgp = document.createElement("div");
         Object.assign(bgp.style, { position: "absolute", inset: "0", background: "#fffdf7", zIndex: "-1", clipPath: torn(e.offsetWidth, e.offsetHeight, 12, 14) });
