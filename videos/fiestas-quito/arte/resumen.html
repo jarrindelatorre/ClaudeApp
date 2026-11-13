@@ -12,7 +12,9 @@
       .bg { position: absolute; inset: 0; background: url("../assets/fotos/chiva.jpg") center / cover; }
       .veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13, 58, 140, 0.92) 0%, rgba(21, 84, 192, 0.86) 45%, rgba(13, 58, 140, 0.95) 100%); }
       .strip { position: absolute; background: var(--red); }
-      .logo { position: absolute; left: 70px; top: 40px; width: 300px; padding: 18px; background: #fffdf7; transform: rotate(-4deg); filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.4)); }
+      /* logo sin fondo: contorno blanco tipo sticker para que el azul contraste sobre el fondo azul */
+      .logo { position: absolute; left: 60px; top: 30px; width: 320px; transform: rotate(-4deg);
+        filter: drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.45)); }
       .logo img { display: block; width: 100%; }
       .head { position: absolute; left: 420px; top: 54px; right: 70px; }
       .head .k { font-weight: 800; font-size: 48px; line-height: 1; }
@@ -21,7 +23,7 @@
       .pill { padding: 8px 30px 14px; font-weight: 800; font-size: 46px; line-height: 1; }
       .pill.r { background: var(--red); }
       .pill.w { background: #fff; color: var(--blue); }
-      .cards { position: absolute; left: 100px; right: 100px; top: 425px; display: flex; gap: 70px; }
+      .cards { position: absolute; left: 100px; right: 100px; top: 410px; display: flex; gap: 70px; }
       .card { position: relative; flex: 1; background: #fffdf7; color: var(--ink); padding: 18px 18px 22px; filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.45)); }
       .card:nth-child(1) { transform: rotate(-3deg); }
       .card:nth-child(2) { transform: rotate(2deg) translateY(14px); }
@@ -32,7 +34,7 @@
       .card .tape { position: absolute; top: -34px; left: 50%; width: 170px; height: 48px; margin-left: -85px; background: rgba(255, 255, 255, 0.75); transform: rotate(-4deg); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); }
       .go { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 10px 8px 0; font-size: 27px; }
       .go b { font-weight: 800; color: var(--red); }
-      .reg { display: inline-block; padding: 4px 16px 8px; background: var(--blue); color: #fff; font-weight: 800; font-size: 25px; transform: rotate(-1.5deg); }
+      .reg { display: inline-block; padding: 4px 16px 8px; background: var(--blue); color: #fff; font-weight: 800; font-size: 25px; line-height: 1.2; transform: rotate(-1.5deg); }
       .flags { position: absolute; left: 0; top: 330px; width: 1920px; height: 90px; z-index: 1; }
       .cards, .head, .sub, .logo, .foot { z-index: 3; }
       #confetti { position: absolute; inset: 0; z-index: 2; }
@@ -71,14 +73,14 @@
         <div class="n">2</div>
         <img src="../assets/fotos/leyenda.jpg" alt="" />
         <div class="t">Concurso de Leyendas Quiteñas</div>
-        <div class="d">Representa una leyenda con disfraces, música y escenografía</div><div class="go"><b>¡Premio sorpresa!</b><span class="reg">Regístrate en Talento Humano</span></div>
+        <div class="d">Representa una leyenda con disfraces, música y escenografía</div><div class="go"><b>¡Premio sorpresa!</b><span class="reg">Talento Humano realizará el registro de los participantes</span></div>
       </div>
       <div class="card torn-card">
         <div class="frame"></div><div class="tape"></div>
         <div class="n">3</div>
         <img src="../assets/fotos/postres.jpg" alt="" />
         <div class="t">Concurso de Postres Quiteños</div>
-        <div class="d">Prepara en equipo un postre tradicional, dulce o salado</div><div class="go"><b>¡Premio sorpresa!</b><span class="reg">Regístrate en Talento Humano</span></div>
+        <div class="d">Prepara en equipo un postre tradicional, dulce o salado</div><div class="go"><b>¡Premio sorpresa!</b><span class="reg">Talento Humano realizará el registro de los participantes</span></div>
       </div>
     </div>
     <div id="confetti"></div>
@@ -111,7 +113,7 @@
         // solo en los márgenes: no tapa textos
         const side = i % 4;
         const cx = side === 0 ? rnd() * 60 : side === 1 ? 1860 + rnd() * 50 : rnd() * 1900;
-        const cy = side < 2 ? 380 + rnd() * 600 : side === 2 ? rnd() * 30 : 1050 + rnd() * 25;
+        const cy = side < 2 ? 380 + rnd() * 600 : side === 2 ? rnd() * 30 : 1062 + rnd() * 14;
         Object.assign(c.style, { left: cx + "px", top: cy + "px", background: ["#e8373e", "#ffffff", "#5b8de8"][i % 3], transform: `rotate(${rnd() * 360}deg)` });
         cfh.appendChild(c);
       }
