@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      /* Arte resumen 16:9 · Fiestas de Quito · solo rojo y azul, papel rasgado */
+      @font-face { font-family: "Baloo 2"; src: url("../assets/fonts/baloo-2-latin-600-normal.woff2") format("woff2"); font-weight: 600; }
+      @font-face { font-family: "Baloo 2"; src: url("../assets/fonts/baloo-2-latin-800-normal.woff2") format("woff2"); font-weight: 800; }
+      :root { --red: #e8373e; --blue: #1554c0; --blue-dark: #0d3a8c; --ink: #1d2340; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { width: 1920px; height: 1080px; overflow: hidden; font-family: "Baloo 2", sans-serif; color: #fff; background: var(--blue-dark); position: relative; }
+      .bg { position: absolute; inset: 0; background: url("../assets/fotos/chiva.jpg") center / cover; }
+      .veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13, 58, 140, 0.92) 0%, rgba(21, 84, 192, 0.86) 45%, rgba(13, 58, 140, 0.95) 100%); }
+      .strip { position: absolute; background: var(--red); }
+      .logo { position: absolute; left: 70px; top: 40px; width: 300px; padding: 18px; background: #fffdf7; transform: rotate(-4deg); filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.4)); }
+      .logo img { display: block; width: 100%; }
+      .head { position: absolute; left: 420px; top: 54px; right: 70px; }
+      .head .k { font-weight: 800; font-size: 48px; line-height: 1; }
+      .head .h { font-weight: 800; font-size: 104px; line-height: 0.95; margin-top: 6px; text-shadow: 0 6px 20px rgba(0, 0, 0, 0.35); }
+      .sub { position: absolute; left: 420px; top: 262px; display: flex; gap: 22px; align-items: center; }
+      .pill { padding: 8px 30px 14px; font-weight: 800; font-size: 46px; line-height: 1; }
+      .pill.r { background: var(--red); }
+      .pill.w { background: #fff; color: var(--blue); }
+      .cards { position: absolute; left: 70px; right: 70px; top: 380px; display: flex; gap: 40px; }
+      .card { position: relative; flex: 1; background: #fffdf7; color: var(--ink); padding: 18px 18px 26px; filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.45)); }
+      .card img { display: block; width: 100%; height: 270px; object-fit: cover; }
+      .card .n { position: absolute; left: -22px; top: -26px; width: 96px; height: 96px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 800; font-size: 64px; display: flex; align-items: center; justify-content: center; padding-top: 8px; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); }
+      .card:nth-child(2) .n { background: var(--blue); }
+      .card .t { font-weight: 800; font-size: 46px; line-height: 1.02; margin: 16px 10px 0; color: var(--blue); }
+      .card .d { font-weight: 600; font-size: 29px; line-height: 1.3; margin: 10px 10px 0; }
+      .card .d b { font-weight: 800; color: var(--red); }
+      .foot { position: absolute; left: 0; right: 0; bottom: 34px; text-align: center; font-weight: 800; font-size: 46px; text-shadow: 0 4px 14px rgba(0, 0, 0, 0.4); }
+    </style>
+  </head>
+  <body>
+    <div class="bg"></div>
+    <div class="veil"></div>
+    <div class="logo"><img src="../assets/logo-fiestas.png" alt="Fiestas de Quito" /></div>
+    <div class="head">
+      <div class="k">En COMUNICA EP</div>
+      <div class="h">se viven las Fiestas de Quito</div>
+    </div>
+    <div class="sub">
+      <div class="pill r torn">3 concursos</div>
+      <div class="pill w torn">¡Prepárate con tu grupo!</div>
+    </div>
+    <div class="cards">
+      <div class="card torn-card">
+        <div class="n">1</div>
+        <img src="../assets/fotos/cuarenta.jpg" alt="" />
+        <div class="t">Campeonato de 40</div>
+        <div class="d">En parejas · <b>$10</b><br />Inscríbete hasta el <b>2 de diciembre</b> con Juan Pablo Martínez<br />1.º premio sorpresa + trofeo · 2.º trofeo</div>
+      </div>
+      <div class="card torn-card">
+        <div class="n">2</div>
+        <img src="../assets/fotos/leyenda.jpg" alt="" />
+        <div class="t">Concurso de Leyendas Quiteñas</div>
+        <div class="d">Representa una leyenda con disfraces, música y escenografía<br /><b>¡Premio sorpresa!</b></div>
+      </div>
+      <div class="card torn-card">
+        <div class="n">3</div>
+        <img src="../assets/fotos/postres.jpg" alt="" />
+        <div class="t">Concurso de Postres Quiteños</div>
+        <div class="d">Prepara en equipo un postre tradicional, dulce o salado<br /><b>¡Premio sorpresa!</b></div>
+      </div>
+    </div>
+    <div class="foot">4 de diciembre · ¡Qué viva Quito!</div>
+    <script>
+      // bordes de papel rasgado
+      let seed = 5;
+      const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      const torn = (w, h, amp = 9, step = 14) => {
+        const p = [];
+        for (let x = 0; x <= w; x += step) p.push([x, rnd() * amp]);
+        for (let y = step; y <= h; y += step) p.push([w - rnd() * amp, y]);
+        for (let x = w - step; x >= 0; x -= step) p.push([x, h - rnd() * amp]);
+        for (let y = h - step; y > 0; y -= step) p.push([rnd() * amp, y]);
+        return `polygon(${p.map(([x, y]) => `${x.toFixed(1)}px ${y.toFixed(1)}px`).join(",")})`;
+      };
+      document.querySelectorAll(".torn").forEach((e) => (e.style.clipPath = torn(e.offsetWidth, e.offsetHeight, 7, 12)));
+      document.querySelectorAll(".torn-card").forEach((e) => {
+        const bgp = document.createElement("div");
+        Object.assign(bgp.style, { position: "absolute", inset: "0", background: "#fffdf7", zIndex: "-1", clipPath: torn(e.offsetWidth, e.offsetHeight, 12, 14) });
+        e.style.background = "transparent";
+        e.prepend(bgp);
+      });
+    </script>
+  </body>
+</html>
