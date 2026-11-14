@@ -1,0 +1,47 @@
+{
+  "ajustes": {
+    "horas_ventana": 24,
+    "telegram_max_por_categoria": 4,
+    "telegram_max_por_corrida": 20
+  },
+  "categorias": {
+    "Política": ["asamblea", "presidente", "presidenta", "gobierno", "ministro", "ministra", "elecciones", "consulta popular", "cne", "corte constitucional", "decreto", "legislador", "asambleísta", "partido", "candidato", "candidata", "congreso", "senado", "noboa", "correísmo", "juicio político", "fiscalía", "contraloría"],
+    "Economía": ["economía", "dólar", "inflación", "petróleo", "fmi", "impuesto", "iva", "exportaciones", "banco central", "riesgo país", "empleo", "desempleo", "salario", "aranceles", "bolsa", "deuda", "presupuesto", "comercio", "empresas", "negocios", "sri", "combustibles", "precio"],
+    "Seguridad": ["policía", "asesinato", "sicariato", "narcotráfico", "crimen", "cárcel", "penitenciaría", "secuestro", "extorsión", "balacera", "militares", "fuerzas armadas", "operativo", "detenido", "detenidos", "homicidio", "droga", "robo", "estado de excepción", "muertes violentas", "atentado"],
+    "Deportes": ["fútbol", "liga pro", "la tri", "selección", "mundial", "gol", "partido", "barcelona sc", "emelec", "liga de quito", "independiente del valle", "copa libertadores", "champions", "tenis", "ciclismo", "olímpicos", "fifa", "conmebol", "nba", "fórmula 1", "deportes"],
+    "Tecnología": ["tecnología", "inteligencia artificial", "ia", "app", "apps", "celular", "google", "apple", "microsoft", "meta", "openai", "ciberseguridad", "redes sociales", "internet", "software", "robot", "startup", "whatsapp", "tiktok"],
+    "Salud": ["salud", "hospital", "iess", "vacuna", "medicinas", "enfermedad", "dengue", "virus", "oms", "pacientes", "médicos", "cáncer", "epidemia", "nutrición", "salud mental"],
+    "Cultura": ["cultura", "cine", "película", "música", "concierto", "festival", "libro", "teatro", "arte", "museo", "serie", "netflix", "farándula", "entretenimiento", "artista", "cantante", "fiestas de quito"],
+    "Sociedad": ["educación", "universidad", "clases", "estudiantes", "tránsito", "transporte", "metro de quito", "clima", "lluvias", "sismo", "temblor", "incendio", "apagones", "cortes de luz", "migrantes", "comunidad", "municipio", "alcalde", "ambiente", "inamhi", "agua potable"]
+  },
+  "fuentes": [
+    {"medio": "El Comercio", "ambito": "nacional", "url": "https://www.elcomercio.com/feed/"},
+    {"medio": "El Universo", "ambito": "nacional", "url": "https://www.eluniverso.com/arc/outboundfeeds/rss/?outputType=xml"},
+    {"medio": "Primicias", "ambito": "nacional", "url": "https://www.primicias.ec/feed/"},
+    {"medio": "Expreso", "ambito": "nacional", "url": "https://www.expreso.ec/rss/portada.xml"},
+    {"medio": "La Hora", "ambito": "nacional", "url": "https://www.lahora.com.ec/feed/"},
+    {"medio": "Ecuavisa", "ambito": "nacional", "url": "https://www.ecuavisa.com/rss/portada.xml"},
+    {"medio": "Teleamazonas", "ambito": "nacional", "url": "https://www.teleamazonas.com/feed/"},
+    {"medio": "GK", "ambito": "nacional", "url": "https://gk.city/feed/"},
+    {"medio": "Extra", "ambito": "nacional", "url": "https://www.extra.ec/rss/portada.xml"},
+    {"medio": "Vistazo", "ambito": "nacional", "url": "https://www.vistazo.com/rss/portada.xml"},
+    {"medio": "El Telégrafo", "ambito": "nacional", "url": "https://www.eltelegrafo.com.ec/feed"},
+    {"medio": "Metro Ecuador", "ambito": "nacional", "url": "https://www.metroecuador.com.ec/arc/outboundfeeds/rss/?outputType=xml"},
+    {"medio": "El Diario", "ambito": "nacional", "url": "https://www.eldiario.ec/feed/"},
+    {"medio": "El Mercurio", "ambito": "nacional", "url": "https://www.elmercurio.com.ec/feed/"},
+
+    {"medio": "BBC Mundo", "ambito": "internacional", "url": "https://feeds.bbci.co.uk/mundo/rss.xml"},
+    {"medio": "El País", "ambito": "internacional", "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada"},
+    {"medio": "El País América", "ambito": "internacional", "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/america/portada"},
+    {"medio": "DW Español", "ambito": "internacional", "url": "https://rss.dw.com/rdf/rss-sp-all"},
+    {"medio": "France 24", "ambito": "internacional", "url": "https://www.france24.com/es/rss"},
+    {"medio": "CNN en Español", "ambito": "internacional", "url": "https://cnnespanol.cnn.com/feed/"},
+    {"medio": "Infobae", "ambito": "internacional", "url": "https://www.infobae.com/arc/outboundfeeds/rss/"},
+    {"medio": "El Tiempo (Colombia)", "ambito": "internacional", "url": "https://www.eltiempo.com/rss/mundo.xml"},
+    {"medio": "El Mundo (España)", "ambito": "internacional", "url": "https://e00-elmundo.uecdn.es/elmundo/rss/internacional.xml"},
+    {"medio": "Europa Press", "ambito": "internacional", "url": "https://www.europapress.es/rss/rss.aspx?ch=00069"},
+    {"medio": "The New York Times", "ambito": "internacional", "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"},
+    {"medio": "The Guardian", "ambito": "internacional", "url": "https://www.theguardian.com/world/rss"},
+    {"medio": "Al Jazeera", "ambito": "internacional", "url": "https://www.aljazeera.com/xml/rss/all.xml"}
+  ]
+}

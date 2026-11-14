@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monitor de noticias</title>
+<style>
+  :root {
+    --fondo: #f4f2ee; --panel: #ffffff; --texto: #1c1b19; --suave: #6b6760;
+    --linea: #e2ded6; --acento: #b3261e; --acento-texto: #ffffff; --chip: #ebe7df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #141413; --panel: #1f1e1c; --texto: #f0ede6; --suave: #a39e94;
+      --linea: #33312d; --acento: #ff6b5e; --acento-texto: #1a0907; --chip: #2a2926;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--fondo); color: var(--texto);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header {
+    position: sticky; top: 0; z-index: 5; background: var(--fondo);
+    border-bottom: 1px solid var(--linea); padding: 14px 16px 10px;
+  }
+  .ancho { max-width: 1200px; margin: 0 auto; }
+  .titulo { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+  h1 { font-size: 1.25rem; margin: 0; letter-spacing: -0.01em; }
+  #estado { color: var(--suave); font-size: 0.85rem; }
+  .controles { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  input[type=search], select {
+    font: inherit; color: inherit; background: var(--panel);
+    border: 1px solid var(--linea); border-radius: 8px; padding: 7px 10px;
+  }
+  input[type=search] { flex: 1 1 220px; min-width: 0; }
+  .chips { display: flex; gap: 6px; overflow-x: auto; padding: 10px 0 2px; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    font: inherit; font-size: 0.875rem; white-space: nowrap; cursor: pointer;
+    color: var(--texto); background: var(--chip); border: 0; border-radius: 999px; padding: 5px 12px;
+  }
+  .chip[aria-pressed=true] { background: var(--acento); color: var(--acento-texto); font-weight: 600; }
+  .chip span { opacity: 0.7; margin-left: 4px; font-variant-numeric: tabular-nums; }
+  main { padding: 16px; }
+  .rejilla { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  article {
+    background: var(--panel); border: 1px solid var(--linea); border-radius: 12px;
+    overflow: hidden; display: flex; flex-direction: column;
+  }
+  article img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--chip); }
+  .cuerpo { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .meta { font-size: 0.78rem; color: var(--suave); display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+  .cat { color: var(--acento); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+  .cobertura { background: var(--acento); color: var(--acento-texto); border-radius: 4px; padding: 0 6px; font-weight: 600; }
+  h2 { font-size: 1.02rem; line-height: 1.3; margin: 0; }
+  h2 a { color: inherit; text-decoration: none; }
+  h2 a:hover { text-decoration: underline; }
+  p { margin: 0; font-size: 0.9rem; color: var(--suave); }
+  .otros { font-size: 0.8rem; }
+  .otros a { color: inherit; }
+  .acciones { margin-top: auto; padding-top: 6px; display: flex; gap: 8px; }
+  .acciones a, .acciones button {
+    font: inherit; font-size: 0.82rem; cursor: pointer; text-decoration: none; color: var(--texto);
+    background: transparent; border: 1px solid var(--linea); border-radius: 8px; padding: 5px 10px;
+  }
+  .acciones button:hover, .acciones a:hover { border-color: var(--acento); color: var(--acento); }
+  .vacio { color: var(--suave); text-align: center; padding: 48px 16px; }
+  details { margin-top: 28px; color: var(--suave); font-size: 0.85rem; }
+  details ul { columns: 220px; padding-left: 18px; }
+  .caida { color: var(--acento); }
+</style>
+</head>
+<body>
+<header>
+  <div class="ancho">
+    <div class="titulo">
+      <h1>Monitor de noticias</h1>
+      <span id="estado">Cargando…</span>
+    </div>
+    <div class="controles">
+      <input type="search" id="buscar" placeholder="Buscar en títulos y resúmenes" aria-label="Buscar">
+      <select id="ambito" aria-label="Ámbito">
+        <option value="">Nacional e internacional</option>
+        <option value="nacional">Solo nacional</option>
+        <option value="internacional">Solo internacional</option>
+      </select>
+      <select id="orden" aria-label="Orden">
+        <option value="relevancia">Más relevantes primero</option>
+        <option value="recientes">Más recientes primero</option>
+      </select>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Categorías"></div>
+  </div>
+</header>
+<main class="ancho">
+  <div class="rejilla" id="rejilla"></div>
+  <div class="vacio" id="vacio" hidden>No hay noticias con esos filtros.</div>
+  <details>
+    <summary id="resumenFuentes">Fuentes</summary>
+    <ul id="fuentes"></ul>
+  </details>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+let datos = null, categoria = "";
+
+function hace(segundos) {
+  const m = Math.max(0, Math.round((Date.now() / 1000 - segundos) / 60));
+  if (m < 1) return "ahora";
+  if (m < 60) return `hace ${m} min`;
+  const h = Math.round(m / 60);
+  return h < 24 ? `hace ${h} h` : `hace ${Math.round(h / 24)} d`;
+}
+
+function nodo(etiqueta, props = {}, hijos = []) {
+  const n = Object.assign(document.createElement(etiqueta), props);
+  for (const h of [].concat(hijos)) if (h) n.append(h);
+  return n;
+}
+
+function tarjeta(h) {
+  const meta = nodo("div", { className: "meta" }, [
+    nodo("span", { className: "cat", textContent: h.categoria }),
+    nodo("span", { textContent: `${h.medio} · ${hace(h.fecha)}` }),
+    h.cobertura > 1 && nodo("span", {
+      className: "cobertura", textContent: `${h.cobertura} medios`,
+      title: "Cuántos medios publicaron esta noticia",
+    }),
+  ]);
+  const titulo = nodo("h2", {}, nodo("a", {
+    href: h.enlace, target: "_blank", rel: "noopener noreferrer", textContent: h.titulo,
+  }));
+  const copiar = nodo("button", { type: "button", textContent: "Copiar" });
+  copiar.onclick = async () => {
+    const texto = [h.titulo, h.resumen, `Fuente: ${h.medio} — ${h.enlace}`].filter(Boolean).join("\n\n");
+    try { await navigator.clipboard.writeText(texto); copiar.textContent = "Copiado"; }
+    catch { copiar.textContent = "No se pudo copiar"; }
+    setTimeout(() => copiar.textContent = "Copiar", 1500);
+  };
+  let otros = null;
+  if (h.otros_medios.length) {
+    otros = nodo("p", { className: "otros" }, "También en: ");
+    h.otros_medios.forEach((o, i) => {
+      if (i) otros.append(", ");
+      otros.append(nodo("a", { href: o.enlace, target: "_blank", rel: "noopener noreferrer", textContent: o.medio }));
+    });
+  }
+  let img = null;
+  if (h.imagen) {
+    img = nodo("img", { src: h.imagen, alt: "", loading: "lazy", referrerPolicy: "no-referrer" });
+    img.onerror = () => img.remove();
+  }
+  return nodo("article", {}, [img, nodo("div", { className: "cuerpo" }, [
+    meta, titulo, h.resumen && nodo("p", { textContent: h.resumen }), otros,
+    nodo("div", { className: "acciones" }, [
+      copiar,
+      nodo("a", { href: h.enlace, target: "_blank", rel: "noopener noreferrer", textContent: "Abrir nota" }),
+    ]),
+  ])]);
+}
+
+function pintar() {
+  const texto = $("buscar").value.trim().toLowerCase();
+  const ambito = $("ambito").value;
+  const base = datos.historias.filter(h =>
+    (!ambito || h.ambito === ambito) &&
+    (!texto || (h.titulo + " " + h.resumen + " " + h.medio).toLowerCase().includes(texto)));
+
+  const conteo = {};
+  for (const h of base) conteo[h.categoria] = (conteo[h.categoria] || 0) + 1;
+  const chips = $("chips");
+  chips.replaceChildren();
+  const opciones = [["", "Todas", base.length]].concat(
+    datos.categorias.filter(c => conteo[c]).map(c => [c, c, conteo[c]]));
+  for (const [valor, nombre, cuantas] of opciones) {
+    const b = nodo("button", { className: "chip", type: "button" },
+      [nombre, nodo("span", { textContent: cuantas })]);
+    b.setAttribute("aria-pressed", valor === categoria);
+    b.onclick = () => { categoria = valor; pintar(); };
+    chips.append(b);
+  }
+
+  const lista = base.filter(h => !categoria || h.categoria === categoria);
+  if ($("orden").value === "recientes") lista.sort((a, b) => b.fecha - a.fecha);
+  else lista.sort((a, b) => b.cobertura - a.cobertura || b.fecha - a.fecha);
+  $("rejilla").replaceChildren(...lista.map(tarjeta));
+  $("vacio").hidden = lista.length > 0;
+}
+
+async function cargar() {
+  try {
+    const r = await fetch("noticias.json?t=" + Date.now());
+    if (!r.ok) throw new Error(r.status);
+    datos = await r.json();
+  } catch (e) {
+    $("estado").textContent = "No se pudo cargar noticias.json. ¿Ya corrió el agente?";
+    return;
+  }
+  if (categoria && !datos.historias.some(h => h.categoria === categoria)) categoria = "";
+  const activas = datos.fuentes.filter(f => !f.error).length;
+  $("estado").textContent =
+    `${datos.historias.length} noticias · actualizado ${hace(datos.generado)}`;
+  $("resumenFuentes").textContent = `Fuentes: ${activas} de ${datos.fuentes.length} respondieron`;
+  $("fuentes").replaceChildren(...datos.fuentes.map(f => nodo("li", {
+    className: f.error ? "caida" : "",
+    textContent: f.error ? `${f.medio}: sin respuesta` : `${f.medio}: ${f.noticias}`,
+    title: f.error || "",
+  })));
+  pintar();
+}
+
+for (const id of ["buscar", "ambito", "orden"]) $(id).addEventListener("input", pintar);
+cargar();
+setInterval(cargar, 5 * 60 * 1000);
+</script>
+</body>
+</html>
