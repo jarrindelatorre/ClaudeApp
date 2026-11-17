@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Historia de Instagram 9:16 · recorrido por festivalesmeraldas.com (vista móvil) ───────────── */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0e2321; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #0e2321; }
+      #stage { position: absolute; inset: 0; }
+      /* captura completa de la web en móvil (430 px CSS → 1080 px) */
+      #page { position: absolute; left: 0; top: 0; width: 1080px; height: 29439px; }
+      #page img { display: block; width: 1080px; height: 29439px; }
+      /* cabecera fija de la web al hacer scroll */
+      #hdr { position: absolute; left: 0; top: 0; width: 1080px; height: 246px; opacity: 0; }
+      #hdr img { display: block; width: 1080px; height: 246px; }
+      /* dedo que desliza */
+      #finger { position: absolute; left: 760px; top: 1300px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255, 255, 255, 0.35); border: 4px solid rgba(255, 255, 255, 0.8); box-shadow: 0 0 30px rgba(0, 0, 0, 0.35); opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="45" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="45" data-track-index="0">
+        <div id="page"><img src="assets/web-movil.jpg" alt="festivalesmeraldas.com" /></div>
+        <div id="hdr"><img src="assets/header.jpg" alt="" /></div>
+        <div id="finger"></div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const K = 1080 / 430; // px CSS de la web → px del video
+      const MAX = 29439 - 1920;
+      // paradas: inicio, conciertos, invitado, Vila, Jakovčić, Gridchuk, inscripción, artistas, apóyanos, contacto
+      const STOPS = [0, 935, 1790, 2837, 4029, 4764, 5495, 8349, 9575, 10083].map((y) => Math.min(MAX, Math.round(Math.max(0, y - (y ? 98 : 0)) * K))); // 98 = alto de la cabecera fija
+
+      // portada: zoom suave para destacar el index
+      tl.fromTo("#page", { scale: 1.08, transformOrigin: "50% 0%" }, { scale: 1, duration: 1.6, ease: "power3.out" }, 0);
+      let t = 5.0;
+      const MOVE = 1.3, HOLD = 2.6;
+      STOPS.slice(1).forEach((y, i) => {
+        // dedo: aparece, sube y se va
+        tl.fromTo("#finger", { y: 260, opacity: 0, scale: 0.8 }, { y: -380, opacity: 1, scale: 1, duration: MOVE * 0.9, ease: "power2.inOut" }, t - 0.15);
+        tl.to("#finger", { opacity: 0, duration: 0.2 }, t + MOVE * 0.75);
+        tl.to("#page", { y: -y, duration: MOVE, ease: "power3.inOut" }, t);
+        if (i === 0) tl.to("#hdr", { opacity: 1, duration: 0.3 }, t + 0.25);
+        t += MOVE + HOLD;
+      });
+      // vuelta al inicio para cerrar en la portada
+      tl.to("#page", { y: 0, duration: 1.3, ease: "power3.inOut" }, t);
+      tl.to("#hdr", { opacity: 0, duration: 0.3 }, t + 1.0);
+      tl.fromTo("#page", { scale: 1 }, { scale: 1.05, transformOrigin: "50% 0%", duration: 45 - t - 1.3, ease: "sine.out", immediateRender: false }, t + 1.3);
+
+      tl.set({}, {}, 45);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
