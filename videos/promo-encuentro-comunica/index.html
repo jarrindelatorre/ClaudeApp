@@ -44,6 +44,10 @@
       .game i { font-style: normal; flex: none; width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 50px; background: var(--blue); }
       .game:nth-child(3n + 1) i { background: #e0a400; }
       .game:nth-child(3n) i { background: var(--teal); }
+      /* logo animado: los arcos se dibujan en sentido horario con una máscara cónica */
+      #logo { position: absolute; left: 434px; top: 20px; width: 1189px; height: 1040px; }
+      .lg { position: absolute; inset: 0; width: 1189px; height: 1040px; display: block; }
+      .arc { --a: 0deg; -webkit-mask: conic-gradient(from 0deg at 49.4% 49.7%, #000 var(--a), transparent var(--a)); mask: conic-gradient(from 0deg at 49.4% 49.7%, #000 var(--a), transparent var(--a)); }
       .dot { position: absolute; border-radius: 50%; mix-blend-mode: multiply; }
     </style>
   </head>
@@ -52,8 +56,13 @@
       <div id="stage" class="clip" data-start="0" data-duration="54" data-track-index="0">
         <!-- Intro: logo Premios Comunica -->
         <div class="scene" id="s0" style="background: #fff">
-          <img id="banner" src="assets/fotos/banner.webp" alt="Premios Comunica 2026" style="position: absolute; left: 60px; top: 150px; width: 1800px" />
-          <div id="s0t" style="position: absolute; left: 0; top: 880px; width: 1920px; text-align: center; color: var(--ink); font-weight: 800; font-size: 52px">Un día para celebrar juntos</div>
+          <div id="logo">
+            <img class="lg arc" id="lgAzul" src="assets/logo/azul.png" alt="" />
+            <img class="lg arc" id="lgTurq" src="assets/logo/turquesa.png" alt="" />
+            <img class="lg arc" id="lgAmar" src="assets/logo/amarillo.png" alt="" />
+            <img class="lg" id="lgGris" src="assets/logo/gris.png" alt="" />
+            <img class="lg" id="lgNegro" src="assets/logo/negro.png" alt="Integración COMUNICA EP 2026" />
+          </div>
         </div>
 
         <!-- Competencias (2 fotos) -->
@@ -169,11 +178,12 @@
         tl.fromTo(sc.querySelector(".tint"), { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "power2.out" }, a + 0.2);
       };
 
-      /* Intro */
+      /* Intro: logo animado */
       show("#s0", T[0], T[1]);
-      tl.fromTo("#banner", { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2, ease: "back.out(1.6)" }, 0.2);
-      tl.fromTo("#s0t", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 1.5);
-      tl.to("#banner", { scale: 1.04, duration: 3, ease: "sine.inOut" }, 1.4);
+      [["#lgAzul", 0.2], ["#lgTurq", 0.45], ["#lgAmar", 0.7]].forEach(([sel, at]) => tl.fromTo(sel, { "--a": "0deg" }, { "--a": "360deg", duration: 1.6, ease: "power2.inOut" }, at));
+      tl.fromTo("#lgGris", { opacity: 0, y: 40, scale: 0.9, transformOrigin: "49% 45%" }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(1.7)" }, 1.7);
+      tl.fromTo("#lgNegro", { opacity: 0, y: 40, scale: 0.8, transformOrigin: "42% 58%" }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(2)" }, 2.1);
+      tl.fromTo("#logo", { scale: 1, rotation: 0 }, { scale: 1.05, duration: 2.2, ease: "sine.inOut", immediateRender: false }, 2.8);
 
       /* Competencias: sacos → cuerda */
       wipe(T[1]); show("#s1", T[1], 13);
