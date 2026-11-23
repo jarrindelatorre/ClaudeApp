@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* ───────────── Promo evento COMUNICA · foto + protagonista recortado sobre degradé de 3 colores ───────────── */
+      :root {
+        --yellow: #f4bb1a;
+        --blue: #1aa6d4;
+        --teal: #36c0c4;
+        --ink: #1f2124;
+        --font: "Archivo", "Inter", system-ui, sans-serif;
+      }
+      @font-face { font-family: "Archivo"; src: url("assets/fonts/archivo-var.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-display: block; }
+      @font-face { font-family: "Inter"; src: url("assets/fonts/inter-var.woff2") format("woff2"); font-weight: 100 900; font-display: block; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #fff; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #fff; font-family: var(--font); color: #fff; }
+      #stage, .scene, .layer { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+      .scene { visibility: hidden; overflow: hidden; }
+
+      /* foto completa (1672×941 → 1920×1080) */
+      .ph { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 50% 45%; }
+      .ph img { position: absolute; inset: 0; width: 1920px; height: 1080px; display: block; }
+      /* degradé con transparencia de los 3 colores de COMUNICA: tiñe todo menos al protagonista */
+      .tint { position: absolute; inset: 0; background: linear-gradient(118deg, rgba(244, 187, 26, 0.82) 0%, rgba(26, 166, 212, 0.8) 52%, rgba(54, 192, 196, 0.84) 100%); }
+      .shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10, 40, 60, 0.55) 0%, rgba(10, 40, 60, 0) 38%); }
+      /* título gigante detrás de la persona */
+      .big { position: absolute; left: 0; top: 46px; width: 1920px; text-align: center; font-weight: 900; font-stretch: 115%; font-size: 250px; line-height: 1; letter-spacing: -0.01em; color: #fff; white-space: nowrap; text-shadow: 0 10px 40px rgba(0, 40, 70, 0.25); }
+      .pop { position: absolute; inset: 0; filter: drop-shadow(0 20px 30px rgba(0, 30, 50, 0.35)); }
+      /* bloque de texto inferior */
+      .info { position: absolute; left: 110px; bottom: 90px; max-width: 1000px; }
+      .ttl { margin-top: 12px; font-weight: 900; font-stretch: 112%; font-size: 96px; line-height: 0.95; text-shadow: 0 6px 26px rgba(0, 30, 50, 0.45); }
+      .kick { display: inline-block; padding: 8px 22px 10px; background: #fff; color: var(--ink); font-weight: 800; font-size: 30px; letter-spacing: 0.18em; }
+      .line { margin-top: 14px; font-weight: 700; font-size: 44px; line-height: 1.15; text-shadow: 0 4px 22px rgba(0, 30, 50, 0.45); }
+      .line b { font-weight: 900; color: #fff6cf; }
+      .dot { position: absolute; border-radius: 50%; mix-blend-mode: multiply; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="40" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="40" data-track-index="0">
+        <!-- Intro: logo Premios Comunica -->
+        <div class="scene" id="s0" style="background: #fff">
+          <img id="banner" src="assets/fotos/banner.webp" alt="Premios Comunica 2026" style="position: absolute; left: 60px; top: 150px; width: 1800px" />
+          <div id="s0t" style="position: absolute; left: 0; top: 880px; width: 1920px; text-align: center; color: var(--ink); font-weight: 800; font-size: 52px">Un día para celebrar juntos</div>
+        </div>
+
+        <!-- Competencias (2 fotos) -->
+        <div class="scene" id="s1">
+          <div class="ph" id="p1a"><img src="assets/fotos/sacos.webp" alt="" /></div>
+          <div class="tint" id="t1a"></div>
+          <div class="ph" id="p1b" style="opacity: 0"><img src="assets/fotos/cuerda.webp" alt="" /><div class="tint" style="position: absolute"></div></div>
+          <div class="big" style="font-size: 196px; top: 70px">COMPETENCIAS</div>
+          <div class="pop" id="q1a"><div class="ph"><img src="assets/fotos/sacos-pop.png" alt="" /></div></div>
+          <div class="pop" id="q1b" style="opacity: 0"><div class="ph"><img src="assets/fotos/cuerda-pop.png" alt="" /></div></div>
+          <div class="shade"></div>
+          <div class="info"><div class="kick">01</div><div class="ttl">Competencias</div><div class="line">Seremos <b>sorteados por colores</b> para armar equipos y participar en dinámicas grupales</div></div>
+        </div>
+
+        <!-- Premios -->
+        <div class="scene" id="s2" style="background: #fff">
+          <div class="layer" style="background: linear-gradient(118deg, rgba(244, 187, 26, 0.9) 0%, rgba(26, 166, 212, 0.88) 52%, rgba(54, 192, 196, 0.92) 100%)"></div>
+          <div class="big">PREMIOS</div>
+          <div id="statues" style="position: absolute; left: 900px; top: 250px; width: 900px; height: 760px; filter: drop-shadow(0 24px 30px rgba(0, 30, 50, 0.35))">
+            <img src="assets/fotos/statues-cut.png" alt="" style="position: absolute; left: 0; bottom: 0; width: 900px; display: block" />
+          </div>
+          <div class="shade"></div>
+          <div class="info" style="max-width: 760px"><div class="kick">02</div><div class="ttl">Premios</div><div class="line">Premiaremos a los <b>ganadores de las nominaciones</b> de los Premios Comunica en todas sus categorías</div></div>
+        </div>
+
+        <!-- Música -->
+        <div class="scene" id="s3">
+          <div class="ph"><img src="assets/fotos/musica.webp" alt="" /></div>
+          <div class="tint"></div>
+          <div class="big">MÚSICA</div>
+          <div class="pop"><div class="ph"><img src="assets/fotos/musica-pop.png" alt="" /></div></div>
+          <div class="shade"></div>
+          <div class="info"><div class="kick">03</div><div class="ttl">Música</div><div class="line">Disfrutaremos de <b>música en vivo</b> con artistas invitados</div></div>
+        </div>
+
+        <!-- Comida -->
+        <div class="scene" id="s4">
+          <div class="ph"><img src="assets/fotos/comida.webp" alt="" /></div>
+          <div class="tint"></div>
+          <div class="big">COMIDA</div>
+          <div class="pop"><div class="ph"><img src="assets/fotos/comida-pop.png" alt="" /></div></div>
+          <div class="shade"></div>
+          <div class="info" style="max-width: 820px"><div class="kick">04</div><div class="ttl">Comida</div><div class="line">Disfrutaremos de un <b>almuerzo delicioso</b> con todos nuestros compañeros</div></div>
+        </div>
+
+        <!-- Info final -->
+        <div class="scene" id="s5" style="background: linear-gradient(118deg, #f4bb1a 0%, #1aa6d4 52%, #36c0c4 100%)">
+          <div class="dot" style="left: -160px; top: -200px; width: 700px; height: 700px; background: rgba(255, 255, 255, 0.18)"></div>
+          <div class="dot" style="left: 1400px; top: 640px; width: 680px; height: 680px; background: rgba(255, 255, 255, 0.16)"></div>
+          <div id="fin" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center">
+            <div class="kick" style="font-size: 34px">¡TE ESPERAMOS!</div>
+            <div style="margin-top: 26px; font-weight: 900; font-stretch: 112%; font-size: 150px; line-height: 0.95; text-shadow: 0 8px 30px rgba(0, 40, 70, 0.25)">Sábado 12<br />de diciembre</div>
+            <div style="margin-top: 26px; font-weight: 700; font-size: 58px">2026 · desde las 8:00</div>
+            <div style="margin-top: 30px; display: inline-block; padding: 14px 44px 18px; background: #fff; color: var(--ink); font-weight: 900; font-size: 64px; letter-spacing: 0.04em">CÍRCULO MILITAR</div>
+          </div>
+        </div>
+
+        <div class="layer" id="wipe" style="background: linear-gradient(118deg, #f4bb1a 0%, #1aa6d4 52%, #36c0c4 100%); clip-path: circle(0% at 50% 50%)"></div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const show = (sel, a, b) => { tl.set(sel, { visibility: "visible" }, a); if (b != null) tl.set(sel, { visibility: "hidden" }, b); };
+      const T = [0, 5, 13, 19.5, 26, 32.5, 40];
+
+      /* transición: círculo de color que se abre y se cierra (los 3 círculos de COMUNICA) */
+      const wipe = (at) => {
+        tl.fromTo("#wipe", { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(75% at 50% 50%)", duration: 0.45, ease: "power3.in" }, at - 0.45);
+        tl.to("#wipe", { clipPath: "circle(0% at 50% 50%)", duration: 0.5, ease: "power3.out" }, at);
+      };
+      /* escena con foto: zoom lento; el recorte crece un poco más que el fondo (profundidad) */
+      const photoScene = (k, a, b, pop = ".pop") => {
+        const sc = document.getElementById("s" + k);
+        tl.fromTo(sc.querySelectorAll(".ph"), { scale: 1.12 }, { scale: 1.0, duration: b - a, ease: "sine.out" }, a);
+        tl.fromTo(sc.querySelectorAll(pop + " .ph"), { scale: 1.06, y: 40 }, { scale: 1.02, y: 0, duration: b - a, ease: "sine.out", immediateRender: false }, a);
+        tl.fromTo(sc.querySelector(".big"), { y: -120, opacity: 0, scaleX: 1.25 }, { y: 0, opacity: 1, scaleX: 1, duration: 1.0, ease: "expo.out" }, a + 0.3);
+        tl.fromTo(sc.querySelector(".info"), { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, a + 0.9);
+        tl.fromTo(sc.querySelector(".tint"), { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "power2.out" }, a + 0.2);
+      };
+
+      /* Intro */
+      show("#s0", T[0], T[1]);
+      tl.fromTo("#banner", { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2, ease: "back.out(1.6)" }, 0.2);
+      tl.fromTo("#s0t", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 1.5);
+      tl.to("#banner", { scale: 1.04, duration: 3, ease: "sine.inOut" }, 1.4);
+
+      /* Competencias: sacos → cuerda */
+      wipe(T[1]); show("#s1", T[1], T[2]);
+      photoScene(1, T[1], T[2], "#q1a");
+      tl.to(["#q1a"], { opacity: 0, duration: 0.5 }, 8.8);
+      tl.to(["#p1b", "#q1b"], { opacity: 1, duration: 0.5 }, 8.8);
+      tl.fromTo("#q1b .ph", { scale: 1.08, y: 30 }, { scale: 1.02, y: 0, duration: 4.2, ease: "sine.out", immediateRender: false }, 8.8);
+
+      /* Premios */
+      wipe(T[2]); show("#s2", T[2], T[3]);
+      tl.fromTo("#s2 .big", { y: -120, opacity: 0, scaleX: 1.25 }, { y: 0, opacity: 1, scaleX: 1, duration: 1.0, ease: "expo.out" }, T[2] + 0.3);
+      tl.fromTo("#statues", { y: 500, scale: 0.9 }, { y: 0, scale: 1, duration: 1.0, ease: "back.out(1.4)" }, T[2] + 0.5);
+      tl.to("#statues", { y: -14, duration: 4.5, ease: "sine.inOut" }, T[2] + 1.5);
+      tl.fromTo("#s2 .info", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, T[2] + 1.0);
+
+      /* Música, Comida */
+      wipe(T[3]); show("#s3", T[3], T[4]); photoScene(3, T[3], T[4]);
+      wipe(T[4]); show("#s4", T[4], T[5]); photoScene(4, T[4], T[5]);
+
+      /* Info */
+      wipe(T[5]); show("#s5", T[5]);
+      tl.fromTo("#fin > *", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "back.out(1.6)", stagger: 0.18 }, T[5] + 0.3);
+      tl.fromTo("#fin > div:last-child", { scale: 1 }, { scale: 1.06, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 5, immediateRender: false }, T[5] + 2.2);
+
+      tl.set({}, {}, T[6]);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
