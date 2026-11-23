@@ -25,8 +25,8 @@
       .ph { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 50% 45%; }
       .ph img { position: absolute; inset: 0; width: 1920px; height: 1080px; display: block; }
       /* degradé con transparencia de los 3 colores de COMUNICA: tiñe todo menos al protagonista */
-      .tint { position: absolute; inset: 0; background: linear-gradient(118deg, rgba(244, 187, 26, 0.82) 0%, rgba(26, 166, 212, 0.8) 52%, rgba(54, 192, 196, 0.84) 100%); }
-      .shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10, 40, 60, 0.55) 0%, rgba(10, 40, 60, 0) 38%); }
+      .tint { position: absolute; inset: 0; background: linear-gradient(118deg, rgba(244, 187, 26, 0.34) 0%, rgba(26, 166, 212, 0.3) 52%, rgba(54, 192, 196, 0.36) 100%); }
+      .shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10, 40, 60, 0.75) 0%, rgba(10, 40, 60, 0.25) 42%, rgba(10, 40, 60, 0) 60%); }
       /* título gigante detrás de la persona */
       .big { position: absolute; left: 0; top: 46px; width: 1920px; text-align: center; font-weight: 900; font-stretch: 115%; font-size: 250px; line-height: 1; letter-spacing: -0.01em; color: #fff; white-space: nowrap; text-shadow: 0 10px 40px rgba(0, 40, 70, 0.25); }
       .pop { position: absolute; inset: 0; filter: drop-shadow(0 20px 30px rgba(0, 30, 50, 0.35)); }
@@ -36,12 +36,20 @@
       .kick { display: inline-block; padding: 8px 22px 10px; background: #fff; color: var(--ink); font-weight: 800; font-size: 30px; letter-spacing: 0.18em; }
       .line { margin-top: 14px; font-weight: 700; font-size: 44px; line-height: 1.15; text-shadow: 0 4px 22px rgba(0, 30, 50, 0.45); }
       .line b { font-weight: 900; color: #fff6cf; }
+      .stat { flex: 1; background: rgba(255, 255, 255, 0.95); color: var(--ink); border-radius: 26px; padding: 26px 30px 30px; box-shadow: 0 18px 40px rgba(0, 40, 70, 0.22); }
+      .stat .n { font-weight: 900; font-stretch: 112%; font-size: 150px; line-height: 0.9; color: var(--blue); }
+      .stat:nth-child(odd) .n { color: #e0a400; }
+      .stat .l { margin-top: 10px; font-weight: 800; font-size: 40px; line-height: 1.1; }
+      .game { display: flex; align-items: center; gap: 26px; background: rgba(255, 255, 255, 0.95); color: var(--ink); border-radius: 22px; padding: 22px 30px; font-weight: 800; font-size: 52px; box-shadow: 0 14px 34px rgba(0, 40, 70, 0.2); }
+      .game i { font-style: normal; flex: none; width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 50px; background: var(--blue); }
+      .game:nth-child(3n + 1) i { background: #e0a400; }
+      .game:nth-child(3n) i { background: var(--teal); }
       .dot { position: absolute; border-radius: 50%; mix-blend-mode: multiply; }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="40" data-width="1920" data-height="1080">
-      <div id="stage" class="clip" data-start="0" data-duration="40" data-track-index="0">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="54" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="54" data-track-index="0">
         <!-- Intro: logo Premios Comunica -->
         <div class="scene" id="s0" style="background: #fff">
           <img id="banner" src="assets/fotos/banner.webp" alt="Premios Comunica 2026" style="position: absolute; left: 60px; top: 150px; width: 1800px" />
@@ -58,6 +66,40 @@
           <div class="pop" id="q1b" style="opacity: 0"><div class="ph"><img src="assets/fotos/cuerda-pop.png" alt="" /></div></div>
           <div class="shade"></div>
           <div class="info"><div class="kick">01</div><div class="ttl">Competencias</div><div class="line">Seremos <b>sorteados por colores</b> para armar equipos y participar en dinámicas grupales</div></div>
+        </div>
+
+        <!-- Reglas de las competencias -->
+        <div class="scene" id="sR">
+          <div class="ph" style="filter: blur(6px) saturate(1.1)"><img src="assets/fotos/cuerda.webp" alt="" /></div>
+          <div class="layer" style="background: linear-gradient(118deg, rgba(244, 187, 26, 0.86) 0%, rgba(26, 166, 212, 0.86) 52%, rgba(54, 192, 196, 0.88) 100%)"></div>
+          <div class="kick" style="position: absolute; left: 110px; top: 90px">01 · COMPETENCIAS</div>
+          <div class="ttl" style="position: absolute; left: 110px; top: 150px; font-size: 104px">¿Cómo participamos?</div>
+          <div id="stats" style="position: absolute; left: 110px; right: 110px; top: 340px; display: flex; gap: 40px">
+            <div class="stat"><div class="n">10</div><div class="l">equipos</div></div>
+            <div class="stat"><div class="n">10+</div><div class="l">integrantes<br />por equipo</div></div>
+            <div class="stat"><div class="n">1</div><div class="l">color<br />por equipo</div></div>
+            <div class="stat"><div class="n">10</div><div class="l">puntos<br />por juego</div></div>
+          </div>
+          <div id="rules" style="position: absolute; left: 110px; right: 110px; top: 720px">
+            <div class="line" style="font-size: 46px; margin: 0">Todos participan <b>al menos en un juego</b>.</div>
+            <div class="line" style="font-size: 46px">El equipo con más puntos gana <b>un premio para cada integrante</b>.</div>
+          </div>
+        </div>
+
+        <!-- Los juegos -->
+        <div class="scene" id="sJ">
+          <div class="ph" style="filter: blur(6px)"><img src="assets/fotos/sacos.webp" alt="" /></div>
+          <div class="layer" style="background: linear-gradient(118deg, rgba(244, 187, 26, 0.86) 0%, rgba(26, 166, 212, 0.86) 52%, rgba(54, 192, 196, 0.88) 100%)"></div>
+          <div class="kick" style="position: absolute; left: 110px; top: 90px">01 · COMPETENCIAS</div>
+          <div class="ttl" style="position: absolute; left: 110px; top: 150px; font-size: 104px">Los juegos</div>
+          <div id="games" style="position: absolute; left: 110px; right: 110px; top: 330px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px 40px">
+            <div class="game"><i>1</i>Carrera de ensacados</div>
+            <div class="game"><i>2</i>Carrera de carretillas</div>
+            <div class="game"><i>3</i>¿Quién deja caer el huevo?</div>
+            <div class="game"><i>4</i>Halar la cuerda</div>
+            <div class="game"><i>5</i>Carrera de 3 piernas</div>
+            <div class="game"><i>6</i>Baile de la silla</div>
+          </div>
         </div>
 
         <!-- Premios -->
@@ -110,7 +152,7 @@
     <script>
       const tl = gsap.timeline({ paused: true });
       const show = (sel, a, b) => { tl.set(sel, { visibility: "visible" }, a); if (b != null) tl.set(sel, { visibility: "hidden" }, b); };
-      const T = [0, 5, 13, 19.5, 26, 32.5, 40];
+      const T = [0, 5, 27, 33.5, 40, 46.5, 54]; // 13–20 reglas · 20–27 juegos
 
       /* transición: círculo de color que se abre y se cierra (los 3 círculos de COMUNICA) */
       const wipe = (at) => {
@@ -134,8 +176,15 @@
       tl.to("#banner", { scale: 1.04, duration: 3, ease: "sine.inOut" }, 1.4);
 
       /* Competencias: sacos → cuerda */
-      wipe(T[1]); show("#s1", T[1], T[2]);
-      photoScene(1, T[1], T[2], "#q1a");
+      wipe(T[1]); show("#s1", T[1], 13);
+      photoScene(1, T[1], 13, "#q1a");
+      wipe(13); show("#sR", 13, 20);
+      tl.fromTo("#sR .ttl", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 13.2);
+      tl.fromTo("#stats .stat", { y: 120, opacity: 0, scale: 0.85 }, { y: 0, opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.7)", stagger: 0.25 }, 13.6);
+      tl.fromTo("#rules .line", { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power3.out", stagger: 0.6 }, 15.0);
+      wipe(20); show("#sJ", 20, 27);
+      tl.fromTo("#sJ .ttl", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 20.2);
+      tl.fromTo("#games .game", { x: -100, opacity: 0 }, { x: 0, opacity: 1, duration: 0.55, ease: "back.out(1.6)", stagger: 0.3 }, 20.6);
       tl.to(["#q1a"], { opacity: 0, duration: 0.5 }, 8.8);
       tl.to(["#p1b", "#q1b"], { opacity: 1, duration: 0.5 }, 8.8);
       tl.fromTo("#q1b .ph", { scale: 1.08, y: 30 }, { scale: 1.02, y: 0, duration: 4.2, ease: "sine.out", immediateRender: false }, 8.8);
