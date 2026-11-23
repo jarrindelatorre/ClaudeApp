@@ -44,10 +44,10 @@
       .game i { font-style: normal; flex: none; width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 50px; background: var(--blue); }
       .game:nth-child(3n + 1) i { background: #e0a400; }
       .game:nth-child(3n) i { background: var(--teal); }
-      /* logo animado: los arcos se dibujan en sentido horario con una máscara cónica */
-      #logo { position: absolute; left: 434px; top: 20px; width: 1189px; height: 1040px; }
-      .lg { position: absolute; inset: 0; width: 1189px; height: 1040px; display: block; }
-      .arc { --a: 0deg; -webkit-mask: conic-gradient(from 0deg at 49.4% 49.7%, #000 var(--a), transparent var(--a)); mask: conic-gradient(from 0deg at 49.4% 49.7%, #000 var(--a), transparent var(--a)); }
+      /* logo animado (arte 1912×1266 → ancho 1920, recortado verticalmente) */
+      #logo2 { position: absolute; left: 0; top: -95px; width: 1920px; height: 1271px; }
+      #logo2 img { position: absolute; inset: 0; width: 1920px; height: 1271px; display: block; }
+      #lgTrazos { --p: -20%; -webkit-mask: linear-gradient(90deg, #000 var(--p), transparent calc(var(--p) + 18%)); mask: linear-gradient(90deg, #000 var(--p), transparent calc(var(--p) + 18%)); }
       .dot { position: absolute; border-radius: 50%; mix-blend-mode: multiply; }
     </style>
   </head>
@@ -55,13 +55,12 @@
     <div id="root" data-composition-id="main" data-start="0" data-duration="54" data-width="1920" data-height="1080">
       <div id="stage" class="clip" data-start="0" data-duration="54" data-track-index="0">
         <!-- Intro: logo Premios Comunica -->
-        <div class="scene" id="s0" style="background: #fff">
-          <div id="logo">
-            <img class="lg arc" id="lgAzul" src="assets/logo/azul.png" alt="" />
-            <img class="lg arc" id="lgTurq" src="assets/logo/turquesa.png" alt="" />
-            <img class="lg arc" id="lgAmar" src="assets/logo/amarillo.png" alt="" />
-            <img class="lg" id="lgGris" src="assets/logo/gris.png" alt="" />
-            <img class="lg" id="lgNegro" src="assets/logo/negro.png" alt="Integración COMUNICA EP 2026" />
+        <div class="scene" id="s0" style="background: #002c4f">
+          <div id="logo2">
+            <img id="lgTrazos" src="assets/logo2/trazos.png" alt="" />
+            <img class="lgT" id="lgT1" src="assets/logo2/texto.png" alt="" style="clip-path: inset(29% 0 56.5% 0)" />
+            <img class="lgT" id="lgT2" src="assets/logo2/texto.png" alt="" style="clip-path: inset(43.5% 0 45.4% 0)" />
+            <img class="lgT" id="lgT3" src="assets/logo2/texto.png" alt="Integración COMUNICA EP 2026" style="clip-path: inset(54.6% 0 31% 0)" />
           </div>
         </div>
 
@@ -178,12 +177,13 @@
         tl.fromTo(sc.querySelector(".tint"), { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "power2.out" }, a + 0.2);
       };
 
-      /* Intro: logo animado */
+      /* Intro: los trazos se dibujan de izquierda a derecha y el texto entra línea por línea */
       show("#s0", T[0], T[1]);
-      [["#lgAzul", 0.2], ["#lgTurq", 0.45], ["#lgAmar", 0.7]].forEach(([sel, at]) => tl.fromTo(sel, { "--a": "0deg" }, { "--a": "360deg", duration: 1.6, ease: "power2.inOut" }, at));
-      tl.fromTo("#lgGris", { opacity: 0, y: 40, scale: 0.9, transformOrigin: "49% 45%" }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(1.7)" }, 1.7);
-      tl.fromTo("#lgNegro", { opacity: 0, y: 40, scale: 0.8, transformOrigin: "42% 58%" }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(2)" }, 2.1);
-      tl.fromTo("#logo", { scale: 1, rotation: 0 }, { scale: 1.05, duration: 2.2, ease: "sine.inOut", immediateRender: false }, 2.8);
+      tl.fromTo("#lgTrazos", { "--p": "-20%" }, { "--p": "105%", duration: 2.2, ease: "power2.inOut" }, 0.1);
+      tl.fromTo("#lgT1", { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" }, 1.0);
+      tl.fromTo("#lgT2", { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" }, 1.3);
+      tl.fromTo("#lgT3", { opacity: 0, y: 60, scale: 0.85, transformOrigin: "18% 62%" }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(2)" }, 1.7);
+      tl.fromTo("#logo2", { scale: 1 }, { scale: 1.04, transformOrigin: "50% 50%", duration: 2.6, ease: "sine.inOut", immediateRender: false }, 2.4);
 
       /* Competencias: sacos → cuerda */
       wipe(T[1]); show("#s1", T[1], 13);
