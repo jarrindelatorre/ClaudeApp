@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es"><head><meta charset="UTF-8" />
+<style>
+  @font-face { font-family: "Archivo"; src: url("../assets/fonts/archivo-var.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 1080px; overflow: hidden; font-family: "Archivo", sans-serif; position: relative; }
+  .bg { position: absolute; inset: 0; }
+  .ghost { position: absolute; left: 0; width: 1920px; text-align: center; top: 760px; font-weight: 900; font-stretch: 115%; font-size: 330px; line-height: 1; white-space: nowrap; color: transparent; -webkit-text-stroke: 4px rgba(255,255,255,0.55); }
+  .side { position: absolute; left: 100px; top: 230px; width: 560px; }
+  .chip { width: 150px; height: 150px; border-radius: 50%; border: 8px solid #fff; box-shadow: 0 16px 40px rgba(0,0,0,0.25); }
+  .k { margin-top: 34px; display: inline-block; padding: 8px 22px 10px; background: #fff; color: #1f2124; font-weight: 800; font-size: 28px; letter-spacing: 0.18em; }
+  .name { margin-top: 12px; font-weight: 900; font-stretch: 105%; font-size: 112px; line-height: 0.92; text-shadow: 0 6px 26px rgba(0,0,0,0.25); }
+  .count { margin-top: 14px; font-weight: 700; font-size: 38px; opacity: 0.9; }
+  .list { position: absolute; left: 690px; right: 80px; top: 120px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 26px; }
+  .p { display: flex; align-items: center; gap: 18px; background: rgba(255,255,255,0.96); color: #1f2124; border-radius: 16px; padding: 14px 20px; min-height: 104px; font-weight: 700; font-size: 30px; line-height: 1.12; box-shadow: 0 10px 26px rgba(0,0,0,0.16); }
+  .p i { flex: none; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-style: normal; font-weight: 900; font-size: 24px; }
+</style></head>
+<body>
+  <div class="bg" id="bg"></div>
+  <div class="ghost" id="ghost"></div>
+  <div class="side"><div class="chip" id="chip"></div><div class="k" id="k"></div><div class="name" id="nm"></div><div class="count" id="ct"></div></div>
+  <div class="list" id="list"></div>
+<script>
+  const COL = { BLANCO: ["#eef1f4", "#ffffff", "#1f2124", "#cfd5dc"], NEGRO: ["#1c1d22", "#3a3c44", "#ffffff", "#000"], AZUL: ["#1554c0", "#1aa6d4", "#ffffff", "#1554c0"], CELESTE: ["#2bb6e8", "#8ad8f4", "#ffffff", "#2bb6e8"], VERDE: ["#1f8f4a", "#4cc36e", "#ffffff", "#1f8f4a"], AMARILLO: ["#f4bb1a", "#ffd95a", "#1f2124", "#f4bb1a"], MORADO: ["#6a2fa0", "#9b5fd0", "#ffffff", "#6a2fa0"], "CAFÉ": ["#6b4226", "#a2683f", "#ffffff", "#6b4226"], GRIS: ["#6f7682", "#a3a9b3", "#ffffff", "#6f7682"], ROSA: ["#e8508f", "#f79ac0", "#ffffff", "#e8508f"], NARANJA: ["#ec6f12", "#f9a24b", "#ffffff", "#ec6f12"] };
+  const p = new URLSearchParams(location.search), team = p.get("t"), idx = +p.get("i");
+  fetch("../data/equipos.json").then(r => r.json()).then(T => {
+    const [c1, c2, ink, chip] = COL[team], names = T[team];
+    document.getElementById("bg").style.background = `linear-gradient(118deg, ${c1} 0%, ${c2} 100%)`;
+    document.body.style.color = ink;
+    if (ink !== "#ffffff") document.getElementById("ghost").style.webkitTextStroke = "4px rgba(31,33,36,0.18)";
+    document.getElementById("ghost").textContent = team; document.getElementById("ghost").style.fontSize = Math.min(330, Math.floor(1880 / (team.length * 0.86))) + "px";
+    document.getElementById("chip").style.background = chip;
+    document.getElementById("k").textContent = `EQUIPO ${idx} DE ${Object.keys(T).length}`;
+    document.getElementById("nm").textContent = team[0] + team.slice(1).toLowerCase();
+    document.getElementById("ct").textContent = names.length + " integrantes";
+    document.getElementById("list").innerHTML = names.map((n, i) => `<div class="p"><i style="background:${chip};color:${ink === "#ffffff" ? "#fff" : "#1f2124"};${team === "BLANCO" ? "border:3px solid #9aa3ad" : ""}">${i + 1}</i>${n}</div>`).join("");
+    document.title = "ok";
+  });
+</script></body></html>
