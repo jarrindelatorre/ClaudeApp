@@ -25,7 +25,7 @@
       .ph { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 50% 45%; }
       .ph img { position: absolute; inset: 0; width: 1920px; height: 1080px; display: block; }
       /* degradé con transparencia de los 3 colores de COMUNICA: tiñe todo menos al protagonista */
-      .tint { position: absolute; inset: 0; background: linear-gradient(118deg, rgba(244, 187, 26, 0.34) 0%, rgba(26, 166, 212, 0.3) 52%, rgba(54, 192, 196, 0.36) 100%); }
+      .tint { position: absolute; inset: 0; background: rgba(26, 166, 212, 0.28); }
       .shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10, 40, 60, 0.75) 0%, rgba(10, 40, 60, 0.25) 42%, rgba(10, 40, 60, 0) 60%); }
       /* título gigante detrás de la persona */
       .big { position: absolute; left: 0; top: -20px; width: 1920px; text-align: center; font-weight: 900; font-stretch: 115%; font-size: 360px; line-height: 1; letter-spacing: -0.01em; color: transparent; -webkit-text-stroke: 4px rgba(255, 255, 255, 0.95); white-space: nowrap; }
@@ -53,17 +53,17 @@
       .team .side { position: absolute; left: 100px; top: 230px; width: 560px; }
       .team .chip { width: 150px; height: 150px; border-radius: 50%; border: 8px solid #fff; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25); }
       .team .k2 { margin-top: 34px; display: inline-block; padding: 8px 22px 10px; background: #fff; color: #1f2124; font-weight: 800; font-size: 28px; letter-spacing: 0.18em; }
-      .team .tn { margin-top: 12px; font-weight: 900; font-stretch: 105%; font-size: 112px; line-height: 0.92; }
+      .team .tn { margin-top: 12px; font-weight: 900; font-stretch: 105%; font-size: 124px; line-height: 0.92; }
       .team .tc { margin-top: 14px; font-weight: 700; font-size: 38px; opacity: 0.9; }
-      .team .list { position: absolute; left: 690px; right: 80px; top: 120px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 26px; }
-      .team .pp { display: flex; align-items: center; gap: 18px; background: rgba(255, 255, 255, 0.96); color: #1f2124; border-radius: 16px; padding: 14px 20px; min-height: 104px; font-weight: 700; font-stretch: 82%; line-height: 1.12; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16); white-space: nowrap; overflow: hidden; }
+      .team .list { position: absolute; left: 680px; right: 70px; top: 90px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 26px; }
+      .team .pp { display: flex; align-items: center; gap: 18px; background: rgba(255, 255, 255, 0.96); color: #1f2124; border-radius: 16px; padding: 14px 20px; min-height: 112px; font-weight: 700; font-stretch: 85%; line-height: 1.12; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16); white-space: nowrap; overflow: hidden; }
       .team .pp i { flex: none; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-style: normal; font-weight: 900; font-size: 24px; font-stretch: 100%; }
       .dot { position: absolute; border-radius: 50%; mix-blend-mode: multiply; }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="113" data-width="1920" data-height="1080">
-      <div id="stage" class="clip" data-start="0" data-duration="113" data-track-index="0">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="146" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="146" data-track-index="0">
         <!-- Intro: logo Premios Comunica -->
         <div class="scene" id="s0" style="background: #002c4f">
           <div id="logo2">
@@ -89,7 +89,7 @@
         <!-- Reglas de las competencias -->
         <div class="scene" id="sR">
           <div class="ph" style="filter: blur(6px) saturate(1.1)"><img src="assets/fotos/cuerda.webp" alt="" /></div>
-          <div class="layer" style="background: linear-gradient(118deg, rgba(244, 187, 26, 0.86) 0%, rgba(26, 166, 212, 0.86) 52%, rgba(54, 192, 196, 0.88) 100%)"></div>
+          <div class="layer" style="background: rgba(26, 166, 212, 0.92)"></div>
           <div class="kick" style="position: absolute; left: 110px; top: 90px">01 · COMPETENCIAS</div>
           <div class="ttl" style="position: absolute; left: 110px; top: 150px; font-size: 104px">¿Cómo participamos?</div>
           <div id="stats" style="position: absolute; left: 110px; right: 110px; top: 340px; display: flex; gap: 40px">
@@ -98,16 +98,17 @@
             <div class="stat"><div class="n">1</div><div class="l">color<br />por equipo</div></div>
             <div class="stat"><div class="n">10</div><div class="l">puntos<br />por juego</div></div>
           </div>
-          <div id="rules" style="position: absolute; left: 110px; right: 110px; top: 720px">
+          <div id="rules" style="position: absolute; left: 110px; right: 110px; top: 680px">
             <div class="line" style="font-size: 46px; margin: 0">Todos participan <b>al menos en un juego</b>.</div>
             <div class="line" style="font-size: 46px">El equipo con más puntos gana <b>un premio para cada integrante</b>.</div>
+            <div class="kick" id="shirt" style="margin-top: 26px; font-size: 40px; letter-spacing: 0.06em; padding: 12px 28px 14px">TRAE UNA CAMISETA DEL COLOR DE TU EQUIPO</div>
           </div>
         </div>
 
         <!-- Los juegos -->
         <div class="scene" id="sJ">
           <div class="ph" style="filter: blur(6px)"><img src="assets/fotos/sacos.webp" alt="" /></div>
-          <div class="layer" style="background: linear-gradient(118deg, rgba(244, 187, 26, 0.86) 0%, rgba(26, 166, 212, 0.86) 52%, rgba(54, 192, 196, 0.88) 100%)"></div>
+          <div class="layer" style="background: rgba(26, 166, 212, 0.92)"></div>
           <div class="kick" style="position: absolute; left: 110px; top: 90px">01 · COMPETENCIAS</div>
           <div class="ttl" style="position: absolute; left: 110px; top: 150px; font-size: 104px">Los juegos</div>
           <div id="games" style="position: absolute; left: 110px; right: 110px; top: 330px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px 40px">
@@ -121,7 +122,7 @@
         </div>
 
         <!-- Organización de equipos -->
-        <div class="scene" id="sO" style="background: linear-gradient(118deg, #f4bb1a 0%, #1aa6d4 52%, #36c0c4 100%)">
+        <div class="scene" id="sO" style="background: #1aa6d4">
           <div class="big" style="top: 700px; font-size: 360px; -webkit-text-stroke: 4px rgba(255, 255, 255, 0.6)">EQUIPOS</div>
           <div id="orgT" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center">
             <div class="kick" style="font-size: 34px">INTEGRACIÓN COMUNICA EP 2026</div>
@@ -134,10 +135,10 @@
 
         <!-- Premios -->
         <div class="scene" id="s2" style="background: #fff">
-          <div class="layer" style="background: linear-gradient(118deg, rgba(244, 187, 26, 0.9) 0%, rgba(26, 166, 212, 0.88) 52%, rgba(54, 192, 196, 0.92) 100%)"></div>
+          <div class="layer" style="background: #1aa6d4"></div>
           <div class="big">PREMIOS</div>
           <div id="statues" style="position: absolute; left: 900px; top: 250px; width: 900px; height: 760px; filter: drop-shadow(0 24px 30px rgba(0, 30, 50, 0.35))">
-            <img src="assets/fotos/statues-cut.png" alt="" style="position: absolute; left: 0; bottom: 0; width: 900px; display: block" />
+            <img src="assets/fotos/statues-clean.png" alt="" style="position: absolute; left: 0; bottom: 0; width: 900px; display: block" />
           </div>
           <div class="shade"></div>
           <div class="info" style="max-width: 760px"><div class="kick">02</div><div class="ttl">Premios</div><div class="line">Premiaremos a los <b>ganadores de las nominaciones</b> de los Premios Comunica en todas sus categorías</div></div>
@@ -164,30 +165,30 @@
         </div>
 
         <!-- Info final -->
-        <div class="scene" id="s5" style="background: linear-gradient(118deg, #f4bb1a 0%, #1aa6d4 52%, #36c0c4 100%)">
+        <div class="scene" id="s5" style="background: #1aa6d4">
           <div class="dot" style="left: -160px; top: -200px; width: 700px; height: 700px; background: rgba(255, 255, 255, 0.18)"></div>
           <div class="dot" style="left: 1400px; top: 640px; width: 680px; height: 680px; background: rgba(255, 255, 255, 0.16)"></div>
           <div id="fin" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center">
             <div class="kick" style="font-size: 34px">¡TE ESPERAMOS!</div>
             <div style="margin-top: 26px; font-weight: 900; font-stretch: 112%; font-size: 150px; line-height: 0.95; text-shadow: 0 8px 30px rgba(0, 40, 70, 0.25)">Sábado 12<br />de diciembre</div>
-            <div style="margin-top: 26px; font-weight: 700; font-size: 58px">2026 · desde las 8:00</div>
+            <div style="margin-top: 26px; font-weight: 700; font-size: 58px">2026 · desde las 9:00</div>
             <div style="margin-top: 30px; display: inline-block; padding: 14px 44px 18px; background: #fff; color: var(--ink); font-weight: 900; font-size: 64px; letter-spacing: 0.04em">CÍRCULO MILITAR</div>
           </div>
         </div>
 
-        <div class="layer" id="wipe" style="background: linear-gradient(118deg, #f4bb1a 0%, #1aa6d4 52%, #36c0c4 100%); clip-path: circle(0% at 50% 50%)"></div>
+        <div class="layer" id="wipe" style="background: #1aa6d4; clip-path: circle(0% at 50% 50%)"></div>
       </div>
     </div>
 
     <script>
       const tl = gsap.timeline({ paused: true });
-      const TEAMS = {"BLANCO": ["Jimenez Ortega Jorge Washington", "Jimenez Vicente Francisco Yofredy", "Sanchez Barahona Lenin", "Sangoquiza Castro Jairo Josue", "Aguilar Lopez Veronica de los Angeles", "Martinez Yanez Jorge Geovany", "Chasi Malliquinga Giovanny Javier", "Mantilla Orellana Carla Mildred", "Barcenes Lopez Paola Tatiana", "Martínez Yánez Juan Pablo", "Vintimilla Egas Sofia Carolina", "Dayana Rivas"], "NEGRO": ["Estrada Angueta Maria Lorena", "Cevallos Beltran Galo Javier", "Ayala Martinez Jorge Giovanny", "Mites Calderón Diana Isabel", "Noboa Garcia Andres Homero", "Gonzalez Gallegos Maria Gabriela", "Jaramillo Ruiz Javier Alejandro", "Cajamarca Rodriguez Christian Santiago", "Bastidas Sanchez Omar Roberto", "Espinosa Cabrera Jose Luis", "Suarez Andrade Jessica Jeanneth", "Wiltón Sánchez"], "AZUL": ["Mendieta Cabrera Gladis Teresa", "Bazantes Fernandez Emerson Rommel", "Sanchez Arias Nelson Samuel", "Barrera Romero Omar Guillermo", "Ambuludi Freire Ximena Katerine", "Bedon Ruiz Sandra Manuela", "Betancourt Quiñonez Edison Fernando", "Lopez Pino Fernando Mauricio", "Vivanco Arias Santiago David", "Montesdeoca Cedeño Ana Maribel", "Murillo Espinoza Luis Giovany", "Dianna Guevara"], "CELESTE": ["Ortega Paez Irene Elizabeth", "Cadena Tigsi Paul Alejandro", "Calderon Guachamin Richard Fabricio", "Barrera Barriga Erick Lenin", "Arteaga Berrezueta Nataly Vanessa", "Zurita Ruales Pablo Anibal", "Porras Torres Carlos Fernando", "Ulcuango Cuascota Elena Noemi", "Quilachamin Guaman Jonathan Patricio", "Cueva Llumiquinga Julio Cesar", "Zapata Valencia Jorge Anibal", "Estefania Garrido"], "VERDE": ["Cañar Armijos Gabriela Liliana", "Garcia Zambrano Gloria Patricia", "Guanoluisa Acero Jose Daniel", "Boada Quinteros Julio Alberto", "Franco Calixto Angel Dionicio", "Jurado Guerrero Diego Xavier", "Andrade Castro Lautaro Rafael", "Gualotuña Tenemasa Jose Luis", "Calderon Chavez Lizeth Carolina", "Delgado Valencia Felix Hilbeto", "Perea Vizcaino Diana Carolina", "Cayambe Tenorio Byron Marcelo"], "AMARILLO": ["Potosi Moya Joselynne Antonella", "Tashiguano Muzo Carlos Alberto", "Velasquez Benitez Winter Eduardo", "Simbaña Guaña Alex Dario", "Burgos Suarez Jose Ramon", "Aldaz Tipan Paola Estefania", "Bravo Najera David Leonardo", "Guamani Jacome Bryan Andres", "Perez Gonzalez Grace Estefany", "Caiza Jami Erika Priscila", "Santiago Daniel Azuero Patiño", "Jerson Estuardo Chamba Maza"], "MORADO": ["Gonzalez Ochoa Veronica Alexandra", "Piedra Merchan Jonathan Kevin", "Alban Oñate Diana Maribel", "Bacuy Cuichan Maria Nelly", "Amaguaña Caña Christian Leonardo", "Cahueñas Apunte Jhon Patricio", "Guerra Carranza Robert Lester", "Casamen Patiño Washington Ivan", "Cléver Guamaní", "Gomez Godoy Sergio Enrique", "Arturo Caviedes", "Milton Patricio Cueva Loachamin"], "CAFÉ": ["Vargas Chavez Mario Xavier", "Betancourt Navarro Cristhian German", "Churuchumbi Lechon Maria Belen", "Montenegro Viera Efren Arturo", "Leon Rosero Francis Cristina", "Guayanay Flores Jessica Janeth", "Vera Cueva Erick Andres", "Vasco Sanchez Ana Lisbeth", "Saravia Alban Luis Fernando", "Cordova Puga Marcelo David", "Arturo Barriga", "Mao Muñoz"], "GRIS": ["Heredia Torres Jessica Valeria", "Guerrero Quishpe Alvaro Sebastian", "Vinueza Vera Alex Rolando", "Ureña Bermudez Allison Victoria", "Chafuel Medina Christian Vinicio", "Humbser Lanas Sebastian", "Malla Mora Freddy Oswaldo", "Izquierdo Chavarria Javier Eduardo", "Cando Salcedo Pablo Leonardo", "Abarca Guashpa Daniela Carolina", "Dario Jarrin", "Xavier Guerrero"], "ROSA": ["Granda Quiña Amanda Maribel", "Nuñez Briones Julio Adrian", "Saavedra Perez Edison Marcelo", "Andrés Leonardo Moreno Paspuel", "Salazar Arevalo Dario Javier", "Saltos Villamarin Carlos Alberto", "Ubidia Viera Aylin Janise", "Pastaz Bauz Allan Joel", "Baquero Bautista Christian Alejandro", "Mateo Ulloa", "Humberto Germán Barahona Chiguano", "Fernado Proaño"], "NARANJA": ["Andrés Orquera", "Ana Moyano", "Paul Vásquez", "Cristian Llusca Quinaluisa", "Villamarin Peña Luis Andrés", "Salvatierra Pizarro Diana Carolina", "Zumba Rivera José Iván", "Galarza Cerón Ramiro Daniel", "Julia Díaz", "Luis Astudillo Mamarandi", "Fernando Estrada", "Darlin Proaño"]};
+      const TEAMS = {"BLANCO": ["Jimenez Ortega Jorge", "Jimenez Vicente Francisco", "Sanchez Barahona Lenin", "Sangoquiza Castro Jairo", "Aguilar Lopez Veronica", "Martinez Yanez Jorge", "Chasi Malliquinga Giovanny", "Mantilla Orellana Carla", "Barcenes Lopez Paola", "Martínez Yánez Juan", "Vintimilla Egas Sofia", "Dayana Rivas"], "NEGRO": ["Estrada Angueta Maria", "Cevallos Beltran Galo", "Ayala Martinez Jorge", "Mites Calderón Diana", "Noboa Garcia Andres", "Gonzalez Gallegos Maria", "Jaramillo Ruiz Javier", "Cajamarca Rodriguez Christian", "Bastidas Sanchez Omar", "Espinosa Cabrera Jose", "Suarez Andrade Jessica", "Wiltón Sánchez"], "AZUL": ["Mendieta Cabrera Gladis", "Bazantes Fernandez Emerson", "Sanchez Arias Nelson", "Barrera Romero Omar", "Ambuludi Freire Ximena", "Bedon Ruiz Sandra", "Betancourt Quiñonez Edison", "Lopez Pino Fernando", "Vivanco Arias Santiago", "Montesdeoca Cedeño Ana", "Murillo Espinoza Luis", "Dianna Guevara"], "CELESTE": ["Ortega Paez Irene", "Cadena Tigsi Paul", "Calderon Guachamin Richard", "Barrera Barriga Erick", "Arteaga Berrezueta Nataly", "Zurita Ruales Pablo", "Porras Torres Carlos", "Ulcuango Cuascota Elena", "Quilachamin Guaman Jonathan", "Cueva Llumiquinga Julio", "Zapata Valencia Jorge", "Estefania Garrido"], "VERDE": ["Cañar Armijos Gabriela", "Garcia Zambrano Gloria", "Guanoluisa Acero Jose", "Boada Quinteros Julio", "Franco Calixto Angel", "Jurado Guerrero Diego", "Andrade Castro Lautaro", "Gualotuña Tenemasa Jose", "Calderon Chavez Lizeth", "Delgado Valencia Felix", "Perea Vizcaino Diana", "Cayambe Tenorio Byron"], "AMARILLO": ["Potosi Moya Joselynne", "Tashiguano Muzo Carlos", "Velasquez Benitez Winter", "Simbaña Guaña Alex", "Burgos Suarez Jose", "Aldaz Tipan Paola", "Bravo Najera David", "Guamani Jacome Bryan", "Perez Gonzalez Grace", "Caiza Jami Erika", "Santiago Daniel Azuero", "Jerson Estuardo Chamba"], "MORADO": ["Gonzalez Ochoa Veronica", "Piedra Merchan Jonathan", "Alban Oñate Diana", "Bacuy Cuichan Maria", "Amaguaña Caña Christian", "Cahueñas Apunte Jhon", "Guerra Carranza Robert", "Casamen Patiño Washington", "Cléver Guamaní", "Gomez Godoy Sergio", "Arturo Caviedes", "Milton Patricio Cueva"], "CAFÉ": ["Vargas Chavez Mario", "Betancourt Navarro Cristhian", "Churuchumbi Lechon Maria", "Montenegro Viera Efren", "Leon Rosero Francis", "Guayanay Flores Jessica", "Vera Cueva Erick", "Vasco Sanchez Ana", "Saravia Alban Luis", "Cordova Puga Marcelo", "Arturo Barriga", "Mao Muñoz"], "GRIS": ["Heredia Torres Jessica", "Guerrero Quishpe Alvaro", "Vinueza Vera Alex", "Ureña Bermudez Allison", "Chafuel Medina Christian", "Humbser Lanas Sebastian", "Malla Mora Freddy", "Izquierdo Chavarria Javier", "Cando Salcedo Pablo", "Abarca Guashpa Daniela", "Dario Jarrin", "Xavier Guerrero"], "ROSA": ["Granda Quiña Amanda", "Nuñez Briones Julio", "Saavedra Perez Edison", "Andrés Leonardo Moreno", "Salazar Arevalo Dario", "Saltos Villamarin Carlos", "Ubidia Viera Aylin", "Pastaz Bauz Allan", "Baquero Bautista Christian", "Mateo Ulloa", "Humberto Germán Barahona", "Fernado Proaño"], "NARANJA": ["Andrés Orquera", "Ana Moyano", "Paul Vásquez", "Cristian Llusca Quinaluisa", "Villamarin Peña Luis", "Salvatierra Pizarro Diana", "Zumba Rivera José", "Galarza Cerón Ramiro", "Julia Díaz", "Luis Astudillo Mamarandi", "Fernando Estrada", "Darlin Proaño"]};
       const TEAMS_ORDER = Object.keys(TEAMS);
       const TCOL = { BLANCO: ["#eef1f4", "#ffffff", "#1f2124", "#cfd5dc"], NEGRO: ["#1c1d22", "#3a3c44", "#ffffff", "#000"], AZUL: ["#1554c0", "#1aa6d4", "#ffffff", "#1554c0"], CELESTE: ["#2bb6e8", "#8ad8f4", "#ffffff", "#2bb6e8"], VERDE: ["#1f8f4a", "#4cc36e", "#ffffff", "#1f8f4a"], AMARILLO: ["#f4bb1a", "#ffd95a", "#1f2124", "#f4bb1a"], MORADO: ["#6a2fa0", "#9b5fd0", "#ffffff", "#6a2fa0"], "CAFÉ": ["#6b4226", "#a2683f", "#ffffff", "#6b4226"], GRIS: ["#6f7682", "#a3a9b3", "#ffffff", "#6f7682"], ROSA: ["#e8508f", "#f79ac0", "#ffffff", "#e8508f"], NARANJA: ["#ec6f12", "#f9a24b", "#ffffff", "#ec6f12"] };
       const show = (sel, a, b) => { tl.set(sel, { visibility: "visible" }, a); if (b != null) tl.set(sel, { visibility: "hidden" }, b); };
       const T = [0, 5, 27, 33.5, 40, 46.5, 54]; // 13–20 reglas · 20–27 juegos
       // después de la promo: título «Organización de equipos» (4 s) y una lámina por equipo (5 s)
-      const NT = TEAMS_ORDER.length, TD = 5, TO = T[6], TT = TO + 4, DUR = TT + NT * TD;
+      const NT = TEAMS_ORDER.length, TD = 8, TO = T[6], TT = TO + 4, DUR = TT + NT * TD;
 
       /* transición: círculo de color que se abre y se cierra (los 3 círculos de COMUNICA) */
       const wipe = (at) => {
@@ -219,6 +220,8 @@
       tl.fromTo("#sR .ttl", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 13.2);
       tl.fromTo("#stats .stat", { y: 120, opacity: 0, scale: 0.85 }, { y: 0, opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.7)", stagger: 0.25 }, 13.6);
       tl.fromTo("#rules .line", { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power3.out", stagger: 0.6 }, 15.0);
+      tl.fromTo("#shirt", { scale: 0.6, opacity: 0, transformOrigin: "0% 50%" }, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(2)" }, 16.4);
+      tl.fromTo("#shirt", { scale: 1 }, { scale: 1.05, duration: 0.4, ease: "sine.inOut", yoyo: true, repeat: 3, immediateRender: false }, 17.2);
       wipe(20); show("#sJ", 20, 27);
       /* Equipos: una lámina por color con sus integrantes */
       TEAMS_ORDER.forEach((team, i) => {
@@ -226,8 +229,8 @@
         const sc = document.createElement("div");
         sc.className = "scene team";
         sc.style.color = ink;
-        const fitName = (n) => Math.min(31, 456 / (0.4 * n.length)).toFixed(1);
-        sc.innerHTML = `<div class="tbg" style="background: linear-gradient(118deg, ${c1} 0%, ${c2} 100%)"></div>
+        const fitName = (n) => Math.min(44, 455 / (0.5 * n.length)).toFixed(1);
+        sc.innerHTML = `<div class="tbg" style="background: ${c1}"></div>
           <div class="ghost" style="font-size: ${Math.min(330, Math.floor(1880 / (team.length * 0.86)))}px; ${ink !== "#ffffff" ? "-webkit-text-stroke: 4px rgba(31, 33, 36, 0.18);" : ""}">${team}</div>
           <div class="side"><div class="chip" style="background: ${chip}"></div><div class="k2">EQUIPO ${i + 1} DE ${NT}</div><div class="tn">${team[0] + team.slice(1).toLowerCase()}</div><div class="tc">${names.length} integrantes</div></div>
           <div class="list">${names.map((n, j) => `<div class="pp" style="font-size: ${fitName(n)}px"><i style="background: ${chip}; color: ${ink === "#ffffff" ? "#fff" : "#1f2124"}; ${team === "BLANCO" ? "border: 3px solid #9aa3ad;" : ""}">${j + 1}</i>${n}</div>`).join("")}</div>`;
@@ -235,7 +238,7 @@
         show(sc, t0, t0 + TD);
         tl.fromTo(sc.querySelector(".side"), { x: -120, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, t0 + 0.05);
         tl.fromTo(sc.querySelector(".ghost"), { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "expo.out" }, t0 + 0.1);
-        tl.fromTo(sc.querySelectorAll(".pp"), { y: 40, opacity: 0, scale: 0.92 }, { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.6)", stagger: 0.07 }, t0 + 0.35);
+        tl.fromTo(sc.querySelectorAll(".pp"), { y: 40, opacity: 0, scale: 0.92 }, { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.6)", stagger: 0.12 }, t0 + 0.35);
         tl.fromTo(sc.querySelector(".tbg"), { opacity: i ? 0 : 1 }, { opacity: 1, duration: 0.3 }, t0);
       });
       tl.fromTo("#sJ .ttl", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 20.2);
