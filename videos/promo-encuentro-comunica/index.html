@@ -28,11 +28,11 @@
       .tint { position: absolute; inset: 0; background: linear-gradient(118deg, rgba(244, 187, 26, 0.34) 0%, rgba(26, 166, 212, 0.3) 52%, rgba(54, 192, 196, 0.36) 100%); }
       .shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10, 40, 60, 0.75) 0%, rgba(10, 40, 60, 0.25) 42%, rgba(10, 40, 60, 0) 60%); }
       /* título gigante detrás de la persona */
-      .big { position: absolute; left: 0; top: 46px; width: 1920px; text-align: center; font-weight: 900; font-stretch: 115%; font-size: 250px; line-height: 1; letter-spacing: -0.01em; color: #fff; white-space: nowrap; text-shadow: 0 10px 40px rgba(0, 40, 70, 0.25); }
+      .big { position: absolute; left: 0; top: -20px; width: 1920px; text-align: center; font-weight: 900; font-stretch: 115%; font-size: 360px; line-height: 1; letter-spacing: -0.01em; color: transparent; -webkit-text-stroke: 4px rgba(255, 255, 255, 0.95); white-space: nowrap; }
       .pop { position: absolute; inset: 0; filter: drop-shadow(0 20px 30px rgba(0, 30, 50, 0.35)); }
       /* bloque de texto inferior */
       .info { position: absolute; left: 110px; bottom: 90px; max-width: 1000px; }
-      .ttl { margin-top: 12px; font-weight: 900; font-stretch: 112%; font-size: 96px; line-height: 0.95; text-shadow: 0 6px 26px rgba(0, 30, 50, 0.45); }
+      .ttl { margin-top: 12px; font-weight: 900; font-stretch: 112%; font-size: 150px; line-height: 0.95; text-shadow: 0 6px 26px rgba(0, 30, 50, 0.45); }
       .kick { display: inline-block; padding: 8px 22px 10px; background: #fff; color: var(--ink); font-weight: 800; font-size: 30px; letter-spacing: 0.18em; }
       .line { margin-top: 14px; font-weight: 700; font-size: 44px; line-height: 1.15; text-shadow: 0 4px 22px rgba(0, 30, 50, 0.45); }
       .line b { font-weight: 900; color: #fff6cf; }
@@ -48,12 +48,22 @@
       #logo2 { position: absolute; left: 0; top: -95px; width: 1920px; height: 1271px; }
       #logo2 img { position: absolute; inset: 0; width: 1920px; height: 1271px; display: block; }
       #lgTrazos { --p: -20%; -webkit-mask: linear-gradient(90deg, #000 var(--p), transparent calc(var(--p) + 18%)); mask: linear-gradient(90deg, #000 var(--p), transparent calc(var(--p) + 18%)); }
+      .team .tbg { position: absolute; inset: 0; }
+      .team .ghost { position: absolute; left: 0; width: 1920px; text-align: center; top: 760px; font-weight: 900; font-stretch: 115%; line-height: 1; white-space: nowrap; color: transparent; -webkit-text-stroke: 4px rgba(255, 255, 255, 0.55); }
+      .team .side { position: absolute; left: 100px; top: 230px; width: 560px; }
+      .team .chip { width: 150px; height: 150px; border-radius: 50%; border: 8px solid #fff; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25); }
+      .team .k2 { margin-top: 34px; display: inline-block; padding: 8px 22px 10px; background: #fff; color: #1f2124; font-weight: 800; font-size: 28px; letter-spacing: 0.18em; }
+      .team .tn { margin-top: 12px; font-weight: 900; font-stretch: 105%; font-size: 112px; line-height: 0.92; }
+      .team .tc { margin-top: 14px; font-weight: 700; font-size: 38px; opacity: 0.9; }
+      .team .list { position: absolute; left: 690px; right: 80px; top: 120px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 26px; }
+      .team .pp { display: flex; align-items: center; gap: 18px; background: rgba(255, 255, 255, 0.96); color: #1f2124; border-radius: 16px; padding: 14px 20px; min-height: 104px; font-weight: 700; font-stretch: 82%; line-height: 1.12; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16); white-space: nowrap; overflow: hidden; }
+      .team .pp i { flex: none; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-style: normal; font-weight: 900; font-size: 24px; font-stretch: 100%; }
       .dot { position: absolute; border-radius: 50%; mix-blend-mode: multiply; }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="54" data-width="1920" data-height="1080">
-      <div id="stage" class="clip" data-start="0" data-duration="54" data-track-index="0">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="113" data-width="1920" data-height="1080">
+      <div id="stage" class="clip" data-start="0" data-duration="113" data-track-index="0">
         <!-- Intro: logo Premios Comunica -->
         <div class="scene" id="s0" style="background: #002c4f">
           <div id="logo2">
@@ -69,7 +79,7 @@
           <div class="ph" id="p1a"><img src="assets/fotos/sacos.webp" alt="" /></div>
           <div class="tint" id="t1a"></div>
           <div class="ph" id="p1b" style="opacity: 0"><img src="assets/fotos/cuerda.webp" alt="" /><div class="tint" style="position: absolute"></div></div>
-          <div class="big" style="font-size: 196px; top: 70px">COMPETENCIAS</div>
+          <div class="big" style="font-size: 238px; top: 10px">COMPETENCIAS</div>
           <div class="pop" id="q1a"><div class="ph"><img src="assets/fotos/sacos-pop.png" alt="" /></div></div>
           <div class="pop" id="q1b" style="opacity: 0"><div class="ph"><img src="assets/fotos/cuerda-pop.png" alt="" /></div></div>
           <div class="shade"></div>
@@ -109,6 +119,18 @@
             <div class="game"><i>6</i>Baile de la silla</div>
           </div>
         </div>
+
+        <!-- Organización de equipos -->
+        <div class="scene" id="sO" style="background: linear-gradient(118deg, #f4bb1a 0%, #1aa6d4 52%, #36c0c4 100%)">
+          <div class="big" style="top: 700px; font-size: 360px; -webkit-text-stroke: 4px rgba(255, 255, 255, 0.6)">EQUIPOS</div>
+          <div id="orgT" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center">
+            <div class="kick" style="font-size: 34px">INTEGRACIÓN COMUNICA EP 2026</div>
+            <div style="margin-top: 24px; font-weight: 900; font-stretch: 112%; font-size: 150px; line-height: 0.95; text-shadow: 0 8px 30px rgba(0, 40, 70, 0.25)">Organización<br />de equipos</div>
+          </div>
+        </div>
+
+        <!-- Equipos (se generan desde TEAMS) -->
+        <div id="teams"></div>
 
         <!-- Premios -->
         <div class="scene" id="s2" style="background: #fff">
@@ -159,8 +181,13 @@
 
     <script>
       const tl = gsap.timeline({ paused: true });
+      const TEAMS = {"BLANCO": ["Jimenez Ortega Jorge Washington", "Jimenez Vicente Francisco Yofredy", "Sanchez Barahona Lenin", "Sangoquiza Castro Jairo Josue", "Aguilar Lopez Veronica de los Angeles", "Martinez Yanez Jorge Geovany", "Chasi Malliquinga Giovanny Javier", "Mantilla Orellana Carla Mildred", "Barcenes Lopez Paola Tatiana", "Martínez Yánez Juan Pablo", "Vintimilla Egas Sofia Carolina", "Dayana Rivas"], "NEGRO": ["Estrada Angueta Maria Lorena", "Cevallos Beltran Galo Javier", "Ayala Martinez Jorge Giovanny", "Mites Calderón Diana Isabel", "Noboa Garcia Andres Homero", "Gonzalez Gallegos Maria Gabriela", "Jaramillo Ruiz Javier Alejandro", "Cajamarca Rodriguez Christian Santiago", "Bastidas Sanchez Omar Roberto", "Espinosa Cabrera Jose Luis", "Suarez Andrade Jessica Jeanneth", "Wiltón Sánchez"], "AZUL": ["Mendieta Cabrera Gladis Teresa", "Bazantes Fernandez Emerson Rommel", "Sanchez Arias Nelson Samuel", "Barrera Romero Omar Guillermo", "Ambuludi Freire Ximena Katerine", "Bedon Ruiz Sandra Manuela", "Betancourt Quiñonez Edison Fernando", "Lopez Pino Fernando Mauricio", "Vivanco Arias Santiago David", "Montesdeoca Cedeño Ana Maribel", "Murillo Espinoza Luis Giovany", "Dianna Guevara"], "CELESTE": ["Ortega Paez Irene Elizabeth", "Cadena Tigsi Paul Alejandro", "Calderon Guachamin Richard Fabricio", "Barrera Barriga Erick Lenin", "Arteaga Berrezueta Nataly Vanessa", "Zurita Ruales Pablo Anibal", "Porras Torres Carlos Fernando", "Ulcuango Cuascota Elena Noemi", "Quilachamin Guaman Jonathan Patricio", "Cueva Llumiquinga Julio Cesar", "Zapata Valencia Jorge Anibal", "Estefania Garrido"], "VERDE": ["Cañar Armijos Gabriela Liliana", "Garcia Zambrano Gloria Patricia", "Guanoluisa Acero Jose Daniel", "Boada Quinteros Julio Alberto", "Franco Calixto Angel Dionicio", "Jurado Guerrero Diego Xavier", "Andrade Castro Lautaro Rafael", "Gualotuña Tenemasa Jose Luis", "Calderon Chavez Lizeth Carolina", "Delgado Valencia Felix Hilbeto", "Perea Vizcaino Diana Carolina", "Cayambe Tenorio Byron Marcelo"], "AMARILLO": ["Potosi Moya Joselynne Antonella", "Tashiguano Muzo Carlos Alberto", "Velasquez Benitez Winter Eduardo", "Simbaña Guaña Alex Dario", "Burgos Suarez Jose Ramon", "Aldaz Tipan Paola Estefania", "Bravo Najera David Leonardo", "Guamani Jacome Bryan Andres", "Perez Gonzalez Grace Estefany", "Caiza Jami Erika Priscila", "Santiago Daniel Azuero Patiño", "Jerson Estuardo Chamba Maza"], "MORADO": ["Gonzalez Ochoa Veronica Alexandra", "Piedra Merchan Jonathan Kevin", "Alban Oñate Diana Maribel", "Bacuy Cuichan Maria Nelly", "Amaguaña Caña Christian Leonardo", "Cahueñas Apunte Jhon Patricio", "Guerra Carranza Robert Lester", "Casamen Patiño Washington Ivan", "Cléver Guamaní", "Gomez Godoy Sergio Enrique", "Arturo Caviedes", "Milton Patricio Cueva Loachamin"], "CAFÉ": ["Vargas Chavez Mario Xavier", "Betancourt Navarro Cristhian German", "Churuchumbi Lechon Maria Belen", "Montenegro Viera Efren Arturo", "Leon Rosero Francis Cristina", "Guayanay Flores Jessica Janeth", "Vera Cueva Erick Andres", "Vasco Sanchez Ana Lisbeth", "Saravia Alban Luis Fernando", "Cordova Puga Marcelo David", "Arturo Barriga", "Mao Muñoz"], "GRIS": ["Heredia Torres Jessica Valeria", "Guerrero Quishpe Alvaro Sebastian", "Vinueza Vera Alex Rolando", "Ureña Bermudez Allison Victoria", "Chafuel Medina Christian Vinicio", "Humbser Lanas Sebastian", "Malla Mora Freddy Oswaldo", "Izquierdo Chavarria Javier Eduardo", "Cando Salcedo Pablo Leonardo", "Abarca Guashpa Daniela Carolina", "Dario Jarrin", "Xavier Guerrero"], "ROSA": ["Granda Quiña Amanda Maribel", "Nuñez Briones Julio Adrian", "Saavedra Perez Edison Marcelo", "Andrés Leonardo Moreno Paspuel", "Salazar Arevalo Dario Javier", "Saltos Villamarin Carlos Alberto", "Ubidia Viera Aylin Janise", "Pastaz Bauz Allan Joel", "Baquero Bautista Christian Alejandro", "Mateo Ulloa", "Humberto Germán Barahona Chiguano", "Fernado Proaño"], "NARANJA": ["Andrés Orquera", "Ana Moyano", "Paul Vásquez", "Cristian Llusca Quinaluisa", "Villamarin Peña Luis Andrés", "Salvatierra Pizarro Diana Carolina", "Zumba Rivera José Iván", "Galarza Cerón Ramiro Daniel", "Julia Díaz", "Luis Astudillo Mamarandi", "Fernando Estrada", "Darlin Proaño"]};
+      const TEAMS_ORDER = Object.keys(TEAMS);
+      const TCOL = { BLANCO: ["#eef1f4", "#ffffff", "#1f2124", "#cfd5dc"], NEGRO: ["#1c1d22", "#3a3c44", "#ffffff", "#000"], AZUL: ["#1554c0", "#1aa6d4", "#ffffff", "#1554c0"], CELESTE: ["#2bb6e8", "#8ad8f4", "#ffffff", "#2bb6e8"], VERDE: ["#1f8f4a", "#4cc36e", "#ffffff", "#1f8f4a"], AMARILLO: ["#f4bb1a", "#ffd95a", "#1f2124", "#f4bb1a"], MORADO: ["#6a2fa0", "#9b5fd0", "#ffffff", "#6a2fa0"], "CAFÉ": ["#6b4226", "#a2683f", "#ffffff", "#6b4226"], GRIS: ["#6f7682", "#a3a9b3", "#ffffff", "#6f7682"], ROSA: ["#e8508f", "#f79ac0", "#ffffff", "#e8508f"], NARANJA: ["#ec6f12", "#f9a24b", "#ffffff", "#ec6f12"] };
       const show = (sel, a, b) => { tl.set(sel, { visibility: "visible" }, a); if (b != null) tl.set(sel, { visibility: "hidden" }, b); };
       const T = [0, 5, 27, 33.5, 40, 46.5, 54]; // 13–20 reglas · 20–27 juegos
+      // después de la promo: título «Organización de equipos» (4 s) y una lámina por equipo (5 s)
+      const NT = TEAMS_ORDER.length, TD = 5, TO = T[6], TT = TO + 4, DUR = TT + NT * TD;
 
       /* transición: círculo de color que se abre y se cierra (los 3 círculos de COMUNICA) */
       const wipe = (at) => {
@@ -193,6 +220,24 @@
       tl.fromTo("#stats .stat", { y: 120, opacity: 0, scale: 0.85 }, { y: 0, opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.7)", stagger: 0.25 }, 13.6);
       tl.fromTo("#rules .line", { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power3.out", stagger: 0.6 }, 15.0);
       wipe(20); show("#sJ", 20, 27);
+      /* Equipos: una lámina por color con sus integrantes */
+      TEAMS_ORDER.forEach((team, i) => {
+        const [c1, c2, ink, chip] = TCOL[team] || ["#1aa6d4", "#36c0c4", "#ffffff", "#1aa6d4"], names = TEAMS[team], t0 = TT + i * TD;
+        const sc = document.createElement("div");
+        sc.className = "scene team";
+        sc.style.color = ink;
+        const fitName = (n) => Math.min(31, 456 / (0.4 * n.length)).toFixed(1);
+        sc.innerHTML = `<div class="tbg" style="background: linear-gradient(118deg, ${c1} 0%, ${c2} 100%)"></div>
+          <div class="ghost" style="font-size: ${Math.min(330, Math.floor(1880 / (team.length * 0.86)))}px; ${ink !== "#ffffff" ? "-webkit-text-stroke: 4px rgba(31, 33, 36, 0.18);" : ""}">${team}</div>
+          <div class="side"><div class="chip" style="background: ${chip}"></div><div class="k2">EQUIPO ${i + 1} DE ${NT}</div><div class="tn">${team[0] + team.slice(1).toLowerCase()}</div><div class="tc">${names.length} integrantes</div></div>
+          <div class="list">${names.map((n, j) => `<div class="pp" style="font-size: ${fitName(n)}px"><i style="background: ${chip}; color: ${ink === "#ffffff" ? "#fff" : "#1f2124"}; ${team === "BLANCO" ? "border: 3px solid #9aa3ad;" : ""}">${j + 1}</i>${n}</div>`).join("")}</div>`;
+        document.getElementById("teams").appendChild(sc);
+        show(sc, t0, t0 + TD);
+        tl.fromTo(sc.querySelector(".side"), { x: -120, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, t0 + 0.05);
+        tl.fromTo(sc.querySelector(".ghost"), { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "expo.out" }, t0 + 0.1);
+        tl.fromTo(sc.querySelectorAll(".pp"), { y: 40, opacity: 0, scale: 0.92 }, { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.6)", stagger: 0.07 }, t0 + 0.35);
+        tl.fromTo(sc.querySelector(".tbg"), { opacity: i ? 0 : 1 }, { opacity: 1, duration: 0.3 }, t0);
+      });
       tl.fromTo("#sJ .ttl", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 20.2);
       tl.fromTo("#games .game", { x: -100, opacity: 0 }, { x: 0, opacity: 1, duration: 0.55, ease: "back.out(1.6)", stagger: 0.3 }, 20.6);
       tl.to(["#q1a"], { opacity: 0, duration: 0.5 }, 8.8);
@@ -211,11 +256,15 @@
       wipe(T[4]); show("#s4", T[4], T[5]); photoScene(4, T[4], T[5]);
 
       /* Info */
-      wipe(T[5]); show("#s5", T[5]);
+      wipe(T[5]); show("#s5", T[5], T[6]);
       tl.fromTo("#fin > *", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "back.out(1.6)", stagger: 0.18 }, T[5] + 0.3);
       tl.fromTo("#fin > div:last-child", { scale: 1 }, { scale: 1.06, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 5, immediateRender: false }, T[5] + 2.2);
 
-      tl.set({}, {}, T[6]);
+      wipe(TO); show("#sO", TO, TT);
+      tl.fromTo("#sO .big", { scale: 1.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.0, ease: "expo.out" }, TO + 0.2);
+      tl.fromTo("#orgT > *", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "back.out(1.6)", stagger: 0.2 }, TO + 0.3);
+      wipe(TT);
+      tl.set({}, {}, DUR);
       window.__timelines["main"] = tl;
       tl.seek(0);
     </script>
