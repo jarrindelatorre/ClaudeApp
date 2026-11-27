@@ -12,7 +12,8 @@
   .name { margin-top: 12px; font-weight: 900; font-stretch: 105%; font-size: 112px; line-height: 0.92; text-shadow: 0 6px 26px rgba(0,0,0,0.25); }
   .count { margin-top: 14px; font-weight: 700; font-size: 38px; opacity: 0.9; }
   .list { position: absolute; left: 690px; right: 80px; top: 120px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 26px; }
-  .p { display: flex; align-items: center; gap: 18px; background: rgba(255,255,255,0.96); color: #1f2124; border-radius: 16px; padding: 14px 20px; min-height: 104px; font-weight: 700; font-size: 30px; line-height: 1.12; box-shadow: 0 10px 26px rgba(0,0,0,0.16); }
+  .p { display: flex; align-items: center; gap: 18px; background: rgba(255,255,255,0.96); color: #1f2124; border-radius: 16px; padding: 14px 20px; min-height: 104px; font-weight: 700; font-size: 31px; font-stretch: 82%; line-height: 1.12; box-shadow: 0 10px 26px rgba(0,0,0,0.16); white-space: nowrap; }
+  .p span { display: inline-block; transform-origin: 0 50%; }
   .p i { flex: none; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-style: normal; font-weight: 900; font-size: 24px; }
 </style></head>
 <body>
@@ -33,7 +34,9 @@
     document.getElementById("k").textContent = `EQUIPO ${idx} DE ${Object.keys(T).length}`;
     document.getElementById("nm").textContent = team[0] + team.slice(1).toLowerCase();
     document.getElementById("ct").textContent = names.length + " integrantes";
-    document.getElementById("list").innerHTML = names.map((n, i) => `<div class="p"><i style="background:${chip};color:${ink === "#ffffff" ? "#fff" : "#1f2124"};${team === "BLANCO" ? "border:3px solid #9aa3ad" : ""}">${i + 1}</i>${n}</div>`).join("");
+    document.getElementById("list").innerHTML = names.map((n, i) => `<div class="p"><i style="background:${chip};color:${ink === "#ffffff" ? "#fff" : "#1f2124"};${team === "BLANCO" ? "border:3px solid #9aa3ad" : ""}">${i + 1}</i><span>${n}</span></div>`).join("");
+    // nombre siempre en una línea: si no entra, se ajusta al ancho de la tarjeta
+    document.querySelectorAll(".p span").forEach((sp) => { const max = sp.parentElement.clientWidth - 40 - 64; if (sp.offsetWidth > max) sp.style.fontSize = (31 * max / sp.offsetWidth).toFixed(1) + "px"; });
     document.title = "ok";
   });
 </script></body></html>
